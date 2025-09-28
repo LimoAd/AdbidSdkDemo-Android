@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">AdBidDemo</string>
+
+    <string name="adbid_sdk_demo">Taku Sdk Demo</string>
+
+    <string name="adbid_title_rewarded_video">Rewarded Video</string>
+    <string name="adbid_title_interstitial">Interstitial</string>
+    <string name="adbid_title_splash">Splash</string>
+    <string name="adbid_title_banner">Banner</string>
+    <string name="adbid_title_native">Native</string>
+    <string name="adbid_title_native_express">Native List</string>
+    <string name="adbid_title_native_list">Native List</string>
+    <string name="adbid_title_native_draw">Native Draw</string>
+    <string name="adbid_title_native_patch">Native Patch</string>
+
+    <string name="adbid_native_self">Native SelfRender</string>
+    <string name="adbid_native_express">Native Express</string>
+    <string name="adbid_native_list">Native list</string>
+    <string name="adbid_native_refresh_list">Native Refresh list</string>
+    <string name="adbid_native_draw">Vertical Draw Video</string>
+    <string name="adbid_native_patch">Paster Video</string>
+
+    <string name="adbid_title_fullscreen">FullScreen</string>
+    <string name="adbid_title_draw">Vertical Draw Video</string>
+    <string name="adbid_title_patch">Pre-roll</string>
+
+    <string name="adbid_main_desc_rewarded_video">Users can engage with a video ad in exchange for in-app rewards.</string>
+    <string name="adbid_main_desc_interstitial">Include Interstitial and FullScreen.Appears at natural breaks or transition points.</string>
+    <string name="adbid_main_desc_splash">Displayed immediately after the application is launched.</string>
+    <string name="adbid_main_desc_banner">Flexible formats which could appear at the top, middle or bottom of your app.</string>
+    <string name="adbid_main_desc_native">Include Native,Vertical Draw Video and Pre-roll Ads.Most compatible with your native app code for video ads and graphic ads.</string>
+
+    <string name="adbid_load_ad">Load Ad</string>
+    <string name="adbid_is_ad_ready">Is Ad Ready</string>
+    <string name="adbid_show_ad">Show Ad</string>
+    <string name="adbid_select_network">Select Network</string>
+
+    <string name="adbid_click_to_copy_device_id">Copy AndroidID: %s</string>
+    <string name="adbid_sdk_version">Taku SDK: %s</string>
+
+    <string name="adbid_ad_status_loading">loadAd</string>
+    <string name="adbid_ad_status_not_load">ad is not load.</string>
+    <string name="app_banner_name">信息流广告</string>
+    <string name="app_inter_name">插屏广告</string>
+    <string name="app_reward_name">激励广告</string>
+    <string name="app_spalsh_name">开屏广告</string>
+    <integer name="adbid_native_button_col">2</integer>
+</resources>

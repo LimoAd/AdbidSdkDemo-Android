@@ -1,0 +1,61 @@
+[versions]
+agp = "8.10.1"
+browser = "1.8.0"
+constraintlayout = "2.2.1"
+core = "1.16.0"
+glide = "4.16.0"
+gson = "2.13.1"
+inmobiAdsKotlin = "10.8.3"
+junit = "4.13.2"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+appcompat = "1.7.1"
+materialVersion = "1.6.0"
+mbridge_android_sdk = "16.9.91"
+pagSdk = "7.2.0.6"
+playServicesAds = "24.4.0"
+material = "1.12.0"
+kotlin = "2.0.21"
+playServicesAdsIdentifier = "18.2.0"
+playServicesAppset = "16.1.0"
+playServicesLocation = "21.3.0"
+playServicesTasks = "18.3.2"
+recyclerview = "1.4.0"
+recyclerviewVersion = "1.2.1"
+tanxuisdk = "3.4.2"
+unityAds = "4.16.0"
+viewpager = "1.1.0"
+vungleAds = "7.5.0"
+
+[libraries]
+androidx-browser = { module = "androidx.browser:browser", version.ref = "browser" }
+androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "core" }
+androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }
+androidx-recyclerview-v121 = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerviewVersion" }
+androidx-viewpager = { module = "androidx.viewpager:viewpager", version.ref = "viewpager" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+inmobi-ads-kotlin = { module = "com.inmobi.monetization:inmobi-ads-kotlin", version.ref = "inmobiAdsKotlin" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material-v160 = { module = "com.google.android.material:material", version.ref = "materialVersion" }
+mbridge_android_sdk = { module = "com.mbridge.msdk.oversea:mbridge_android_sdk", version.ref = "mbridge_android_sdk" }
+pag-sdk = { module = "com.pangle.global:pag-sdk", version.ref = "pagSdk" }
+play-services-ads = { module = "com.google.android.gms:play-services-ads", version.ref = "playServicesAds" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+play-services-ads-identifier = { module = "com.google.android.gms:play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
+play-services-appset = { module = "com.google.android.gms:play-services-appset", version.ref = "playServicesAppset" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+play-services-tasks = { module = "com.google.android.gms:play-services-tasks", version.ref = "playServicesTasks" }
+tanxuisdk = { module = "com.tanx:TanxUISDK", version.ref = "tanxuisdk" }
+unity-ads = { module = "com.unity3d.ads:unity-ads", version.ref = "unityAds" }
+vungle-ads = { module = "com.vungle:vungle-ads", version.ref = "vungleAds" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+

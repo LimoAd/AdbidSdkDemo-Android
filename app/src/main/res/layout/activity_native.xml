@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/adbid_F5F5F5">
+
+
+    <LinearLayout
+        android:background="#ffffff"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/adbid_padding">
+        <com.yiman.ad.adbid.view.TitleBar
+            android:id="@+id/title_bar"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/adbid_45dp" />
+        <RelativeLayout
+            android:layout_weight="1"
+            android:id="@+id/rl_panel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/adbid_F5F5F5"
+            android:visibility="invisible">
+
+            <com.adbid.media.nativeAd.AdbidNativeAdView
+                android:id="@+id/native_ad_view"
+                android:background="#000000"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <include
+                    android:id="@+id/self_render_view"
+                    layout="@layout/layout_native_self" />
+            </com.adbid.media.nativeAd.AdbidNativeAdView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/native_ad_view"
+                android:layout_marginStart="@dimen/adbid_12dp"
+                android:layout_marginTop="@dimen/adbid_18dp"
+                android:layout_marginEnd="@dimen/adbid_12dp"/>
+
+        </RelativeLayout>
+
+        <include layout="@layout/include_btn" />
+
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>
