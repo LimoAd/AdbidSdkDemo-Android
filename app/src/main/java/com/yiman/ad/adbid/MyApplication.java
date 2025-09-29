@@ -13,6 +13,7 @@ import com.adbid.sdk.AdbidInitConfig;
 import com.adbid.sdk.AdbidLocation;
 import com.adbid.sdk.AdbidSdk;
 import com.adbid.sdk.AdbidSdkInitListener;
+import com.adbid.sdk.BuildConfig;
 
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class MyApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
-        //AdbidSdk.getInstance(this).setDebugMode(true);
+        AdbidSdk.getInstance(this).setDebugMode(BuildConfig.DEBUG);
         AdbidInitConfig config = AdbidInitConfig
                 .builder(AdConfig.getAdConfig().getAppToken(), AdConfig.getAdConfig().getAppId())
                 //设置App渠道
