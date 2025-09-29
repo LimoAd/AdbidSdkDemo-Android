@@ -2,6 +2,7 @@ package com.yiman.ad.adbid.ad;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
@@ -31,7 +32,7 @@ public class InterstitialActivity extends ComponentActivity {
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
                 //获取广告价格，单位分
                 double price = adInfo.getPrice();
-                Log.i("AdbidAd", "插屏广告加载完成，ecpm: " + price);
+                log( "插屏广告加载完成，ecpm: " + price);
 
                 //展示广告
                 if (interstitialAd != null) {
@@ -41,24 +42,24 @@ public class InterstitialActivity extends ComponentActivity {
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                Log.i("AdbidAd", "插屏广告加载失败：" + error.getMessage());
+                log( "插屏广告加载失败：" + error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "插屏广告展示成功");
+                log( "插屏广告展示成功");
             }
 
             @Override public void onAdDisplayedFailed(@Nullable AdbidAdInfo adInfo,
                                                       @NonNull AdbidError error) {
-                Log.i("AdbidAd", "插屏广告展示失败，error: " + error.getMessage());
+                log( "插屏广告展示失败，error: " + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "插屏广告关闭");
+                log( "插屏广告关闭");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "插屏广告触发点击");
+                log( "插屏广告触发点击");
             }
         });
 
@@ -74,5 +75,13 @@ public class InterstitialActivity extends ComponentActivity {
             interstitialAd.destroy();
             interstitialAd = null;
         }
+    }
+
+    StringBuilder stringBuilder = new StringBuilder("广告日志：\n");
+
+    private void log(String msg) {
+        stringBuilder.append(msg + ";\n");
+        TextView textView = findViewById(R.id.text_layout);
+        textView.setText(stringBuilder.toString());
     }
 }

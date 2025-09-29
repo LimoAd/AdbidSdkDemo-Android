@@ -42,6 +42,7 @@ public class MainActivity extends ComponentActivity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         TitleBar titleBar = findViewById(R.id.title_bar);
         titleBar.setTitle(R.string.app_name);
         titleBar.setListener(view -> finish());
@@ -75,30 +76,30 @@ public class MainActivity extends ComponentActivity {
             AdbidBannerView bannerView = new AdbidBannerView(MainActivity.this);
             bannerView.setUnitId(AdConfig.getAdConfig().getBannerUnitId());
             ViewGroup viewGroup = findViewById(R.id.frame_ad_banner);
+            int width = getResources().getDisplayMetrics().widthPixels;//定一个宽度值，比如屏幕宽度
+            int height = (int) (width / (320 / 50f));//按照比例转换高度的值
+           // bannerView.setAdSize(width, height);
             bannerView.setBannerAdListener(new AdbidBannerListener() {
                 @Override public void onBannerLoad(@NonNull AdbidAdInfo adInfo) {
-                    Toast.makeText(MainActivity.this, "load success", Toast.LENGTH_SHORT).show();
-                    Log.i("AdbidSdk",
-                            "onBannerLoad: " + adInfo.getAdUnitId());
+                    logToast("onBannerLoad");
                 }
 
                 @Override
                 public void onBannerFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                    Toast.makeText(MainActivity.this, "load fail", Toast.LENGTH_SHORT).show();
-                    Log.i("AdbidSdk", "onBannerLoad: " + error.getMessage());
+                    logToast("onBannerFail: "+error.getMessage());
                 }
 
                 @Override public void onBannerShow(@NonNull AdbidAdInfo adInfo) {
-                    Toast.makeText(MainActivity.this, "banner show", Toast.LENGTH_SHORT).show();
+                    logToast("onBannerShow");
                 }
 
                 @Override public void onBannerClose(@NonNull AdbidAdInfo adInfo) {
                     ViewUtils.removeFromParent(bannerView);
-                    Toast.makeText(MainActivity.this, "banner close", Toast.LENGTH_SHORT).show();
+                    logToast("onBannerClose");
                 }
 
                 @Override public void onBannerClicked(@NonNull AdbidAdInfo adInfo) {
-                    Toast.makeText(MainActivity.this, "banner click", Toast.LENGTH_SHORT).show();
+                    logToast("onBannerClicked");
                 }
             });
             viewGroup.removeAllViews();
@@ -111,51 +112,34 @@ public class MainActivity extends ComponentActivity {
     private void initReward() {
         adbidRewardListener = new AdbidRewardListener() {
             @Override public void onUserReward(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "onUserReward", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onUserReward: " + adInfo.getAdUnitId());
+               logToast("onUserReward");
 
             }
 
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "load success", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk", "onAdLoad: " + adInfo.getAdUnitId());
+               logToast("onAdLoadSuccess");
             }
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                Toast.makeText(MainActivity.this, "load fail " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk", error.getMessage());
+                logToast("onAdLoadFail: "+error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "display success", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdDisplayed: " + adInfo.getAdUnitId());
+                logToast("onAdDisplayed");
             }
 
-            @Override
-            public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
-                                            @NonNull AdbidError error) {
-                Toast.makeText(MainActivity.this, "display fail " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        error.getMessage());
+            @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
+                                                      @NonNull AdbidError error) {
+                logToast("onAdDisplayedFailed: "+error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "hidden", Toast.LENGTH_SHORT).show();
-                FrameLayout frameLayout = findViewById(R.id.frame_ad);
-                frameLayout.removeAllViews();
-                Log.i("AdbidSdk",
-                        "onAdHidden: " + adInfo.getAdUnitId());
+                logToast("onAdHidden");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdClicked: " + adInfo.getAdUnitId());
+                logToast("onAdClicked");
             }
         };
         findViewById(R.id.btn_reward_Load).setOnClickListener(view -> {
@@ -171,45 +155,31 @@ public class MainActivity extends ComponentActivity {
     private void initInter() {
         interListener = new AdbidListener() {
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "load success", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk", "onAdLoad: " + adInfo.getAdUnitId());
+               logToast("onAdLoadSuccess");
             }
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                Toast.makeText(MainActivity.this, "load fail " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk", error.getMessage());
+                logToast("onAdLoadFail: "+error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "display success", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdDisplayed: " + adInfo.getAdUnitId());
+                logToast("onAdDisplayed");
             }
 
-            @Override
-            public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
-                                            @NonNull AdbidError error) {
-                Toast.makeText(MainActivity.this, "display fail " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-
-                Log.i("AdbidSdk",
-                        error.getMessage());
+            @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
+                                                      @NonNull AdbidError error) {
+                logToast("onAdDisplayedFailed: "+error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "hidden", Toast.LENGTH_SHORT).show();
                 FrameLayout frameLayout = findViewById(R.id.frame_ad);
                 frameLayout.removeAllViews();
-                Log.i("AdbidSdk",
-                        "onAdHidden: " + adInfo.getAdUnitId());
+                logToast("onAdHidden");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdClicked: " + adInfo.getAdUnitId());
+                logToast("onAdClicked");
             }
         };
         findViewById(R.id.btn_inter_load).setOnClickListener(view -> {
@@ -228,45 +198,33 @@ public class MainActivity extends ComponentActivity {
     private void initSplash() {
         appOpenAdListener = new AdbidListener() {
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "load success", Toast.LENGTH_SHORT).show();
-                Log.i("AdSDK", "开屏广告加载成功");
+                logToast("onAdLoadSuccess");
             }
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
                 Toast.makeText(MainActivity.this, "load fail " + error.getMessage(),
                         Toast.LENGTH_SHORT).show();
-                Log.i("AdSDK", "开屏广告加载失败：" + error.getMessage());
+                logToast("onAdLoadFail: "+error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "display success", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdDisplayed: " + adInfo.getAdUnitId());
+                logToast("onAdDisplayed");
             }
 
-            @Override
-            public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
-                                            @NonNull AdbidError error) {
-                Toast.makeText(MainActivity.this, "display fail " + error.getMessage(),
-                        Toast.LENGTH_SHORT).show();
-
-                Log.i("AdbidSdk",
-                        error.getMessage());
+            @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
+                                                      @NonNull AdbidError error) {
+                logToast("onAdDisplayedFailed: "+error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "hidden", Toast.LENGTH_SHORT).show();
                 FrameLayout frameLayout = findViewById(R.id.frame_ad);
                 frameLayout.removeAllViews();
-                Log.i("AdbidSdk",
-                        "onAdHidden: " + adInfo.getAdUnitId());
+                logToast("onAdHidden");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Toast.makeText(MainActivity.this, "click", Toast.LENGTH_SHORT).show();
-                Log.i("AdbidSdk",
-                        "onAdClicked: " + adInfo.getAdUnitId());
+                logToast("onAdClicked");
             }
         };
         findViewById(R.id.btn_app_open_load).setOnClickListener(view -> {
@@ -303,9 +261,10 @@ public class MainActivity extends ComponentActivity {
         }
 
     }
+
+
+    private void logToast(String msg){
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+        Log.i("AdbidSdk", msg);
+    }
 }
-
-
-
-
-

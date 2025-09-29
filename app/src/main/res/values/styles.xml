@@ -32,7 +32,7 @@
     <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/btn_custom</item> <!-- 引用上面创建的状态背景 -->
         <item name="android:textColor">#FFFFFF</item> <!-- 文字颜色 -->
-        <item name="android:textSize">16sp</item> <!-- 文字大小 -->
+        <item name="android:textSize">14sp</item> <!-- 文字大小 -->
     </style>
 
 

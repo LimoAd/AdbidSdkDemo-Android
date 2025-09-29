@@ -11,11 +11,22 @@
         android:background="#ffffff"
         android:orientation="vertical">
 
+
+
         <com.yiman.ad.adbid.view.TitleBar
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/adbid_45dp"
             android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_margin="10dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:text="分步加载与展示"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <LinearLayout
 
@@ -110,6 +121,14 @@
             android:layout_margin="10dp"
             android:text="横幅广告" />
 
+        <TextView
+            android:layout_margin="10dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:text="打开新页面，直接加载展示广告"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -122,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="开屏新页面" />
+                android:text="开屏" />
 
             <Button
                 android:id="@+id/btn_inter_jump"
@@ -131,7 +150,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="插屏新页面" />
+                android:text="插屏" />
 
             <Button
                 android:id="@+id/btn_reeard_jump"
@@ -140,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="激励新页面" />
+                android:text="激励" />
 
             <Button
                 android:id="@+id/btn_banner_jump"
@@ -149,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                android:text="横幅新页面" />
+                android:text="横幅" />
 
         </LinearLayout>
 

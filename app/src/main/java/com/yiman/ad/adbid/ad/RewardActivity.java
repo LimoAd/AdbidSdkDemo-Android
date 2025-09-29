@@ -2,6 +2,7 @@ package com.yiman.ad.adbid.ad;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
@@ -29,13 +30,13 @@ public class RewardActivity extends ComponentActivity {
         rewardedAd = new AdbidRewarded(AdConfig.getAdConfig().getRewardUnitId());
         rewardedAd.setAdListener(new AdbidRewardListener() {
             @Override public void onUserReward(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "激励视频领取奖励");
+                log( "激励视频领取奖励");
             }
 
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
                 //获取广告价格，单位分
                 double price = adInfo.getPrice();
-                Log.i("AdbidAd", "激励视频广告加载完成, ecpm: "+price);
+                log( "激励视频广告加载完成, ecpm: "+price);
 
                 //展示广告
                 if (rewardedAd != null)
@@ -44,24 +45,24 @@ public class RewardActivity extends ComponentActivity {
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                Log.i("AdbidAd", "激励视频广告加载失败：" + error.getMessage());
+                log( "激励视频广告加载失败：" + error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "激励视频广告展示成功");
+                log( "激励视频广告展示成功");
             }
 
             @Override
             public void onAdDisplayedFailed(@Nullable AdbidAdInfo adInfo,@NonNull AdbidError error) {
-                Log.i("AdbidAd", "激励视频广告展示失败: " + error.getMessage());
+                log( "激励视频广告展示失败: " + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "激励视频广告关闭");
+                log( "激励视频广告关闭");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "激励视频广告触发点击");
+                log( "激励视频广告触发点击");
             }
         });
 
@@ -77,5 +78,13 @@ public class RewardActivity extends ComponentActivity {
             rewardedAd.destroy();
             rewardedAd = null;
         }
+    }
+
+    StringBuilder stringBuilder = new StringBuilder("广告日志：\n");
+
+    private void log(String msg) {
+        stringBuilder.append(msg + ";\n");
+        TextView textView = findViewById(R.id.text_layout);
+        textView.setText(stringBuilder.toString());
     }
 }

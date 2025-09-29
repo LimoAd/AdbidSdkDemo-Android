@@ -2,6 +2,7 @@ package com.yiman.ad.adbid.ad;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
@@ -32,7 +33,7 @@ public class SplashActivity extends ComponentActivity {
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
                 //获取广告价格，单位分
                 double ecpm = adInfo.getPrice();
-                Log.i("AdbidAd", "开屏广告加载成功，ecpm: " + ecpm);
+                log( "开屏广告加载成功，ecpm: " + ecpm);
 
                 // 广告加载成功，可以展示
                 appOpenAd.showAd(findViewById(R.id.frame_ad));
@@ -40,25 +41,25 @@ public class SplashActivity extends ComponentActivity {
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                Log.i("AdbidAd", "开屏广告加载失败");
+                log( "开屏广告加载失败");
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "开屏广告展示");
+                log( "开屏广告展示");
 
             }
 
             @Override
             public void onAdDisplayedFailed(@Nullable AdbidAdInfo adInfo,@NonNull AdbidError error) {
-                Log.i("AdbidAd", "开屏广告失败：" + error.getMessage());
+                log( "开屏广告失败：" + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "开屏广告关闭");
+                log( "开屏广告关闭");
             }
 
             @Override public void onAdClicked(@NonNull AdbidAdInfo adInfo) {
-                Log.i("AdbidAd", "开屏广告触发点击");
+                log( "开屏广告触发点击");
             }
         });
 
@@ -75,5 +76,13 @@ public class SplashActivity extends ComponentActivity {
             appOpenAd = null;
         }
 
+    }
+
+    StringBuilder stringBuilder = new StringBuilder("广告日志：\n");
+
+    private void log(String msg) {
+        stringBuilder.append(msg + ";\n");
+        TextView textView = findViewById(R.id.text_layout);
+        textView.setText(stringBuilder.toString());
     }
 }
