@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-sdk tools:overrideLibrary="com.limo.sdk.common,com.bytedance.gromore" />
+
 
     <application
         android:name=".MyApplication"
@@ -40,6 +42,7 @@
         </activity>
 
         <activity android:name=".ad.NativeAdActivity" />
+        <activity android:name=".ad.NativeAdRecycleActivity" />
     </application>
 
 </manifest>

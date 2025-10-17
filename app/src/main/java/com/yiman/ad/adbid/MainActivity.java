@@ -25,12 +25,17 @@ import com.adbid.utils.ViewUtils;
 import com.yiman.ad.adbid.ad.BannerActivity;
 import com.yiman.ad.adbid.ad.InterstitialActivity;
 import com.yiman.ad.adbid.ad.NativeAdActivity;
+import com.yiman.ad.adbid.ad.NativeAdRecycleActivity;
 import com.yiman.ad.adbid.ad.RewardActivity;
 import com.yiman.ad.adbid.ad.SplashActivity;
 import com.yiman.ad.adbid.view.TitleBar;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MainActivity extends ComponentActivity {
+
+public class MainActivity extends BaseActivity {
     @Nullable AdbidAppOpen appOpenAd;
     @Nullable AdbidRewarded rewardedAd;
     @Nullable AdbidInterstitial interstitialAd;
@@ -54,8 +59,12 @@ public class MainActivity extends ComponentActivity {
         initReward();
         initInter();
         initBanner();
+
         findViewById(R.id.btn_native_load).setOnClickListener(
                 view -> startActivity(new Intent(MainActivity.this, NativeAdActivity.class)));
+
+        findViewById(R.id.btn_native_load_list).setOnClickListener(view -> startActivity(
+                new Intent(MainActivity.this, NativeAdRecycleActivity.class)));
 
         findViewById(R.id.btn_app_open_jump).setOnClickListener(
                 view -> startActivity(new Intent(MainActivity.this, SplashActivity.class)));
@@ -78,7 +87,7 @@ public class MainActivity extends ComponentActivity {
             ViewGroup viewGroup = findViewById(R.id.frame_ad_banner);
             int width = getResources().getDisplayMetrics().widthPixels;//定一个宽度值，比如屏幕宽度
             int height = (int) (width / (320 / 50f));//按照比例转换高度的值
-           // bannerView.setAdSize(width, height);
+            bannerView.setAdSize(width, height);
             bannerView.setBannerAdListener(new AdbidBannerListener() {
                 @Override public void onBannerLoad(@NonNull AdbidAdInfo adInfo) {
                     logToast("onBannerLoad");
@@ -86,7 +95,7 @@ public class MainActivity extends ComponentActivity {
 
                 @Override
                 public void onBannerFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                    logToast("onBannerFail: "+error.getMessage());
+                    logToast("onBannerFail: " + error.getMessage());
                 }
 
                 @Override public void onBannerShow(@NonNull AdbidAdInfo adInfo) {
@@ -112,17 +121,17 @@ public class MainActivity extends ComponentActivity {
     private void initReward() {
         adbidRewardListener = new AdbidRewardListener() {
             @Override public void onUserReward(@NonNull AdbidAdInfo adInfo) {
-               logToast("onUserReward");
+                logToast("onUserReward");
 
             }
 
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
-               logToast("onAdLoadSuccess");
+                logToast("onAdLoadSuccess");
             }
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                logToast("onAdLoadFail: "+error.getMessage());
+                logToast("onAdLoadFail: " + error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
@@ -131,7 +140,7 @@ public class MainActivity extends ComponentActivity {
 
             @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
                                                       @NonNull AdbidError error) {
-                logToast("onAdDisplayedFailed: "+error.getMessage());
+                logToast("onAdDisplayedFailed: " + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
@@ -145,6 +154,11 @@ public class MainActivity extends ComponentActivity {
         findViewById(R.id.btn_reward_Load).setOnClickListener(view -> {
             rewardedAd = new AdbidRewarded(AdConfig.getAdConfig().getRewardUnitId());
             rewardedAd.setAdListener(adbidRewardListener);
+            Map<String,Object> extra=new HashMap<>();
+            extra.put("testId",189978878);
+            extra.put("testUserName","zhangSan");
+            extra.put("testAdInfo",new ArrayList<>());
+            rewardedAd.setLocalExtra(extra);
             rewardedAd.loadAd();
         });
         findViewById(R.id.btn_reward_show).setOnClickListener(view -> {
@@ -155,12 +169,12 @@ public class MainActivity extends ComponentActivity {
     private void initInter() {
         interListener = new AdbidListener() {
             @Override public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
-               logToast("onAdLoadSuccess");
+                logToast("onAdLoadSuccess");
             }
 
             @Override
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
-                logToast("onAdLoadFail: "+error.getMessage());
+                logToast("onAdLoadFail: " + error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
@@ -169,7 +183,7 @@ public class MainActivity extends ComponentActivity {
 
             @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
                                                       @NonNull AdbidError error) {
-                logToast("onAdDisplayedFailed: "+error.getMessage());
+                logToast("onAdDisplayedFailed: " + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
@@ -205,7 +219,7 @@ public class MainActivity extends ComponentActivity {
             public void onAdLoadFail(@Nullable String adUnitId, @NonNull AdbidError error) {
                 Toast.makeText(MainActivity.this, "load fail " + error.getMessage(),
                         Toast.LENGTH_SHORT).show();
-                logToast("onAdLoadFail: "+error.getMessage());
+                logToast("onAdLoadFail: " + error.getMessage());
             }
 
             @Override public void onAdDisplayed(@NonNull AdbidAdInfo adInfo) {
@@ -214,7 +228,7 @@ public class MainActivity extends ComponentActivity {
 
             @Override public void onAdDisplayedFailed(@NonNull AdbidAdInfo adInfo,
                                                       @NonNull AdbidError error) {
-                logToast("onAdDisplayedFailed: "+error.getMessage());
+                logToast("onAdDisplayedFailed: " + error.getMessage());
             }
 
             @Override public void onAdHidden(@NonNull AdbidAdInfo adInfo) {
@@ -263,7 +277,7 @@ public class MainActivity extends ComponentActivity {
     }
 
 
-    private void logToast(String msg){
+    private void logToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
         Log.i("AdbidSdk", msg);
     }

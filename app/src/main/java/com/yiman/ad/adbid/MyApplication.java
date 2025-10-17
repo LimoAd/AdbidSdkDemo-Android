@@ -2,25 +2,25 @@ package com.yiman.ad.adbid;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
-import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.adbid.media.AdbidError;
+import com.adbid.media.AdBidPlatform;
 import com.adbid.sdk.AdbidCustomController;
 import com.adbid.sdk.AdbidInitConfig;
 import com.adbid.sdk.AdbidLocation;
 import com.adbid.sdk.AdbidSdk;
-import com.adbid.sdk.AdbidSdkInitListener;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class MyApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
-        //AdbidSdk.getInstance(this).setDebugMode(true);
+
         AdbidInitConfig config = AdbidInitConfig
                 .builder(AdConfig.getAdConfig().getAppToken(), AdConfig.getAdConfig().getAppId())
                 //设置App渠道
@@ -56,7 +56,7 @@ public class MyApplication extends Application {
                         return true;
                     }
                     //开发者可传入OAID（当isCanUseOaid=false时生效）
-                    @Nullable @Override public String getDevOaid() {
+                    @NonNull @Override public String getDevOaid() {
                         return "";
                     }
                     //是否允许SDK获取应用安装列表
@@ -64,7 +64,7 @@ public class MyApplication extends Application {
                         return true;
                     }
                     //开发者可传入应用安装列表（当isCanUseAppList=false时生效）
-                    @Nullable @Override public List<PackageInfo> getAppList() {
+                    @NonNull @Override public List<PackageInfo> getAppList() {
                         return Collections.emptyList();
                     }
                     //是否允许SDK获取ANDROID_ID
@@ -72,7 +72,7 @@ public class MyApplication extends Application {
                         return true;
                     }
                     // 开发者可传入ANDROID_ID（当isCanUseAndroidId=false时生效）
-                    @Nullable @Override public String getAndroidId() {
+                    @NonNull @Override public String getAndroidId() {
                         return "";
                     }
                     //是否允许SDK获取MAC地址
@@ -80,7 +80,7 @@ public class MyApplication extends Application {
                         return true;
                     }
                     //开发者可传入MAC地址（当isCanUseMacAddress=false时生效）
-                    @Nullable @Override public String getMacAddress() {
+                    @NonNull @Override public String getMacAddress() {
                         return "";
                     }
                     //是否允许写入存储卡权限
@@ -96,11 +96,11 @@ public class MyApplication extends Application {
                         return true;
                     }
                     //开发者可传入IMEI（当isCanUsePhoneState=false时生效）
-                    @Nullable @Override public String getDevImei() {
+                    @NonNull @Override public String getDevImei() {
                         return "";
                     }
                     //开发者可传入IMEI列表（多卡设备）
-                    @Nullable @Override public String[] getDevImeiList() {
+                    @NonNull @Override public String[] getDevImeiList() {
                         return new String[0];
                     }
                     //开发者可传入定位信息
@@ -112,21 +112,20 @@ public class MyApplication extends Application {
                         return true;
                     }
                     //开发者可传入IP地址（当isCanUseIP=false时生效）
-                    @Nullable @Override public String getIP() {
+                    @NonNull @Override public String getIP() {
                         return "";
                     }
                 })
                 .build();
-        AdbidSdk.getInstance(this).initialize(config, new AdbidSdkInitListener() {
-            @Override public void onSdkInitCallback(boolean isSuccess, AdbidError adbidError) {
-                if (isSuccess){
-                    Log.i("AdbidSdk", "初始化成功");
-                }else {
-                    Log.i("AdbidSdk", "初始化失败："+adbidError.getMessage());
-                }
-
+        AdbidSdk.getInstance(this).initialize(config, (isSuccess, adbidError) -> {
+            if (isSuccess){
+                Log.i("AdbidSdk", "初始化成功");
+            }else {
+                Log.i("AdbidSdk", "初始化失败："+adbidError.getMessage());
             }
+
         });
+
         AdbidSdk.getInstance(this).setDebugMode(true);
 
     }

@@ -13,10 +13,11 @@ import com.adbid.media.AdbidError;
 import com.adbid.media.AdbidListener;
 import com.adbid.media.ad.AdbidAppOpen;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 
-public class SplashActivity extends ComponentActivity {
+public class SplashActivity extends BaseActivity {
     private AdbidAppOpen appOpenAd;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

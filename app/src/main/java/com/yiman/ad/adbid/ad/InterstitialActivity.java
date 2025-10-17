@@ -13,10 +13,11 @@ import com.adbid.media.AdbidError;
 import com.adbid.media.AdbidListener;
 import com.adbid.media.ad.AdbidInterstitial;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 
-public class InterstitialActivity extends ComponentActivity {
+public class InterstitialActivity extends BaseActivity {
     @Nullable AdbidInterstitial interstitialAd;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

@@ -12,7 +12,6 @@
         android:orientation="vertical">
 
 
-
         <com.yiman.ad.adbid.view.TitleBar
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
@@ -20,13 +19,13 @@
             android:layout_marginTop="30dp" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
             android:text="分步加载与展示"
             android:textColor="#000000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <LinearLayout
 
@@ -105,13 +104,29 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_native_load"
-            style="@style/CustomButtonStyle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="信息流广告" />
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/btn_native_load"
+                style="@style/CustomButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="信息流自渲染" />
+
+            <Button
+                android:id="@+id/btn_native_load_list"
+                style="@style/CustomButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:text="信息流自渲染列表" />
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_banner_load"
@@ -122,14 +137,17 @@
             android:text="横幅广告" />
 
         <TextView
-            android:layout_margin="10dp"
-            android:textSize="16dp"
-            android:textStyle="bold"
-            android:textColor="#000000"
-            android:text="打开新页面，直接加载展示广告"
+            android:visibility="invisible"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:text="打开新页面，直接加载展示广告"
+            android:textColor="#000000"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+
         <LinearLayout
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -173,10 +191,10 @@
         </LinearLayout>
 
         <FrameLayout
-            android:layout_marginTop="20dp"
             android:id="@+id/frame_ad_banner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
             android:orientation="vertical">
 
         </FrameLayout>

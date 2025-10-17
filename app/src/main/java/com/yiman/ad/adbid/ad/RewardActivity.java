@@ -13,10 +13,11 @@ import com.adbid.media.AdbidError;
 import com.adbid.media.AdbidRewardListener;
 import com.adbid.media.ad.AdbidRewarded;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 
-public class RewardActivity extends ComponentActivity {
+public class RewardActivity extends BaseActivity {
     @Nullable AdbidRewarded rewardedAd;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

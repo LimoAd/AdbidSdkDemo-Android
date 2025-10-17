@@ -1,0 +1,39 @@
+apply from: "config.gradle"
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        maven {
+            url "http://maven.leadmoad.com/repository/maven-releases/"
+            allowInsecureProtocol = true
+        }
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo' }
+        maven { url 'https://developer.hihonor.com/repo' }
+        maven { url 'https://artifact.bytedance.com/repository/Volcengine/' }
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:7.4.1"
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url "http://maven.leadmoad.com/repository/maven-releases/"
+            allowInsecureProtocol = true
+        }
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        maven { url 'https://developer.huawei.com/repo' }
+        maven { url 'https://developer.hihonor.com/repo' }
+        maven { url 'https://artifact.bytedance.com/repository/Volcengine/' }
+
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

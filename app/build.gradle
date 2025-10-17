@@ -1,0 +1,72 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+    namespace = "com.yiman.ad.adbid"
+    defaultConfig {
+        applicationId "com.chinaath.szxd"
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file("./test.jks") // 密钥库文件路径
+            storePassword "123456" // 密钥库密码
+            keyAlias "key0" // 密钥别名
+            keyPassword "123456" // 密钥密码
+            enableV2Signing true
+        }
+    }
+
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+            // 是否混淆
+            minifyEnabled false
+            // zipAlign优化
+            zipAlignEnabled true
+            // 是否可以debug
+            debuggable true
+            jniDebuggable true
+            // 移除无用的resource文件
+            shrinkResources false
+            // 混淆配置文件的位置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.debug
+            minifyEnabled true
+            // 混淆配置文件的位置
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.glide)
+    implementation(libs.androidx.recyclerview)
+    implementation(libs.androidx.constraintlayout)
+    implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
+
+    implementation("com.limo.sdk:adbid-sdk:2.0.6")
+
+}

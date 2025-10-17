@@ -2,54 +2,62 @@ package com.yiman.ad.adbid.ad;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.adbid.media.AdMaterialType;
 import com.adbid.media.AdbidAdInfo;
 import com.adbid.media.AdbidError;
-import com.adbid.media.NativeAdLoadListener;
 import com.adbid.media.ad.AdbidNativeLoader;
 import com.adbid.media.nativeAd.AdbidAppDownLoadListener;
+import com.adbid.media.nativeAd.AdbidCustomDownloadConfirmListener;
 import com.adbid.media.nativeAd.AdbidNativeAd;
 import com.adbid.media.nativeAd.AdbidNativeAdView;
 import com.adbid.media.nativeAd.AdbidNativeEventListener;
-import com.adbid.media.nativeAd.AdbidNativePrepareInfo;
+import com.adbid.media.nativeAd.AdbidNativeMaterial;
+import com.adbid.media.nativeAd.AdbidNativeVideoListener;
+import com.adbid.media.nativeOverseas.NativeAdbidLoadListener;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BaseActivity;
 import com.yiman.ad.adbid.R;
-import com.yiman.ad.adbid.utils.SelfRenderViewUtil;
+import com.yiman.ad.adbid.utils.BindViewUtils;
 import com.yiman.ad.adbid.view.TitleBar;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class NativeAdActivity extends Activity implements View.OnClickListener {
+public class NativeAdActivity extends BaseActivity implements View.OnClickListener {
 
     private AdbidNativeLoader mATNative;
     private AdbidNativeAd mNativeAd;
 
     private AdbidNativeAdView mATNativeView;
-    private ViewGroup mSelfRenderView;
     private TextView mTVLoadAdBtn;
     private TextView mTVIsAdReadyBtn;
     private TextView mTVShowAdBtn;
     private View mPanel;
+    private View videoControl;
+    private View videoStart;
+    private View videoPause;
+    private Button videoMuteChange;
+    private TextView videoLog;
+    private TextView videoProgress;
+    //是否自定义video展示
+    private boolean isCustomVideo = false;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native);
         initView();
         initListener();
-        initPanel();
         initATNativeAd(AdConfig.getAdConfig().getNativeUnitId());
     }
 
@@ -60,7 +68,22 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
         mTVShowAdBtn = findViewById(R.id.show_ad_btn);
         TitleBar titleBar = findViewById(R.id.title_bar);
         titleBar.setListener(view -> finish());
-        initPanel();
+
+        //广告布局
+        mPanel = findViewById(R.id.rl_panel);
+        mATNativeView = findViewById(R.id.native_ad_view);
+        RecyclerView rvButtonList = findViewById(R.id.rv_button);
+        GridLayoutManager manager = new GridLayoutManager(this, 2);
+        rvButtonList.setLayoutManager(manager);
+
+        //视频广告操作布局
+        videoControl = findViewById(R.id.layout_video_control);
+        videoPause = findViewById(R.id.btn_pause);
+        videoStart = findViewById(R.id.btn_start);
+        videoLog = findViewById(R.id.text_video_msg);
+        videoProgress = findViewById(R.id.text_video_progress);
+        videoMuteChange = findViewById(R.id.btn_mute);
+
     }
 
     protected void initListener() {
@@ -69,24 +92,15 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
         mTVShowAdBtn.setOnClickListener(this);
     }
 
-    private void initPanel() {
-        mPanel = findViewById(R.id.rl_panel);
-        mATNativeView = findViewById(R.id.native_ad_view);
-        mSelfRenderView = findViewById(R.id.self_render_view);
-        RecyclerView rvButtonList = findViewById(R.id.rv_button);
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        rvButtonList.setLayoutManager(manager);
-    }
 
     private void initATNativeAd(String placementId) {
-        mATNative = new AdbidNativeLoader(this, placementId, new NativeAdLoadListener() {
-            @Override
-            public void onNativeAdLoaded() {
+        mATNative = new AdbidNativeLoader(this, placementId, new NativeAdbidLoadListener() {
+
+            @Override public void onNativeAdLoaded(@NonNull AdbidNativeAd nativeAd) {
                 Toast.makeText(NativeAdActivity.this, "load success", Toast.LENGTH_SHORT).show();
             }
 
-            @Override
-            public void onNativeAdLoadFail(@NonNull AdbidError adError) {
+            @Override public void onNativeAdLoadFail(@NonNull AdbidError adError) {
                 Toast.makeText(NativeAdActivity.this, "load fail", Toast.LENGTH_SHORT).show();
             }
         });
@@ -94,9 +108,6 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
     }
 
     private void loadAd() {
-        Map<String,Object> map=new HashMap<>();
-        map.put("test","this is test");
-        mATNative.setLocalExtra(map);
         mATNative.loadAd();
     }
 
@@ -113,115 +124,164 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
                 mNativeAd.destroy();
             }
             mNativeAd = nativeAd;
-
+            //设置事件监听
             mNativeAd.setEventListener(new AdbidNativeEventListener() {
-
-                @Override
-                public void onImpression(@NonNull AdbidNativeAdView view,
-                                         @NonNull AdbidAdInfo adInfo) {
+                @Override public void onImpression(@NonNull AdbidNativeAdView view,
+                                                   @NonNull AdbidAdInfo adInfo) {
+                    videoControl.setVisibility(
+                            nativeAd.getAdMaterialType() == AdMaterialType.VIDEO ? View.VISIBLE :
+                                    View.INVISIBLE);
                     Toast.makeText(NativeAdActivity.this, "ad impress", Toast.LENGTH_SHORT).show();
                 }
 
-                @Override
-                public void onNativeAdClick(@NonNull AdbidNativeAdView view,
-                                            @NonNull AdbidAdInfo adInfo) {
+                @Override public void onNativeAdClick(@NonNull AdbidNativeAdView view,
+                                                      @NonNull AdbidAdInfo adInfo) {
                     Toast.makeText(NativeAdActivity.this, "ad click", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdVideoStart(@NonNull AdbidNativeAdView view) {
-                    Toast.makeText(NativeAdActivity.this, "video start", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAdVideoEnd(@NonNull AdbidNativeAdView view) {
-                    Toast.makeText(NativeAdActivity.this, "video end", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override public void onAdClose(@Nullable AdbidNativeAdView view) {
                     Toast.makeText(NativeAdActivity.this, "ad close", Toast.LENGTH_SHORT).show();
                 }
-
-                @Override
-                public void onAdVideoProgress(@Nullable AdbidNativeAdView view, int progress) {
-
-                }
             });
 
             mNativeAd.setDislikeCallbackListener(
-                    info -> Toast.makeText(NativeAdActivity.this, "dislike click", Toast.LENGTH_SHORT)
-                            .show());
-
-            mATNativeView.removeAllViews();
-
-            AdbidNativePrepareInfo mNativePrepareInfo;
-
-            mNativePrepareInfo = new AdbidNativePrepareInfo();
-
-            SelfRenderViewUtil.bindSelfRenderView(this, mNativeAd.getAdMaterial(), mSelfRenderView,
-                    mNativePrepareInfo);
-
-            mNativeAd.renderAdContainer(mATNativeView, mSelfRenderView);
-
-            if (mNativePrepareInfo.getCtaView() != null &&
-                    mNativePrepareInfo.getCtaView() instanceof TextView) {
-                TextView ctaTextView = (TextView) mNativePrepareInfo.getCtaView();
-                mNativeAd.setDownLoadListener(new AdbidAppDownLoadListener() {
-
-                    @Override
-                    public void onDownloadPaused(int progress) {
-                        Toast.makeText(NativeAdActivity.this, "download pause", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void onDownloadStarted() {
-                        Toast.makeText(NativeAdActivity.this, "download start", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void onDownloadProgressUpdate(int progress) {
-
-                    }
-
-                    @Override
-                    public void onDownloadFinished() {
-                        Toast.makeText(NativeAdActivity.this, "download finish", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override public void onDownloadResume(int progress) {
-
-                    }
-
-                    @Override public void onDownloadFailed(AdbidError error) {
-                        Toast.makeText(NativeAdActivity.this, "download fail", Toast.LENGTH_SHORT)
-                                .show();
-                    }
+                    info -> Toast.makeText(NativeAdActivity.this, "dislike click",
+                            Toast.LENGTH_SHORT).show());
 
 
-                    @Override
-                    public void onInstalled() {
-                        Toast.makeText(NativeAdActivity.this, "download install",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            mNativeAd.prepare(mATNativeView, mNativePrepareInfo);
+            if (!isCustomVideo) {
+                BindViewUtils.registerView(this, mNativeAd, mATNativeView);
+            }/*else {
+                BindViewUtils.registerCustomViewView(this, mNativeAd, mATNativeView);
+            }*/
+            initAdNativeListener(mNativeAd);
+
             mATNativeView.setVisibility(View.VISIBLE);
             mPanel.setVisibility(View.VISIBLE);
-        } else {
-            Log.e("nativeActivity", "this placement no cache!");
         }
+
+
     }
 
-//    public void changeBg(View view,boolean selected) {
-//        view.setBackgroundResource(selected ? R.drawable.bg_white_selected : R.drawable.bg_white);
-//    }
+    private boolean isMute = true;
 
-    @Override
-    protected void onDestroy() {
+    private void initAdNativeListener(AdbidNativeAd mNativeAd) {
+        videoStart.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                mNativeAd.startVideo();
+            }
+        });
+        videoPause.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                mNativeAd.pauseVideo();
+            }
+        });
+
+        /*mNativeAd.setCustomDownloadConfirmListener(new AdbidCustomDownloadConfirmListener() {
+            @Override public void onDownloadConfirm(Context context, Bundle bundle,
+                                                    AdbidDownloadConfirmCallback callback) {
+                new AlertDialog.Builder(context)
+                        .setTitle("这是一个广告测试弹框")
+                        .setPositiveButton("确定", (dialog, which) -> {
+                            // 处理“确定”
+                            if (callback!=null){
+                                callback.onConfirm();
+                            }
+                        })
+                        .setNegativeButton("取消", (dialog, which) -> {
+                            // 处理“取消”
+                            if (callback!=null){
+                                callback.onCancel();
+                            }
+                        })
+                        .setNeutralButton("关闭", (dialog, which) -> {
+                            // 处理“关闭”
+                            if (callback!=null){
+                                callback.onConfirm();
+                            }
+                        })
+                        .setCancelable(false) // 可选：点击外部不关闭
+                        .show();
+            }
+        });*/
+        videoMuteChange.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                isMute = !isMute;
+                videoMuteChange.setText(isMute ? "打开声音" : "关闭声音");
+                mNativeAd.setMuted(isMute);
+            }
+        });
+        mNativeAd.setVideoListener(new AdbidNativeVideoListener() {
+            @Override public void onVideoStart() {
+                logText("video status: start");
+            }
+
+            @Override public void onVideoPause() {
+                logText("video status: pause");
+            }
+
+            @Override public void onVideoResume() {
+                logText("video status: resume");
+            }
+
+            @Override public void onVideoComplete() {
+                logText("video status: end");
+            }
+
+            @Override public void onVideoError(AdbidError var1) {
+                logText("video status: error " + var1.getMessage());
+            }
+
+            @Override public void onVideoProgressUpdate(long var1, long var3) {
+                if (var3 == 0) {
+                    return;
+                }
+                int progress = (int) (var1 * 100F / var3);
+                progressText("video progress：" + progress + "%");
+            }
+        });
+        mNativeAd.setDownLoadListener(new AdbidAppDownLoadListener() {
+            @Override public void onDownloadPaused(int progress) {
+                logText("download status: pause");
+            }
+
+            @Override public void onDownloadStarted() {
+                logText("download status: start");
+            }
+
+            @Override public void onDownloadProgressUpdate(int progress) {
+                progressText("download progress：" + progress + "%");
+            }
+
+            @Override public void onDownloadFinished() {
+                logText("download status: finish");
+            }
+
+            @Override public void onDownloadResume(int progress) {
+                logText("download status: resume");
+            }
+
+            @Override public void onDownloadFailed(AdbidError error) {
+                logText("download status: fail");
+            }
+
+
+            @Override public void onInstalled() {
+                logText("download status: apk install");
+            }
+        });
+    }
+
+    private void logText(String msg) {
+        videoLog.setText(msg);
+    }
+
+    private void progressText(String msg) {
+        videoProgress.setText(msg);
+    }
+
+
+    @Override protected void onDestroy() {
         super.onDestroy();
         destroyAd();
         if (mATNative != null) {
@@ -235,25 +295,8 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
         }
     }
 
-    @Override
-    protected void onPause() {
-        if (mNativeAd != null) {
-            mNativeAd.onPause();
-        }
-        super.onPause();
-    }
 
-    @Override
-    protected void onResume() {
-        if (mNativeAd != null) {
-            mNativeAd.onResume();
-        }
-        super.onResume();
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public void onClick(View v) {
+    @SuppressLint("NonConstantResourceId") @Override public void onClick(View v) {
         if (v == null) return;
         if (v.getId() == R.id.load_ad_btn) {
             loadAd();
@@ -263,6 +306,5 @@ public class NativeAdActivity extends Activity implements View.OnClickListener {
             showAd();
         }
     }
-
-
 }
+

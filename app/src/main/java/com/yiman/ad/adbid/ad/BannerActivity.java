@@ -14,10 +14,11 @@ import com.adbid.media.AdbidBannerListener;
 import com.adbid.media.AdbidError;
 import com.adbid.media.ad.AdbidBannerView;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 
-public class BannerActivity extends ComponentActivity {
+public class BannerActivity extends BaseActivity {
     private @Nullable AdbidBannerView bannerView;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class BannerActivity extends ComponentActivity {
         bannerView = new AdbidBannerView(BannerActivity.this);
         int width = getResources().getDisplayMetrics().widthPixels;//定一个宽度值，比如屏幕宽度
         int height = (int) (width / (320 / 50f));//按照比例转换高度的值
-        //bannerView.setAdSize(width, height);
+        bannerView.setAdSize(width, height);
         bannerView.setUnitId(AdConfig.getAdConfig().getBannerUnitId());
         ViewGroup bannerContainer = findViewById(R.id.banner_container);
         bannerView.setBannerAdListener(new AdbidBannerListener() {
