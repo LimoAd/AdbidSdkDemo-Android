@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
+    implementation("com.huawei.hms:ads-identifier:3.4.62.300")
+    implementation("com.hihonor.mcs:ads-identifier:1.0.2.301")
     implementation("com.limo.sdk:adbid-sdk:2.0.6")
 
 }
