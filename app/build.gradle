@@ -67,8 +67,15 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
+    //模块化接入，个性化广告需求使用
+//    implementation("com.limo.sdk:adbid-sdk:2.0.8.1")
+//    implementation("com.limo.sdk:adx-sdk-base:2.7.95")
+//    implementation("com.limo.sdk:limo-sdk-common:1.0.75")
+//    implementation("com.limo.sdk.ubix:ubix-sdk:2.8.0")
+
+    //聚合接入
+    implementation("com.limo.sdk:adbid-sdk:2.0.8")
+    //如果初始化sdk时，未手动传入oaid,此处必须要引用，否则无法请求广告
     implementation("com.huawei.hms:ads-identifier:3.4.62.300")
     implementation("com.hihonor.mcs:ads-identifier:1.0.2.301")
-    implementation("com.limo.sdk:adbid-sdk:2.0.7")
-
 }
