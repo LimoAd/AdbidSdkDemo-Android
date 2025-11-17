@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.activity.ComponentActivity;
 import androidx.annotation.Nullable;
 
-import com.adbid.adx.util.immersionbar.ImmersionBar;
+import com.gyf.immersionbar.ImmersionBar;
 
 
 public class BaseActivity extends ComponentActivity {
