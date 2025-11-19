@@ -62,7 +62,7 @@ dependencies {
 
 
     //聚合接入
-    implementation("com.limo.sdk:adbid-sdk:2.0.9.1")
+    implementation("com.limo.sdk:adbid-sdk:2.0.9.4")
 
 
     //如果初始化sdk时，未手动传入oaid,此处必须要引用，否则无法请求广告
