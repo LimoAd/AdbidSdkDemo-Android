@@ -33,12 +33,19 @@ public class BindViewUtils {
 
 
         TextView titleView = nativeAdView.findViewById(R.id.native_ad_title);
+        nativeAdView.setTitleView(titleView);
         TextView descView = nativeAdView.findViewById(R.id.native_ad_desc);
+        nativeAdView.setDescView(descView);
         TextView ctaView = nativeAdView.findViewById(R.id.native_ad_install_btn);
+        nativeAdView.setCtaView(ctaView);
         TextView adFromView = nativeAdView.findViewById(R.id.native_ad_from);
+        nativeAdView.setAdFromView(adFromView);
         FrameLayout iconArea = nativeAdView.findViewById(R.id.native_ad_image);
+        nativeAdView.setAdIconView(iconArea);
         FrameLayout contentArea = nativeAdView.findViewById(R.id.native_ad_content_image_area);
+        nativeAdView.setMutiImageView(contentArea);
         final ImageView logoView = nativeAdView.findViewById(R.id.native_ad_logo);
+        nativeAdView.setLogoView(logoView);
         View closeView = nativeAdView.findViewById(R.id.native_ad_close);
         FrameLayout adLogoContainer =
                 nativeAdView.findViewById(R.id.native_ad_logo_container);   //v6.1.52+
