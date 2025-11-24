@@ -18,11 +18,12 @@ public class AdConfig {
     private static final Map<String, AdConfig> configMap = new HashMap<>();
 
     static {
+        configMap.put("10001", new AdConfig("10001", "kSX7afvAQgXKYQEx8xF3wsOzI5AmRuc9", "MTc2MTEyMjM5NTQwNA==", "MTc2MTEyMjI5MjI0OA==", "MTc2MTEyMjMzNTUyMQ==", "MTc1MjcyMDQyMjgwOQ==", "MTc2MTU0NjgxNjEyOQ=="));
         configMap.put("10005", new AdConfig("10005", "VaxesOELeH5iiKvajqEgkx7hz5IkEEWi", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==", "MTc1ODcwMDkyNjk1NA==", "MTc1MzkzMDY5NDkyOA==", "MTc1ODc5NjM5NTY4OA=="));
     }
 
     public static AdConfig getAdConfig() {
-         return configMap.get("10005");
+         return configMap.get("10001");
     }
 
     public AdConfig(String appId, String appToken, String interUnitId, String nativeUnitId, String rewardUnitId, String splashUnitId, String bannerUnitId) {

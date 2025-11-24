@@ -62,7 +62,7 @@ dependencies {
 
 
     //聚合接入
-    implementation("com.limo.sdk:adbid-sdk:2.0.9.6")
+    implementation("com.limo.sdk:adbid-sdk:2.1.0")
     // 可选，联系技术是否需要接入
     implementation("com.limo.sdk:adbid-ubix-adapter:1.0.1")
     implementation("com.limo.sdk.ubix:ubix-sdk:2.8.0")

@@ -145,7 +145,7 @@ public class MyApplication extends Application {
 
         });
 
-        // AdbidSdk.getInstance(this).setDebugMode(true);
+        AdbidSdk.getInstance(this).setDebugMode(true);
 
     }
 }
