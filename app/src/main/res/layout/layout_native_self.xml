@@ -11,6 +11,7 @@
         android:id="@+id/native_ad_content_image_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#88000000"
         tools:layout_height="200dp" />
 
     <FrameLayout

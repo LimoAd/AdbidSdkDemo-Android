@@ -63,8 +63,7 @@ dependencies {
 
     //聚合接入
     implementation("com.limo.sdk:adbid-sdk:2.1.0")
-    // 可选，联系技术是否需要接入
-    implementation("com.limo.sdk:adbid-ubix-adapter:1.0.1")
+    implementation("com.limo.sdk:adbid-ubix-adapter:1.0.2")
     implementation("com.limo.sdk.ubix:ubix-sdk:2.8.0")
 
     //如果初始化sdk时，未手动传入oaid,此处必须要引用，否则无法请求广告
