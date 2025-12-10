@@ -23,7 +23,7 @@ public class AdConfig {
     }
 
     public static AdConfig getAdConfig() {
-         return configMap.get("10001");
+         return configMap.get("10005");
     }
 
     public AdConfig(String appId, String appToken, String interUnitId, String nativeUnitId, String rewardUnitId, String splashUnitId, String bannerUnitId) {
