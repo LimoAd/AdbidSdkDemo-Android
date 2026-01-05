@@ -10,8 +10,11 @@
 
 ### 环境要求
 |组件|最低要求|推荐配置|
+
 |Android版本|API 21 (Android 5.0)|API 28 (Android 9.0)+|
+
 |编译工具|Android Studio|Android Studio Giraffe+|
+
 |Gradle版本|7.5|7.4+|
 
 ### 支持平台
