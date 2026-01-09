@@ -20,6 +20,7 @@ public class AdConfig {
     static {
         configMap.put("10001", new AdConfig("10001", "kSX7afvAQgXKYQEx8xF3wsOzI5AmRuc9", "MTc2MTEyMjM5NTQwNA==", "MTc2MTEyMjI5MjI0OA==", "MTc2MTEyMjMzNTUyMQ==", "MTc1MjcyMDQyMjgwOQ==", "MTc2MTU0NjgxNjEyOQ=="));
         configMap.put("10005", new AdConfig("10005", "VaxesOELeH5iiKvajqEgkx7hz5IkEEWi", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==", "MTc1ODcwMDkyNjk1NA==", "MTc1MzkzMDY5NDkyOA==", "MTc1ODc5NjM5NTY4OA=="));
+        configMap.put("10003", new AdConfig("10003", "pM2ez49GsWHnZJ8lPAPOapGxAciMVB8j", "MTc1MjgxODg5NzQwNg==", "MTc1MjgzNDIzODkwMA==", "MTc1NTI0NzIwMTI1Ng==", "MTc1MjgxODg1MjYzNA==", "MTc1NTI0NzIyMDA4Nw=="));
     }
 
     public static AdConfig getAdConfig() {

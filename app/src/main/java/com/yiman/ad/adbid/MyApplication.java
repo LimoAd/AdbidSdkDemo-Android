@@ -20,7 +20,6 @@ import java.util.List;
 public class MyApplication extends Application {
     @Override public void onCreate() {
         super.onCreate();
-
         AdbidInitConfig config = AdbidInitConfig
                 .builder(AdConfig.getAdConfig().getAppId())
                 //设置App渠道
