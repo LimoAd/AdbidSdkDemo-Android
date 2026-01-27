@@ -10,8 +10,8 @@ android {
         applicationId "com.adbid.sdk.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 20100007
-        versionName "2.1.0.7"
+        versionCode 20100008
+        versionName "2.1.0.8"
     }
 
     signingConfigs {
@@ -62,11 +62,11 @@ dependencies {
 
 
     //聚合接入
-   /* implementation(files("libs/adbid-sdk-2.1.0.7.aar"))
-    implementation(files("libs/adbid-ubix-adapter-1.0.2.aar"))
+   /* implementation(files("libs/adbid-sdk-2.1.0.8.aar"))
+    implementation(files("libs/adbid-ubix-adapter-1.0.3.aar"))
     implementation(files("libs/ubix-sdk-2.8.0.aar"))*/
-    implementation("com.limo.sdk:adbid-sdk:2.1.0.7")
-    implementation("com.limo.sdk:adbid-ubix-adapter:1.0.2")
+    implementation("com.limo.sdk:adbid-sdk:2.1.0.8")
+    implementation("com.limo.sdk:adbid-ubix-adapter:1.0.3")
     implementation("com.limo.sdk.ubix:ubix-sdk:2.8.0")
 
 
