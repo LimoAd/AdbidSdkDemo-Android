@@ -18,17 +18,51 @@
             android:layout_height="@dimen/adbid_45dp"
             android:layout_marginTop="30dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:text="平台切换:" />
+
+            <TextView
+                android:id="@+id/text_platform"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:textSize="14dp"
+                android:textColor="#000000"
+                android:text="全部" />
+
+
+            <ImageView
+                android:id="@+id/btn_change"
+                android:src="@drawable/change"
+                android:layout_width="35dp"
+                android:padding="8dp"
+                android:layout_height="35dp" />
+        </LinearLayout>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:text="分步加载与展示"
+            android:text="广告加载"
             android:textColor="#000000"
             android:textSize="16dp"
             android:textStyle="bold" />
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -40,12 +74,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="14dp"
                 android:text="开屏加载" />
 
             <Button
                 android:id="@+id/btn_app_open_show"
                 style="@style/CustomButtonStyle"
                 android:layout_width="wrap_content"
+                android:textSize="14dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
@@ -66,6 +102,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="14dp"
                 android:text="激励加载" />
 
             <Button
@@ -75,6 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
+                android:textSize="14dp"
                 android:text="激励展示" />
 
         </LinearLayout>
@@ -88,6 +126,7 @@
             <Button
                 android:id="@+id/btn_inter_load"
                 style="@style/CustomButtonStyle"
+                android:textSize="14dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -98,6 +137,7 @@
                 style="@style/CustomButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:text="插屏展示" />
@@ -115,6 +155,7 @@
                 style="@style/CustomButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:text="信息流自渲染" />
 
@@ -124,6 +165,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
+                android:textSize="14dp"
                 android:layout_weight="1"
                 android:text="信息流自渲染列表" />
         </LinearLayout>
@@ -133,25 +175,26 @@
             style="@style/CustomButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14dp"
             android:layout_margin="10dp"
             android:text="横幅广告" />
 
         <TextView
-            android:visibility="invisible"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="打开新页面，直接加载展示广告"
             android:textColor="#000000"
             android:textSize="16dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:visibility="invisible" />
 
         <LinearLayout
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:visibility="invisible">
 
             <Button
                 android:id="@+id/btn_app_open_jump"
@@ -206,7 +249,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
     </FrameLayout>
 
 </FrameLayout>

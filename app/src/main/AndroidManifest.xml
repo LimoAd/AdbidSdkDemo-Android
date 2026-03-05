@@ -43,6 +43,24 @@
 
         <activity android:name=".ad.NativeAdActivity" />
         <activity android:name=".ad.NativeAdRecycleActivity" />
+
+
+
+        <!--广点通SDK start-->
+        <provider
+            android:name="com.qq.e.comm.GDTFileProvider"
+            android:authorities="${applicationId}.gdt.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/gdt_file_path" />
+        </provider>
+        <!--广点通SDK end-->
+
+
+
     </application>
 
 </manifest>
+   

@@ -1,9 +1,6 @@
 package com.yiman.ad.adbid.ad;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,20 +9,19 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.adbid.media.AdBidLossInfo;
+import com.adbid.media.AdBidPlatform;
 import com.adbid.media.AdMaterialType;
 import com.adbid.media.AdbidAdInfo;
 import com.adbid.media.AdbidError;
 import com.adbid.media.ad.AdbidNativeLoader;
 import com.adbid.media.nativeAd.AdbidAppDownLoadListener;
-import com.adbid.media.nativeAd.AdbidCustomDownloadConfirmListener;
 import com.adbid.media.nativeAd.AdbidNativeAd;
 import com.adbid.media.nativeAd.AdbidNativeAdView;
 import com.adbid.media.nativeAd.AdbidNativeEventListener;
-import com.adbid.media.nativeAd.AdbidNativeMaterial;
 import com.adbid.media.nativeAd.AdbidNativeVideoListener;
 import com.adbid.media.nativeOverseas.NativeAdbidLoadListener;
 import com.yiman.ad.adbid.AdConfig;
@@ -92,12 +88,23 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         mTVShowAdBtn.setOnClickListener(this);
     }
 
-
+    int size=0;
     private void initATNativeAd(String placementId) {
         mATNative = new AdbidNativeLoader(this, placementId, new NativeAdbidLoadListener() {
 
             @Override public void onNativeAdLoaded(@NonNull AdbidNativeAd nativeAd) {
-                Toast.makeText(NativeAdActivity.this, "load success", Toast.LENGTH_SHORT).show();
+                AdbidAdInfo adinfo = nativeAd.getAdbidAdInfo();
+                Toast.makeText(NativeAdActivity.this,
+                        "load success ecpm" + (adinfo == null ? "adinfo " +
+                                "null" : adinfo.getPrice()),
+                        Toast.LENGTH_SHORT).show();
+
+                if (size % 2 > 0)
+                    mATNative.winNotice(1000);
+                else
+                    mATNative.lossNotice(new AdBidLossInfo(AdBidPlatform.GDT,5000,"this is test " +
+                            "ad"));
+                size++;
             }
 
             @Override public void onNativeAdLoadFail(@NonNull AdbidError adError) {
@@ -147,7 +154,6 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             mNativeAd.setDislikeCallbackListener(
                     info -> Toast.makeText(NativeAdActivity.this, "dislike click",
                             Toast.LENGTH_SHORT).show());
-
 
             if (!isCustomVideo) {
                 BindViewUtils.registerView(this, mNativeAd, mATNativeView);

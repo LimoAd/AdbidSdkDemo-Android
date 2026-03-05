@@ -30,8 +30,6 @@ public class BindViewUtils {
 
     public static void registerView(Context context, @NonNull AdbidNativeAd nativeAd,
                                     @NonNull AdbidNativeAdView nativeAdView) {
-
-
         TextView titleView = nativeAdView.findViewById(R.id.native_ad_title);
         nativeAdView.setTitleView(titleView);
         TextView descView = nativeAdView.findViewById(R.id.native_ad_desc);
@@ -142,8 +140,9 @@ public class BindViewUtils {
             contentArea.addView(mediaView, mainImageParam);
             clickViewList.add(mediaView);
             contentArea.setVisibility(View.VISIBLE);
-        } else if (imageList != null && imageList.size() > 1) {
+        } else if (imageList != null && !imageList.isEmpty()) {
             createDynamicImageLayout(contentArea, imageList, context, 3);
+            clickViewList.add(contentArea);
         } else if (!TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
             ImageView imageView = new ImageView(context);
             Glide.with(context).load(nativeAd.getMainImageUrl())// 圆形裁剪

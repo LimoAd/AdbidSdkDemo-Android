@@ -34,7 +34,7 @@ public class InterstitialActivity extends BaseActivity {
                 //获取广告价格，单位分
                 double price = adInfo.getPrice();
                 log( "插屏广告加载完成，ecpm: " + price);
-
+                interstitialAd.winNotice(12);
                 //展示广告
                 if (interstitialAd != null) {
                     interstitialAd.showAd();

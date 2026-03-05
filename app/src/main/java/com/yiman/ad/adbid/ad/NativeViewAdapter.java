@@ -74,7 +74,6 @@ import java.util.List;
                 ((NativeAdHolder) holder).videoLayout.removeAllViews();
                 ViewUtils.removeFromParent(mediaView);
                 ((NativeAdHolder) holder).videoLayout.addView(mediaView);
-                nativeAd.setMuted(false);
                 nativeAd.setVideoListener(new AdbidNativeVideoListener() {
 
                     @Override public void onVideoStart() {

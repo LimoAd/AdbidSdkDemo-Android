@@ -17,4 +17,5 @@
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="mia_commons_header_back_pressed">#8f9299</color>
 </resources>
