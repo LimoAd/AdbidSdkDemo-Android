@@ -25,7 +25,7 @@ public class PlatformManager {
             mItemList.add(new ItemModel("快手", true, AdBidPlatform.KS.getLabel()));
             mItemList.add(new ItemModel("汇川", true, AdBidPlatform.HuiChuan.getLabel()));
             mItemList.add(new ItemModel("TopOn", true, AdBidPlatform.TaKu.getLabel()));
-            mItemList.add(new ItemModel("AdHub", true, AdBidPlatform.AMPS.getLabel()));
+            mItemList.add(new ItemModel("倍孜", true, AdBidPlatform.AMPS.getLabel()));
             mItemList.add(new ItemModel("优必客思", true, AdBidPlatform.UBX.getLabel()));
             mItemList.add(new ItemModel("Sigmob", true, AdBidPlatform.Sigmob.getLabel()));
             mItemList.add(new ItemModel("美数", true, AdBidPlatform.MS.getLabel()));
