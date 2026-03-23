@@ -71,7 +71,7 @@ dependencies {
     //*********************广告聚合接入*******************************************
 
     //领摩聚合核心库(默认接入领摩ADX)
-    implementation(files("libs/adbid_sdk_2.1.0.11_0323_1912.aar"))
+    implementation(files("libs/adbid_sdk_2.1.0.11_0323_1939.aar"))
 
     //微信小程序,各平台都建议接入，有利于提高收益，需提供wxId
     implementation("com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.8.0")
