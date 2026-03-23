@@ -10,8 +10,8 @@ android {
         applicationId "com.adbid.sdk.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 20100010
-        versionName "2.1.0.10"
+        versionCode 20100011
+        versionName "2.1.0.11"
     }
 
     signingConfigs {
