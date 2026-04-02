@@ -11,8 +11,8 @@ android {
         applicationId "com.mengxigeyd.novel"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 20100011
-        versionName "2.1.0.11"
+        versionCode 20100012
+        versionName "2.1.0.12"
     }
 
     signingConfigs {
