@@ -10,9 +10,8 @@ android {
         applicationId "com.adbid.sdk.demo"
         minSdkVersion rootProject.ext.android.minSdkVersion
         targetSdkVersion rootProject.ext.android.targetSdkVersion
-        versionCode 20100012
-        versionName "2.1.0.12"
-    }
+        versionCode 20100013
+        versionName "2.1.0.13"
 
     signingConfigs {
         debug {
@@ -71,7 +70,7 @@ dependencies {
     //*********************广告聚合接入*******************************************
 
     //领摩聚合核心库(默认接入领摩ADX)
-    implementation(files("libs/adbid_sdk_2.1.0.12_0401_2216.aar"))
+    implementation(files("libs/adbid_sdk_2.1.0.13_0423_1100.aar"))
 
     //微信小程序,各平台都建议接入，有利于提高收益，需提供wxId
     implementation("com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.8.0")
@@ -81,7 +80,7 @@ dependencies {
     implementation("com.hihonor.mcs:ads-identifier:1.0.2.301")
 
     //快手
-    implementation(files("libs/adbid_ks_1.0.9_0323_1909.aar"))
+    implementation(files("libs/adbid_ks_1.0.11_0423_1103.aar"))
     implementation(files("libs/kssdk-ad-4.12.20.4-publishRelease-5fe79af37b.aar"))
 
     //汇川
@@ -89,7 +88,7 @@ dependencies {
     implementation(files("libs/noah-12.0.4002-120.aar"))
 
     //广点通
-    implementation(files("libs/adbid_gdt_1.0.10_0323_1908.aar"))
+    implementation(files("libs/adbid_gdt_1.0.11_0423_1103.aar"))
     implementation(files("libs/GDTSDK-union-4.671.1541.aar"))// 普通版本
 
     //优必客思
@@ -97,20 +96,20 @@ dependencies {
     implementation(files("libs/ubix-sdk-2.8.0.1106.aar"))
 
     //TopOn(Taku)
-    implementation(files("libs/adbid_taKu_1.0.4_0323_1914.aar"))
-    implementation(files("libs/anythink_adx_sdk_kuying_6.5.54_necessary..aar"))
-    implementation(files("libs/anythink_core_6.5.70.aar"))
-    implementation(files("libs/anythink_network_adx_kuying_sdk_necessary_6.5.54.1.0.aar"))
-    implementation(files("libs/anythink_network_csj_mix_7.3.0.7.1.0.aar"))
-    implementation(files("libs/anythink_network_mobrain_mix_plus_7.3.0.7.1.0.aar"))
+    implementation(files("libs/adbid_taKu_1.0.5_0423_1106.aar"))
+    implementation(files("libs/anythink_adx_sdk_kuying_6.5.64_necessary.aar"))
+    implementation(files("libs/anythink_core_6.5.80.aar"))
+    implementation(files("libs/anythink_network_adx_kuying_sdk_necessary_6.5.64.1.0.aar"))
+    implementation(files("libs/anythink_network_csj_mix_7.4.2.0.1.0.aar"))
+    implementation(files("libs/anythink_network_mobrain_mix_plus_7.4.2.0.1.0.aar"))
     implementation(files("libs/util-1.0.6.aar"))
 
     //穿山甲(必须与TopOn一起接入)
-    implementation(files("libs/open_ad_sdk_7.3.0.7.aar"))
+    implementation(files("libs/open_ad_sdk_7.4.2.0.aar"))
     implementation(files("libs/adbid_csj_1.0.10_0323_1907.aar"))
 
     //AdHub(轻便聚合、倍孜广告)
-    implementation(files("libs/adbid_amps_1.0.3_0323_1906.aar"))
+    implementation(files("libs/adbid_amps_1.0.4_0423_1101.aar"))
     implementation(files("libs/AMPSSDK-5.1.1.3.aar"))
     implementation(files("libs/common_5.1.1.3.aar"))
     implementation(files("libs/AMPSASNPAdapter-5.1.5305.0.aar"))
@@ -132,6 +131,9 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 
+    //funlink
+    implementation(files("libs/adbid_funlink_1.0.0_0423_1102.aar"))
+    implementation(files("libs/funlink_2.9.1_77570936_release.aar"))
 }
 
 
