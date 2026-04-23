@@ -12,7 +12,7 @@ android {
         targetSdkVersion rootProject.ext.android.targetSdkVersion
         versionCode 20100013
         versionName "2.1.0.13"
-
+    }
     signingConfigs {
         debug {
             storeFile file("./test.jks") // 密钥库文件路径
