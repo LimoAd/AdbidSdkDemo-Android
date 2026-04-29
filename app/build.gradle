@@ -70,7 +70,7 @@ dependencies {
     //*********************广告聚合接入*******************************************
 
     //领摩聚合核心库(默认接入领摩ADX)
-    implementation(files("libs/adbid_sdk_2.1.0.13_0423_1100.aar"))
+    implementation(files("libs/adbid_sdk_2.1.0.13_0428_1409.aar"))
 
     //微信小程序,各平台都建议接入，有利于提高收益，需提供wxId
     implementation("com.tencent.mm.opensdk:wechat-sdk-android-without-mta:6.8.0")
@@ -92,8 +92,8 @@ dependencies {
     implementation(files("libs/GDTSDK-union-4.671.1541.aar"))// 普通版本
 
     //优必客思
-    implementation(files("libs/adbid_ubix_1.0.4_0323_1915.aar"))
-    implementation(files("libs/ubix-sdk-2.8.0.1106.aar"))
+    implementation(files("libs/adbid_ubix_1.0.5_0429_1454.aar"))
+    implementation(files("libs/ubix-sdk-2.10.2.11.aar"))
 
     //TopOn(Taku)
     implementation(files("libs/adbid_taKu_1.0.5_0423_1106.aar"))
