@@ -1,5 +1,44 @@
 <resources>
-    <string name="app_name">AdBidDemo</string>
+    <string name="app_name">领摩广告测试</string>
+    <string name="app_main_eyebrow">AdBid Demo Console</string>
+    <string name="app_main_title">调试面板</string>
+    <string name="app_main_title_source">广告设置</string>
+    <string name="app_main_summary">集中切换广告源、平台并快速触发不同广告位，方便联调和排查展示链路。</string>
+    <string name="app_mode_title">广告源模式</string>
+    <string name="app_source_title">广告源切换</string>
+    <string name="app_mode_summary">切换当前使用的广告加载实现，默认使用 AdBid。</string>
+    <string name="app_mode_adx">启用 AdX</string>
+    <string name="app_source_action_adx">启动AdX</string>
+    <string name="app_platform_title">当前平台</string>
+    <string name="app_platform_prefix">已选:</string>
+    <string name="app_platform_default">全部平台</string>
+    <string name="app_appid_title">切换应用ID</string>
+    <string name="app_app_title">切换应用</string>
+    <string name="app_appid_action">切换 ▾</string>
+    <string name="app_app_action">切换</string>
+    <string name="app_platform_action">切换</string>
+    <string name="app_actions_title">广告操作</string>
+    <string name="app_section_splash">开屏广告</string>
+    <string name="app_section_reward">激励广告</string>
+    <string name="app_section_interstitial">插屏广告</string>
+    <string name="app_section_native">信息流广告</string>
+    <string name="app_section_banner">横幅广告</string>
+    <string name="app_title_native_feed">信息流列表</string>
+    <string name="app_action_load">加载</string>
+    <string name="app_action_ready">就绪验证</string>
+    <string name="app_action_show">展示</string>
+    <string name="app_action_native_single">单条自渲染</string>
+    <string name="app_action_native_list">列表自渲染</string>
+    <string name="app_action_banner_show">展示</string>
+    <string name="app_log_title">调试日志</string>
+    <string name="app_platform_dialog_title">选择调试平台</string>
+    <string name="app_platform_dialog_select_all">全选</string>
+    <string name="app_platform_dialog_confirm">保存选择</string>
+    <string name="app_platform_dialog_summary">已选 %1$d / %2$d</string>
+    <string name="app_switch_dialog_title">选择应用</string>
+    <string name="app_switch_dialog_summary">当前应用: %1$s · 共 %2$d 项</string>
+    <string name="app_switch_dialog_summary_empty">请选择应用</string>
+    <string name="app_switch_item_title">应用 %1$s</string>
 
     <string name="adbid_sdk_demo">Taku Sdk Demo</string>
 

@@ -1,4 +1,4 @@
-package com.yiman.ad.adbid;
+package com.yiman.ad;
 
 import android.app.Application;
 import android.content.pm.PackageInfo;
@@ -12,6 +12,7 @@ import com.adbid.sdk.AdbidInitConfig;
 import com.adbid.sdk.AdbidLocation;
 import com.adbid.sdk.AdbidSdk;
 import com.adbid.sdk.AdbidSdkInitListener;
+import com.yiman.ad.adbid.AdConfig;
 import com.yiman.ad.adbid.platform.PlatformManager;
 
 import java.util.Collections;
@@ -25,7 +26,7 @@ public class MyApplication extends Application {
 
         //sdk初始化
         AdbidSdk.getInstance(this).setDebugMode(true);
-        //广告sdk初始化
+                //广告sdk初始化
         AdbidInitConfig config = AdbidInitConfig.builder(AdConfig.getAdConfig().getAppId())
                 //设置App渠道
                 .setAppChannel("xiaomi")

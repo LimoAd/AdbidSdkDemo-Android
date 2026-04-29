@@ -1,34 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/adbid_F5F5F5">
+    android:background="@drawable/bg_page_gradient">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff"
         android:orientation="vertical"
-        android:padding="@dimen/adbid_padding">
+        android:paddingStart="18dp"
+        android:paddingTop="34dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="20dp">
 
         <com.yiman.ad.adbid.view.TitleBar
             android:id="@+id/title_bar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/adbid_45dp"
-            android:layout_marginTop="30dp" />
+            android:layout_height="@dimen/adbid_45dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_log_panel"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_badge_soft"
+                android:paddingStart="10dp"
+                android:paddingTop="5dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="5dp"
+                android:text="@string/app_title_native_feed"
+                android:textColor="@color/app_accent_dark"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/app_main_summary"
+                android:textColor="@color/app_text_secondary"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycle"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="@dimen/adbid_12dp"
-            android:layout_marginTop="@dimen/adbid_18dp"
-            android:layout_marginEnd="@dimen/adbid_12dp"
-            android:layout_weight="1" />
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingBottom="6dp" />
 
     </LinearLayout>
 
-
-</RelativeLayout>
+</FrameLayout>

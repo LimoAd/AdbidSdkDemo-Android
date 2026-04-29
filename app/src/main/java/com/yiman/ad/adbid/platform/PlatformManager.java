@@ -1,7 +1,6 @@
 package com.yiman.ad.adbid.platform;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.adbid.media.AdBidPlatform;
 import com.adbid.sdk.AdbidSdk;
@@ -30,7 +29,7 @@ public class PlatformManager {
             mItemList.add(new ItemModel("优必客思", true, AdBidPlatform.UBX.getLabel()));
             mItemList.add(new ItemModel("Sigmob", true, AdBidPlatform.Sigmob.getLabel()));
             mItemList.add(new ItemModel("美数", true, AdBidPlatform.MS.getLabel()));
-            mItemList.add(new ItemModel("funlink", true, AdBidPlatform.FL.getLabel()));
+            mItemList.add(new ItemModel("Funlink", true, AdBidPlatform.FL.getLabel()));
         }
         setConfig();
     }
@@ -67,6 +66,78 @@ public class PlatformManager {
         List<AdBidPlatform> notSelect = new ArrayList<>();
         StringBuilder select = new StringBuilder();
         for (ItemModel itemModel : mItemList) {
+            if (!itemModel.isSelected()) {
+                notSelect.add(AdBidPlatform.getByLabel(itemModel.getAdBidPlatform()));
+            } else {
+                if (!TextUtils.isEmpty(select.toString())) {
+                    select.append(",");
+                }
+                select.append(itemModel.getName());
+            }
+        }
+        if (notSelect.isEmpty()) {
+            return "全部";
+        } else {
+            return select.toString();
+        }
+    }
+
+    public static int getSelectedCount() {
+        int count = 0;
+        for (ItemModel itemModel : mItemList) {
+            if (itemModel.isSelected()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static int getTotalCount() {
+        return mItemList.size();
+    }
+
+    public static String getSummary() {
+        int selectedCount = getSelectedCount();
+        int totalCount = getTotalCount();
+        if (selectedCount == 0) {
+            return "未选择平台";
+        }
+        if (selectedCount == totalCount) {
+            return "全部平台";
+        }
+        return "已选 " + selectedCount + " 个平台";
+    }
+
+    public static String getDisplayText() {
+        return getDisplayText(mItemList);
+    }
+
+    public static String getDisplayText(List<ItemModel> itemList) {
+        String value = getString(itemList);
+        if ("全部".equals(value)) {
+            return "已选: 全部平台";
+        }
+        if (TextUtils.isEmpty(value)) {
+            return "已选: 暂无";
+        }
+        return "已选: " + value;
+    }
+
+    public static String getSelectedNamesText() {
+        String value = getString();
+        if ("全部".equals(value)) {
+            return "全部平台";
+        }
+        if (TextUtils.isEmpty(value)) {
+            return "暂无";
+        }
+        return value;
+    }
+
+    private static String getString(List<ItemModel> itemList) {
+        List<AdBidPlatform> notSelect = new ArrayList<>();
+        StringBuilder select = new StringBuilder();
+        for (ItemModel itemModel : itemList) {
             if (!itemModel.isSelected()) {
                 notSelect.add(AdBidPlatform.getByLabel(itemModel.getAdBidPlatform()));
             } else {

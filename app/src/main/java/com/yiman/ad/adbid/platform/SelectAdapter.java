@@ -15,11 +15,14 @@ import java.util.List;
 
 public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.ViewHolder>{
     private final List<ItemModel> mData;
-    private final CheckBox mCheckBoxSelectAll; // 用于与“全选”复选框联动
+    private final CheckBox mCheckBoxSelectAll;
+    private final Runnable mOnSelectionChanged;
 
-    public SelectAdapter(List<ItemModel> data, CheckBox selectAllCheckBox) {
+    public SelectAdapter(List<ItemModel> data, CheckBox selectAllCheckBox,
+            Runnable onSelectionChanged) {
         this.mData = data;
         this.mCheckBoxSelectAll = selectAllCheckBox;
+        this.mOnSelectionChanged = onSelectionChanged;
         setupSelectAllListener();
     }
 
@@ -34,12 +37,18 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ItemModel item = mData.get(position);
         holder.tvName.setText(item.getName());
+
+        holder.cbItem.setOnCheckedChangeListener(null);
         holder.cbItem.setChecked(item.isSelected());
+        holder.itemView.setSelected(item.isSelected());
 
         holder.cbItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
             item.setSelected(isChecked);
+            holder.itemView.setSelected(isChecked);
             updateSelectAllCheckBoxState();
+            mOnSelectionChanged.run();
         });
+        holder.itemView.setOnClickListener(v -> holder.cbItem.toggle());
     }
 
     @Override public int getItemCount() {
@@ -70,6 +79,7 @@ public class SelectAdapter extends RecyclerView.Adapter<SelectAdapter.ViewHolder
                 item.setSelected(isChecked);
             }
             notifyDataSetChanged();
+            mOnSelectionChanged.run();
         });
     }
 

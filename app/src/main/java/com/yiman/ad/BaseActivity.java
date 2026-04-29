@@ -1,4 +1,4 @@
-package com.yiman.ad.adbid;
+package com.yiman.ad;
 
 import android.os.Bundle;
 

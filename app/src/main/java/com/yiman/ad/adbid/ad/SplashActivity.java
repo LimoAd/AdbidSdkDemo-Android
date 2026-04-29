@@ -1,10 +1,8 @@
 package com.yiman.ad.adbid.ad;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
-import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -13,7 +11,7 @@ import com.adbid.media.AdbidError;
 import com.adbid.media.AdbidListener;
 import com.adbid.media.ad.AdbidAppOpen;
 import com.yiman.ad.adbid.AdConfig;
-import com.yiman.ad.adbid.BaseActivity;
+import com.yiman.ad.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 
@@ -38,6 +36,7 @@ public class SplashActivity extends BaseActivity {
 
                 // 广告加载成功，可以展示
                 appOpenAd.showAd(findViewById(R.id.frame_ad));
+
             }
 
             @Override

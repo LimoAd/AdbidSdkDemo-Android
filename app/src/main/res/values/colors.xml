@@ -4,6 +4,29 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="app_page_bg_top">#F7F4EC</color>
+    <color name="app_page_bg_bottom">#EEF3FF</color>
+    <color name="app_surface">#FFFDF9</color>
+    <color name="app_surface_alt">#F4F7FE</color>
+    <color name="app_surface_border">#D9E2F2</color>
+    <color name="app_text_primary">#1C2434</color>
+    <color name="app_text_secondary">#667085</color>
+    <color name="app_accent">#1E63F0</color>
+    <color name="app_accent_dark">#174FC0</color>
+    <color name="app_accent_pressed">#0E46B4</color>
+    <color name="app_accent_soft">#E6EEFF</color>
+    <color name="app_switch_tint">#1B56D6</color>
+    <color name="app_action_load">#2563EB</color>
+    <color name="app_action_load_pressed">#1D4ED8</color>
+    <color name="app_action_ready">#F59E0B</color>
+    <color name="app_action_ready_pressed">#D97706</color>
+    <color name="app_action_show">#10B981</color>
+    <color name="app_action_show_pressed">#059669</color>
+    <color name="app_action_alt">#4B5563</color>
+    <color name="app_action_alt_pressed">#374151</color>
+    <color name="app_log_bg">#66111A26</color>
+    <color name="app_log_title_bg">#99111A26</color>
+
     <color name="adbid_1E2231">#1E2231</color>
     <color name="adbid_0042DF">#0042DF</color>
     <color name="adbid_666666">#666666</color>
