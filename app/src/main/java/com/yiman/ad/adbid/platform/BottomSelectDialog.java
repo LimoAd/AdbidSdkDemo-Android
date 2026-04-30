@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,7 +19,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.adbid.sdk.AdbidSdkConfiguration;
 import com.yiman.ad.adbid.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BottomSelectDialog extends Dialog {
@@ -26,6 +26,7 @@ public class BottomSelectDialog extends Dialog {
     private SelectAdapter mAdapter;
     private Button mBtnConfirm;
     private CheckBox mCbSelectAll;
+    private TextView mTvSelectedSummary;
     private OnConfirmClickListener mListener;
     private List<ItemModel> mItemList;
 
@@ -47,6 +48,7 @@ public class BottomSelectDialog extends Dialog {
         mRecyclerView = findViewById(R.id.recyclerView);
         mBtnConfirm = findViewById(R.id.btn_confirm);
         mCbSelectAll = findViewById(R.id.cb_select_all);
+        mTvSelectedSummary = findViewById(R.id.tv_selected_summary);
 
         boolean isSelectAll = true;
         for (ItemModel itemModel : mItemList) {
@@ -56,9 +58,9 @@ public class BottomSelectDialog extends Dialog {
             }
         }
         mCbSelectAll.setChecked(isSelectAll);
-        // 设置RecyclerView
+        updateSelectedSummary();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new SelectAdapter(mItemList, mCbSelectAll);
+        mAdapter = new SelectAdapter(mItemList, mCbSelectAll, this::updateSelectedSummary);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -70,6 +72,17 @@ public class BottomSelectDialog extends Dialog {
             }
             dismiss();
         });
+    }
+
+    private void updateSelectedSummary() {
+        int count = 0;
+        for (ItemModel itemModel : mItemList) {
+            if (itemModel.isSelected()) {
+                count++;
+            }
+        }
+        mTvSelectedSummary.setText(getContext().getString(R.string.app_platform_dialog_summary,
+                count, mItemList.size()));
     }
 
 
@@ -88,6 +101,7 @@ public class BottomSelectDialog extends Dialog {
             window.setWindowAnimations(R.style.DialogAnimation_FromBottom); // 设置进入退出动画
             window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                     WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setDimAmount(0.28f);
         }
     }
 }

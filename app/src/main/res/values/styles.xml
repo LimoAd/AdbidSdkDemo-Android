@@ -26,13 +26,49 @@
 
     <style name="style_checkBox" parent="Theme.AppCompat.Light">
         <item name="colorControlNormal">@color/adbid_666666</item>
-        <item name="colorControlActivated">@color/adbid_0042DF</item>
+        <item name="colorControlActivated">@color/app_switch_tint</item>
     </style>
 
     <style name="CustomButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/btn_custom</item> <!-- 引用上面创建的状态背景 -->
-        <item name="android:textColor">#FFFFFF</item> <!-- 文字颜色 -->
-        <item name="android:textSize">14sp</item> <!-- 文字大小 -->
+        <item name="android:background">@drawable/btn_custom</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ActionButtonBaseStyle" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:minHeight">34dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="ActionLoadButtonStyle" parent="ActionButtonBaseStyle">
+        <item name="android:background">@drawable/btn_action_load</item>
+    </style>
+
+    <style name="ActionReadyButtonStyle" parent="ActionButtonBaseStyle">
+        <item name="android:background">@drawable/btn_action_ready</item>
+    </style>
+
+    <style name="ActionShowButtonStyle" parent="ActionButtonBaseStyle">
+        <item name="android:background">@drawable/btn_action_show</item>
+    </style>
+
+    <style name="ActionAltButtonStyle" parent="ActionButtonBaseStyle">
+        <item name="android:background">@drawable/btn_action_alt</item>
     </style>
 
 

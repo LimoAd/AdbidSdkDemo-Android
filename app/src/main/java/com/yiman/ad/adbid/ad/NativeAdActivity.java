@@ -25,7 +25,7 @@ import com.adbid.media.nativeAd.AdbidNativeEventListener;
 import com.adbid.media.nativeAd.AdbidNativeVideoListener;
 import com.adbid.media.nativeOverseas.NativeAdbidLoadListener;
 import com.yiman.ad.adbid.AdConfig;
-import com.yiman.ad.adbid.BaseActivity;
+import com.yiman.ad.BaseActivity;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.utils.BindViewUtils;
 import com.yiman.ad.adbid.view.TitleBar;

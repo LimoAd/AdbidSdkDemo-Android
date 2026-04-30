@@ -3,14 +3,16 @@
     android:id="@+id/rl_title_bar"
     android:layout_width="match_parent"
     android:layout_height="@dimen/adbid_45dp"
-    android:background="@android:color/white">
+    android:background="@android:color/transparent"
+    android:paddingHorizontal="4dp">
 
     <ImageView
         android:id="@+id/iv_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_centerVertical="true"
-        android:padding="@dimen/adbid_6dp"
+        android:background="@drawable/bg_surface_chip"
+        android:padding="10dp"
         android:src="@mipmap/ic_test_back" />
 
     <TextView
@@ -19,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="@string/adbid_title_native"
-        android:textColor="@color/adbid_1E2231"
-        android:textSize="@dimen/adbid_title_bar_text_size" />
+        android:textColor="@color/app_text_primary"
+        android:textSize="21sp" />
 
 </RelativeLayout>
