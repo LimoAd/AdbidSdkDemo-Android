@@ -249,6 +249,8 @@ public class AdbidAdLoad extends IAdLoad {
             @Override public void onBannerLoad(@NonNull AdbidAdInfo adInfo) {
                 logSuccess("横幅广告加载成功");
                 toast("横幅广告加载成功");
+                viewGroup.removeAllViews();
+                viewGroup.addView(bannerView);
                 if (size % 2 > 0) bannerView.winNotice(1000);
                 else bannerView.lossNotice(
                         new AdBidLossInfo(AdBidPlatform.GDT, 5000, "this is " + "test " + "ad"));
@@ -277,8 +279,7 @@ public class AdbidAdLoad extends IAdLoad {
                 toast("横幅广告被点击");
             }
         });
-        viewGroup.removeAllViews();
-        viewGroup.addView(bannerView);
+
         bannerView.loadAd();
     }
 
