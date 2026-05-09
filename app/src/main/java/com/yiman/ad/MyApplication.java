@@ -23,7 +23,6 @@ public class MyApplication extends Application {
         super.onCreate();
         //忽略，非sdk功能
         PlatformManager.init();
-
         //sdk初始化
         AdbidSdk.getInstance(this).setDebugMode(true);
                 //广告sdk初始化
