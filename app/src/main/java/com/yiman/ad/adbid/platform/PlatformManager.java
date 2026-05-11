@@ -30,6 +30,7 @@ public class PlatformManager {
             mItemList.add(new ItemModel("Sigmob", true, AdBidPlatform.Sigmob.getLabel()));
             mItemList.add(new ItemModel("美数", true, AdBidPlatform.MS.getLabel()));
             mItemList.add(new ItemModel("Funlink", true, AdBidPlatform.FL.getLabel()));
+            mItemList.add(new ItemModel("萤石", true, AdBidPlatform.Ezviz.getLabel()));
         }
         setConfig();
     }
