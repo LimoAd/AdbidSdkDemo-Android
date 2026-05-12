@@ -23,7 +23,6 @@ public class MyApplication extends Application {
         super.onCreate();
         //忽略，非sdk功能
         PlatformManager.init();
-
         //sdk初始化
         AdbidSdk.getInstance(this).setDebugMode(true);
                 //广告sdk初始化
@@ -32,12 +31,8 @@ public class MyApplication extends Application {
                 .setAppChannel("xiaomi")
                 //设置App版本
                 .setAppVersion("1.0.0")
-                //设置年龄
-                .setAge(18)
                 //设置用户ID
                 .setUserId("xxxxxx")
-                //设置用户性别，Male表示男性，Female表示女性
-                .setGender(AdbidInitConfig.AdbidGender.Female)
                 //设置隐私权限
                 .addCustomController(new AdbidCustomController() {
                     //是否允许SDK主动使用手机硬件参数（如IMEI）
