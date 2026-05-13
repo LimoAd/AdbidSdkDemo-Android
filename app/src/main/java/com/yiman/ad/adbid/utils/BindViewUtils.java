@@ -191,11 +191,16 @@ public class BindViewUtils {
         nativeAd.registerViews(nativeAdView, clickViewList, closeView);
 
         //应用六要素
-        initSixAppInfo(nativeAd.getNativeAppInfo(), nativeAdView);
+        if (nativeAd.isDownload())
+            initSixAppInfo(nativeAd.getNativeAppInfo(), nativeAdView);
+        else {
+            View sixInfoView = nativeAdView.findViewById(R.id.six_info);
+            sixInfoView.setVisibility(View.INVISIBLE);
+        }
     }
 
     private static void initSixAppInfo(AdbidNativeAppInfo adAppInfo, View nativeAdView) {
-        View sixInfoView = nativeAdView.findViewById(R.id.six_info);
+       View sixInfoView = nativeAdView.findViewById(R.id.six_info);
         if (adAppInfo != null) {
             sixInfoView.setVisibility(View.VISIBLE);
             TextView functionTextView = sixInfoView.findViewById(R.id.function_test);
