@@ -30,8 +30,7 @@
         <activity android:name=".ad.BannerActivity" />
         <activity android:name=".ad.InterstitialActivity" />
         <activity android:name=".ad.RewardActivity" />
-        <activity android:name="com.yiman.ad.adx.NativeAdxActivity"/>
-        <activity android:name="com.yiman.ad.adx.NativeAdxRecycleActivity"/>
+
         <activity
             android:name="com.yiman.ad.MainActivity"
             android:exported="true"
