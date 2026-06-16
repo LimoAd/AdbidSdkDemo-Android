@@ -89,7 +89,7 @@ dependencies {
     //领摩聚合核心库(默认接入领摩ADX)
     implementation(files("libs/adbid-sdk-2.1.0.18.aar"))
     implementation(files("libs/adbid_common_1.0.0_0616_2248.aar"))
-    implementation(files("libs/adbid_limo_1.0.1_0616_2306.aar"))
+    implementation(files("libs/adbid_limo_1.0.1_0616_2353.aar"))
     implementation(files("libs/adbid_lmx_1.0.0_0616_2311.aar"))
 
     //微信小程序,各平台都建议接入，有利于提高收益，需提供wxId
