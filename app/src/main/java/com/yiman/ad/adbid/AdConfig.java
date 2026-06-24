@@ -6,12 +6,11 @@ import androidx.annotation.NonNull;
 
 import com.yiman.ad.IAdLoad;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class AdConfig {
+@SuppressWarnings("unused")
+public class AdConfig {
     private String appId;
     private final String interUnitId;
     private final String nativeUnitId;
@@ -21,7 +20,6 @@ import java.util.Map;
 
     public static final String DEFAULT_APP_ID = "10005";
     private static final Map<String, AdConfig> configMap = new HashMap<>();
-
 
     static {
         configMap.put("10005", new AdConfig("10005", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==",
@@ -81,7 +79,9 @@ import java.util.Map;
     }
 
 
-    @NonNull @Override public String toString() {
+    @NonNull
+    @Override
+    public String toString() {
         return "AdConfig{" + "appId='" + appId + '\'' + ", interUnitId='" + interUnitId + '\'' +
                 ", nativeUnitId='" + nativeUnitId + '\'' + ", rewardUnitId='" + rewardUnitId +
                 '\'' + ", splashUnitId='" + splashUnitId + '\'' + ", bannerUnitId='" +
