@@ -20,7 +20,7 @@ import java.util.Map;
     private final String splashUnitId;
     private final String bannerUnitId;
 
-    public static final String DEFAULT_APP_ID = "10028";
+    public static final String DEFAULT_APP_ID = "10005";
     private static final Map<String, AdConfig> configMap = new HashMap<>();
 
     private static boolean s2sBiddingEnabled = false;
