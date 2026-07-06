@@ -5,10 +5,10 @@
     <string name="app_main_title_source">广告设置</string>
     <string name="app_main_summary">集中切换广告源、平台并快速触发不同广告位，方便联调和排查展示链路。</string>
     <string name="app_mode_title">广告源模式</string>
-    <string name="app_source_title">广告源切换</string>
+    <string name="app_source_title">广告设置</string>
     <string name="app_mode_summary">切换当前使用的广告加载实现，默认使用 AdBid。</string>
     <string name="app_mode_adx">启用 AdX</string>
-    <string name="app_source_action_adx">启动AdX</string>
+    <string name="app_source_action_adx">启动Adx</string>
     <string name="app_platform_title">当前平台</string>
     <string name="app_platform_prefix">已选:</string>
     <string name="app_platform_default">全部平台</string>
@@ -21,14 +21,14 @@
     <string name="app_section_splash">开屏广告</string>
     <string name="app_section_reward">激励广告</string>
     <string name="app_section_interstitial">插屏广告</string>
-    <string name="app_section_native">信息流广告</string>
+    <string name="app_section_native">自渲染信息流</string>
     <string name="app_section_banner">横幅广告</string>
     <string name="app_title_native_feed">信息流列表</string>
     <string name="app_action_load">加载</string>
-    <string name="app_action_ready">就绪验证</string>
+    <string name="app_action_ready">就绪</string>
     <string name="app_action_show">展示</string>
-    <string name="app_action_native_single">单条自渲染</string>
-    <string name="app_action_native_list">列表自渲染</string>
+    <string name="app_action_native_single">单条</string>
+    <string name="app_action_native_list">列表</string>
     <string name="app_action_banner_show">展示</string>
     <string name="app_log_title">调试日志</string>
     <string name="app_platform_dialog_title">选择调试平台</string>
@@ -46,7 +46,7 @@
     <string name="adbid_title_interstitial">Interstitial</string>
     <string name="adbid_title_splash">Splash</string>
     <string name="adbid_title_banner">Banner</string>
-    <string name="adbid_title_native">Native</string>
+    <string name="adbid_title_native">自渲染信息流</string>
     <string name="adbid_title_native_express">Native List</string>
     <string name="adbid_title_native_list">Native List</string>
     <string name="adbid_title_native_draw">Native Draw</string>
@@ -79,7 +79,7 @@
 
     <string name="adbid_ad_status_loading">loadAd</string>
     <string name="adbid_ad_status_not_load">ad is not load.</string>
-    <string name="app_banner_name">信息流广告</string>
+    <string name="app_banner_name">自渲染信息流</string>
     <string name="app_inter_name">插屏广告</string>
     <string name="app_reward_name">激励广告</string>
     <string name="app_spalsh_name">开屏广告</string>

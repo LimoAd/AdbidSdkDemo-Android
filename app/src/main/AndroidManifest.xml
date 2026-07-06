@@ -30,7 +30,6 @@
         <activity android:name=".ad.BannerActivity" />
         <activity android:name=".ad.InterstitialActivity" />
         <activity android:name=".ad.RewardActivity" />
-
         <activity
             android:name="com.yiman.ad.MainActivity"
             android:exported="true"
@@ -48,7 +47,7 @@
 
 
         <!--广点通SDK start-->
-       <!-- <provider
+        <provider
             android:name="com.qq.e.comm.GDTFileProvider"
             android:authorities="${applicationId}.gdt.fileprovider"
             android:exported="false"
@@ -56,7 +55,7 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/gdt_file_path" />
-        </provider>-->
+        </provider>
         <!--广点通SDK end-->
 
 

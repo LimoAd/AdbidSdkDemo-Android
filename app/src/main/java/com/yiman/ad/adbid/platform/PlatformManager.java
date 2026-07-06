@@ -21,6 +21,7 @@ public class PlatformManager {
         } else {
             mItemList.add(new ItemModel("领摩", true, AdBidPlatform.LM.getLabel()));
             mItemList.add(new ItemModel("领摩新", true, AdBidPlatform.LMX.getLabel()));
+            mItemList.add(new ItemModel("酷盈S2S", true, AdBidPlatform.KuYing.getLabel()));
             mItemList.add(new ItemModel("穿山甲", true, AdBidPlatform.CSJ.getLabel()));
             mItemList.add(new ItemModel("优量汇", true, AdBidPlatform.GDT.getLabel()));
             mItemList.add(new ItemModel("快手", true, AdBidPlatform.KS.getLabel()));

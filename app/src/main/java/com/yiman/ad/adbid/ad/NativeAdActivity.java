@@ -26,6 +26,7 @@ import com.adbid.media.nativeAd.AdbidNativeVideoListener;
 import com.adbid.media.nativeOverseas.NativeAdbidLoadListener;
 import com.yiman.ad.adbid.AdConfig;
 import com.yiman.ad.BaseActivity;
+import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.utils.BindViewUtils;
 import com.yiman.ad.adbid.view.TitleBar;
@@ -90,7 +91,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
 
     int size=0;
     private void initATNativeAd(String placementId) {
-        mATNative = new AdbidNativeLoader(this, placementId, new NativeAdbidLoadListener() {
+        mATNative = new AdbidNativeLoader(this, placementId,new NativeAdbidLoadListener() {
 
             @Override public void onNativeAdLoaded(@NonNull AdbidNativeAd nativeAd) {
                 AdbidAdInfo adinfo = nativeAd.getAdbidAdInfo();
@@ -115,7 +116,8 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void loadAd() {
-        mATNative.loadAd();
+        String token = getIntent().getStringExtra("s2s_token");
+        mATNative.loadAd(token);
     }
 
     private boolean isAdReady() {

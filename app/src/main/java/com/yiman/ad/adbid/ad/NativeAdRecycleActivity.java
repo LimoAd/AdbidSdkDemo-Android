@@ -151,7 +151,8 @@ public class NativeAdRecycleActivity extends BaseActivity implements NativeViewA
 
                             }
                         });
-        nativeLoader.loadAd();
+        String token = getIntent().getStringExtra("s2s_token");
+        nativeLoader.loadAd(token);
     }
 
     @Override public void printMsg(String s) {

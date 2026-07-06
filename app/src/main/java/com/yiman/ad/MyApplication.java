@@ -12,21 +12,23 @@ import com.adbid.sdk.AdbidInitConfig;
 import com.adbid.sdk.AdbidLocation;
 import com.adbid.sdk.AdbidSdk;
 import com.adbid.sdk.AdbidSdkInitListener;
-import com.yiman.ad.adbid.AdConfig;
 import com.yiman.ad.adbid.platform.PlatformManager;
 
 import java.util.Collections;
 import java.util.List;
 
 public class MyApplication extends Application {
-    @Override public void onCreate() {
+    static Application myApplication;
+
+    @Override
+    public void onCreate() {
         super.onCreate();
-        //忽略，非sdk功能
+        myApplication = this;
+        //无需接入
         PlatformManager.init();
-        //sdk初始化
         AdbidSdk.getInstance(this).setDebugMode(true);
-                //广告sdk初始化
-        AdbidInitConfig config = AdbidInitConfig.builder(AdConfig.getAdConfig().getAppId())
+        //广告sdk初始化
+        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId())
                 //设置App渠道
                 .setAppChannel("xiaomi")
                 //设置App版本
@@ -36,107 +38,136 @@ public class MyApplication extends Application {
                 //设置隐私权限
                 .addCustomController(new AdbidCustomController() {
                     //是否允许SDK主动使用手机硬件参数（如IMEI）
-                    @Override public boolean isCanUsePhoneState() {
+                    @Override
+                    public boolean isCanUsePhoneState() {
                         return true;
                     }
 
                     //是否允许SDK使用个性化广告（GDPR/CCPA合规需关闭）
-                    @Override public boolean isSupportPersonalized() {
+                    @Override
+                    public boolean isSupportPersonalized() {
                         return false;
                     }
 
                     //是否允许SDK主动使用地理位置信息
-                    @Override public boolean isCanUseLocation() {
+                    @Override
+                    public boolean isCanUseLocation() {
                         return true;
                     }
 
                     //是否允许SDK主动获取OAID
-                    @Override public boolean isCanUseWifiState() {
+                    @Override
+                    public boolean isCanUseWifiState() {
                         return true;
                     }
 
                     //是否允许SDK主动获取OAID
-                    @Override public boolean isCanUseOaid() {
+                    @Override
+                    public boolean isCanUseOaid() {
                         return true;
                     }
 
                     //开发者可传入OAID（当isCanUseOaid=false时生效）
-                    @Nullable @Override public String getDevOaid() {
+                    @Nullable
+                    @Override
+                    public String getDevOaid() {
                         return "";
                     }
 
                     //是否允许SDK获取应用安装列表
-                    @Override public boolean isCanUseAppList() {
+                    @Override
+                    public boolean isCanUseAppList() {
                         return true;
                     }
 
                     //开发者可传入应用安装列表（当isCanUseAppList=false时生效）
-                    @Nullable @Override public List<PackageInfo> getAppList() {
+                    @Nullable
+                    @Override
+                    public List<PackageInfo> getAppList() {
                         return Collections.emptyList();
                     }
 
                     //是否允许SDK获取ANDROID_ID
-                    @Override public boolean isCanUseAndroidId() {
+                    @Override
+                    public boolean isCanUseAndroidId() {
                         return true;
                     }
 
                     // 开发者可传入ANDROID_ID（当isCanUseAndroidId=false时生效）
-                    @Nullable @Override public String getAndroidId() {
+                    @Nullable
+                    @Override
+                    public String getAndroidId() {
                         return "";
                     }
 
                     //是否允许SDK获取MAC地址
-                    @Override public boolean isCanUseMacAddress() {
+                    @Override
+                    public boolean isCanUseMacAddress() {
                         return true;
                     }
 
                     //开发者可传入MAC地址（当isCanUseMacAddress=false时生效）
-                    @Nullable @Override public String getMacAddress() {
+                    @Nullable
+                    @Override
+                    public String getMacAddress() {
                         return "";
                     }
 
                     //是否允许写入存储卡权限
-                    @Override public boolean isCanUseWriteExternal() {
+                    @Override
+                    public boolean isCanUseWriteExternal() {
                         return true;
                     }
 
                     // 是否允许加载摇一摇广告（需加速度传感器权限）
-                    @Override public boolean isCanUseShakeAd() {
+                    @Override
+                    public boolean isCanUseShakeAd() {
                         return true;
                     }
 
                     //是否允许SDK使用录音权限
-                    @Override public boolean isCanUseRecordAudio() {
+                    @Override
+                    public boolean isCanUseRecordAudio() {
                         return true;
                     }
 
                     //开发者可传入IMEI（当isCanUsePhoneState=false时生效）
-                    @Nullable @Override public String getDevImei() {
+                    @Nullable
+                    @Override
+                    public String getDevImei() {
                         return "";
                     }
 
                     //开发者可传入IMEI列表（多卡设备）
-                    @Nullable @Override public String[] getDevImeiList() {
+                    @Nullable
+                    @Override
+                    public String[] getDevImeiList() {
                         return new String[0];
                     }
 
                     //开发者可传入定位信息
-                    @Nullable @Override public AdbidLocation getLocation() {
+                    @Nullable
+                    @Override
+                    public AdbidLocation getLocation() {
                         return null;
                     }
 
                     //是否允许SDK主动获取IP地址
-                    @Override public boolean isCanUseIP() {
+                    @Override
+                    public boolean isCanUseIP() {
                         return true;
                     }
 
                     //开发者可传入IP地址（当isCanUseIP=false时生效）
-                    @Nullable @Override public String getIP() {
+                    @Nullable
+                    @Override
+                    public String getIP() {
                         return "";
                     }
                 }).build();
         AdbidSdk.getInstance(this).initialize(config, new AdbidSdkInitListener() {
-            @Override public void onSdkInitCallback(boolean isSuccess, AdbidError adbidError) {
+            @Override
+            public void onSdkInitCallback(boolean isSuccess, AdbidError adbidError) {
                 if (isSuccess) {
                     Log.i("AdbidSdk", "初始化成功");
                 } else {
@@ -147,6 +178,5 @@ public class MyApplication extends Application {
         });
 
         AdbidSdk.getInstance(this).setDebugMode(true);
-
     }
 }

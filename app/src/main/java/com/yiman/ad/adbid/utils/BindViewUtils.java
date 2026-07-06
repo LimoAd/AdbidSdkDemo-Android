@@ -200,7 +200,7 @@ public class BindViewUtils {
     }
 
     private static void initSixAppInfo(AdbidNativeAppInfo adAppInfo, View nativeAdView) {
-       View sixInfoView = nativeAdView.findViewById(R.id.six_info);
+        View sixInfoView = nativeAdView.findViewById(R.id.six_info);
         if (adAppInfo != null) {
             sixInfoView.setVisibility(View.VISIBLE);
             TextView functionTextView = sixInfoView.findViewById(R.id.function_test);

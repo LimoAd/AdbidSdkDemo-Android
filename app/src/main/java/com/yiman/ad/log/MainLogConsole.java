@@ -48,33 +48,33 @@ public final class MainLogConsole {
     }
 
     public static void info(String msg) {
-        append(msg, COLOR_INFO);
+        append(msg, COLOR_INFO, "💡");
     }
 
     public static void success(String msg) {
-        append(msg, COLOR_SUCCESS);
+        append(msg, COLOR_SUCCESS, "✅");
     }
 
     public static void warning(String msg) {
-        append(msg, COLOR_WARNING);
+        append(msg, COLOR_WARNING, "⚠️");
     }
 
     public static void error(String msg) {
-        append(msg, COLOR_ERROR);
+        append(msg, COLOR_ERROR, "❌");
     }
 
     public static void toast(android.content.Context context, String msg) {
         ToastHub.show(context, msg);
     }
 
-    private static void append(String msg, int color) {
+    private static void append(String msg, int color, String icon) {
         if (msg == null) {
             return;
         }
         if (LOG_BUILDER.length() > 0) {
             LOG_BUILDER.append('\n');
         }
-        String lineText = formatNow() + " " + msg;
+        String lineText = formatNow() + " " + icon + " " + msg;
         SpannableString line = new SpannableString(lineText);
         line.setSpan(new ForegroundColorSpan(color), 0, line.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

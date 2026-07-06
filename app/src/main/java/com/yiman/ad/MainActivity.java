@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
 import com.yiman.ad.log.MainLogConsole;
@@ -12,13 +11,12 @@ import com.yiman.ad.log.ToastHub;
 
 public class MainActivity extends BaseActivity {
 
-    private AdbidAdLoad adLoad;
+    private IAdLoad adLoad;
     private MainPanelController panelController;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        adLoad = new AdbidAdLoad(this);
         TitleBar titleBar = findViewById(R.id.title_bar);
         if (titleBar != null) {
             titleBar.setTitle(R.string.app_name);
@@ -27,10 +25,17 @@ public class MainActivity extends BaseActivity {
 
         panelController = new MainPanelController(this);
         panelController.bind();
+        adLoad = panelController.getCurrentAdLoad();
 
         initAdActions();
     }
 
+    void resetAdLoad(IAdLoad load) {
+        if (adLoad != null) {
+            adLoad.destroy();
+        }
+        adLoad = load;
+    }
 
     private void initAdActions() {
         findViewById(R.id.btn_native_load).setOnClickListener(view -> {
@@ -84,10 +89,10 @@ public class MainActivity extends BaseActivity {
     private void showReadyToast(String adName, boolean ready) {
         if (ready) {
             MainLogConsole.success(adName + " isReady: true");
-            ToastHub.show(this, adName + " 就绪验证 true");
+            ToastHub.show(this, adName + " 就绪 true");
         } else {
             MainLogConsole.warning(adName + " isReady: false");
-            ToastHub.show(this, adName + " 就绪验证 false");
+            ToastHub.show(this, adName + " 就绪 false");
         }
     }
 

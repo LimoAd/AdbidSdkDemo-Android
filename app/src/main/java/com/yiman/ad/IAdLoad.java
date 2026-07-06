@@ -6,35 +6,35 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 public abstract class IAdLoad {
-    public Context context;
+    protected Context context;
 
     public IAdLoad(Context context) {
         this.context = context;
     }
 
-    public abstract void loadSplash();
+    protected abstract void loadSplash();
 
-    public abstract boolean isSplashReady();
+    protected abstract boolean isSplashReady();
 
-    public abstract void showSplash(@NonNull ViewGroup viewGroup);
+    protected abstract void showSplash(@NonNull ViewGroup viewGroup);
 
-    public abstract void loadInterstitial();
+    protected abstract void loadInterstitial();
 
-    public abstract boolean isInterstitialReady();
+    protected abstract boolean isInterstitialReady();
 
-    public abstract void showInterstitial();
+    protected abstract void showInterstitial();
 
-    public abstract void loadReward();
+    protected abstract void loadReward();
 
-    public abstract boolean isRewardReady();
+    protected abstract boolean isRewardReady();
 
-    public abstract void showReward();
+    protected abstract void showReward();
 
-    public abstract void showBanner(@NonNull ViewGroup viewGroup);
+    protected abstract void showBanner(@NonNull ViewGroup viewGroup);
 
-    public abstract void destroy();
+    protected abstract void destroy();
 
-    public abstract void loadNative();
+    protected abstract void loadNative();
 
-    public abstract void loadRecycleNative();
+    protected abstract void loadRecycleNative();
 }
