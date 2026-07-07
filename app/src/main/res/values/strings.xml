@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">领摩广告测试</string>
+    <string name="app_name">Adbid Demo</string>
     <string name="app_main_eyebrow">AdBid Demo Console</string>
     <string name="app_main_title">调试面板</string>
     <string name="app_main_title_source">广告设置</string>
