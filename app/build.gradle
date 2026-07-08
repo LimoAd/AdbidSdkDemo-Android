@@ -69,13 +69,13 @@ dependencies {
     implementation 'com.limo.sdk.ubix:ubix-sdk:2.10.2.11'
     //泛连
     implementation 'com.limo.sdk:adbid-funlink-adapter:1.0.2'
-    implementation 'com.limo.sdk.funlink:funlink-sdk:2.9.1.7'
+    implementation 'com.limo.sdk.funlink:funlink-sdk:2.9.1.8'
     //sigmob
     implementation 'com.limo.sdk:adbid-sigmob-adapter:1.0.0'
-    implementation 'com.limo.sdk.wind:wind-sdk:4.26.20.2'
+    implementation 'com.limo.sdk.wind:wind-sdk:4.26.20.4'
     //萤石
-    implementation 'com.limo.sdk:adbid-ezviz-adapter:1.0.0'
-    implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.1.0.0529'
+    implementation 'com.limo.sdk:adbid-ezviz-adapter:1.0.1'
+    implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.1.0.0616'
     implementation "com.google.code.gson:gson:2.8.9"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
@@ -84,10 +84,13 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.7.2"*/
 
 
+
     //*********************广告聚合接入*******************************************
 
     //领摩聚合核心库(默认接入领摩ADX)
-    implementation(files("libs/adbid_sdk_2.1.0.20_0706_1757.aar"))
+    implementation(files("libs/adbid_sdk_2.1.0.20_0708_1643.aar"))
+
+    //lmx
     implementation(files("libs/adbid_common_1.0.0_0616_2248.aar"))
     implementation(files("libs/adbid_limo_1.0.1_0616_2353.aar"))
     implementation(files("libs/adbid_lmx_1.0.0_0616_2311.aar"))
@@ -164,6 +167,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.11.0"
     implementation "com.airbnb.android:lottie:3.7.2"
 }
+
 
 
 

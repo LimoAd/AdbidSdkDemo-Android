@@ -4,15 +4,15 @@
     "type": "APK",
     "kind": "Directory"
   },
-  "applicationId": "com.adbid.sdk.demo",
+  "applicationId": "com.dz.hmjc",
   "variantName": "release",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "attributes": [],
-      "versionCode": 20100018,
-      "versionName": "2.1.0.18",
+      "versionCode": 20100019,
+      "versionName": "2.1.0.19",
       "outputFile": "app-release.apk"
     }
   ],
