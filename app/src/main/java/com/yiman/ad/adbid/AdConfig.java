@@ -6,19 +6,22 @@ import androidx.annotation.NonNull;
 
 import com.yiman.ad.AppIdStore;
 import com.yiman.ad.IAdLoad;
+import com.yiman.ad.log.MainLogConsole;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class AdConfig {
+@SuppressWarnings("unused")
+public class AdConfig {
     private String appId;
     private final String interUnitId;
     private final String nativeUnitId;
     private final String rewardUnitId;
     private final String splashUnitId;
     private final String bannerUnitId;
+    private String nativeUnitId2;
 
     public static final String DEFAULT_APP_ID = "10005";
     private static final Map<String, AdConfig> configMap = new HashMap<>();
@@ -35,31 +38,68 @@ import java.util.Map;
 
 
     static {
+
         configMap.put("10005", new AdConfig("10005", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==",
                 "MTc1ODcwMDkyNjk1NA==", "MTc1MzkzMDY5NDkyOA==", "MTc1ODc5NjM5NTY4OA=="));
-        configMap.put("10007", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
+        configMap.put("10006",
+                new AdConfig("10006", "MTc1ODc4MzcyODk3Ng==", "MTc1NDAzMjI5MTk4OQ==", "",
+                        "MTc1NDAzMTYwOTk3OQ==", ""));
+
+        configMap.put("10007_LM", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
+                "MTc3OTI0ODU5MjcxNQ==",
+                "MTc3OTI0ODU2ODYxNQ==", "MTc3OTI0ODU0OTgxMg==", "MTc1ODc5NjM5NTY4OA=="));
+
+        configMap.put("10007_FL", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
+                "MTc3OTI0NjMyODQzNA==",
+                "MTc3OTI0NjM4MzE5Ng==", "MTc3OTI0NjQxNTkxOA==", "MTc1ODc5NjM5NTY4OA=="));
+
+        configMap.put("10007_Sigmob", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
+                "MTc3OTcwNTk5MjcxMg==",
+                "MTc3OTcwNTk1ODkxNQ==", "MTc3OTcwNTkyNzA5Mg==", "MTc1ODc5NjM5NTY4OA=="));
+
+        configMap.put("10007_Ezviz", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
                 "MTc3OTcwNjA5MjgyMw==",
+                //  "MTc3OTcwNjEwNTAyNg==",
                 "MTc3OTcwNjA1NjI2Nw==", "MTc3OTcwNjA0NDAxNg==", "MTc1ODc5NjM5NTY4OA=="));
+
+        configMap.put("10028",
+                new AdConfig("10028", "", "", "",
+                        "MTc3OTg1ODEyOTc5Nw==", ""));
     }
 
-    public static IAdLoad getAdLoad(@NonNull Context context) {
-        return new AdbidAdLoad(context);
+    public static IAdLoad getAdLoad(@NonNull Context context, @NonNull MainLogConsole logConsole) {
+        return new AdbidAdLoad(context, logConsole);
     }
 
-    @NonNull public static String resolveAppId(String appId) {
+    @NonNull
+    public static String resolveSelectionKey(String appId) {
         if (appId != null && configMap.containsKey(appId)) {
             return appId;
         }
         return DEFAULT_APP_ID;
     }
 
-    @NonNull public static List<String> getAvailableAppIds() {
+    public void setNativeUnitId2(String nativeUnitId2) {
+        this.nativeUnitId2 = nativeUnitId2;
+    }
+
+    public String getNativeUnitId2() {
+        return nativeUnitId2;
+    }
+
+    @NonNull
+    public static String resolveAppId(String appId) {
+        return configMap.get(resolveSelectionKey(appId)).appId;
+    }
+
+    @NonNull
+    public static List<String> getAvailableAppIds() {
         return new ArrayList<>(configMap.keySet());
     }
 
     public static AdConfig getAdConfig() {
-        String selected = AppIdStore.getSelectedAppId();
-        return configMap.get(resolveAppId(selected));
+        String selected = AppIdStore.getSelectedAppKey();
+        return configMap.get(resolveSelectionKey(selected));
     }
 
     public AdConfig(String appId, String interUnitId, String nativeUnitId, String rewardUnitId,
@@ -106,7 +146,9 @@ import java.util.Map;
     }
 
 
-    @NonNull @Override public String toString() {
+    @NonNull
+    @Override
+    public String toString() {
         return "AdConfig{" + "appId='" + appId + '\'' + ", interUnitId='" + interUnitId + '\'' +
                 ", nativeUnitId='" + nativeUnitId + '\'' + ", rewardUnitId='" + rewardUnitId +
                 '\'' + ", splashUnitId='" + splashUnitId + '\'' + ", bannerUnitId='" +

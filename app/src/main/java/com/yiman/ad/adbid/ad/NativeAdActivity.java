@@ -2,8 +2,11 @@ package com.yiman.ad.adbid.ad;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,9 +33,11 @@ import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.utils.BindViewUtils;
 import com.yiman.ad.adbid.view.TitleBar;
+import com.yiman.ad.log.MainLogConsole;
 
 public class NativeAdActivity extends BaseActivity implements View.OnClickListener {
 
+    private final MainLogConsole logConsole = new MainLogConsole();
     private AdbidNativeLoader mATNative;
     private AdbidNativeAd mNativeAd;
 
@@ -45,8 +50,6 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     private View videoStart;
     private View videoPause;
     private Button videoMuteChange;
-    private TextView videoLog;
-    private TextView videoProgress;
     //是否自定义video展示
     private boolean isCustomVideo = false;
 
@@ -64,22 +67,24 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         mTVIsAdReadyBtn = findViewById(R.id.is_ad_ready_btn);
         mTVShowAdBtn = findViewById(R.id.show_ad_btn);
         TitleBar titleBar = findViewById(R.id.title_bar);
+        titleBar.setTitle(R.string.app_section_native);
         titleBar.setListener(view -> finish());
 
         //广告布局
         mPanel = findViewById(R.id.rl_panel);
-        mATNativeView = findViewById(R.id.native_ad_view);
-        RecyclerView rvButtonList = findViewById(R.id.rv_button);
-        GridLayoutManager manager = new GridLayoutManager(this, 2);
-        rvButtonList.setLayoutManager(manager);
+        recreateNativeAdView();
+
 
         //视频广告操作布局
         videoControl = findViewById(R.id.layout_video_control);
         videoPause = findViewById(R.id.btn_pause);
         videoStart = findViewById(R.id.btn_start);
-        videoLog = findViewById(R.id.text_video_msg);
-        videoProgress = findViewById(R.id.text_video_progress);
         videoMuteChange = findViewById(R.id.btn_mute);
+        ScrollView logScroll = findViewById(R.id.scroll_log);
+        TextView logText = findViewById(R.id.text_log);
+        logConsole.bind(logScroll, logText);
+        logConsole.clear();
+        logConsole.info("自渲染信息流页面已打开");
 
     }
 
@@ -95,10 +100,10 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
 
             @Override public void onNativeAdLoaded(@NonNull AdbidNativeAd nativeAd) {
                 AdbidAdInfo adinfo = nativeAd.getAdbidAdInfo();
-                Toast.makeText(NativeAdActivity.this,
-                        "load success ecpm" + (adinfo == null ? "adinfo " +
-                                "null" : adinfo.getPrice()),
-                        Toast.LENGTH_SHORT).show();
+                String msg = "load success ecpm" + (adinfo == null ? "adinfo null" :
+                        adinfo.getPrice());
+                showToast(msg);
+                logConsole.success("信息流加载成功: " + msg);
 
                 if (size % 2 > 0)
                     mATNative.winNotice(1000);
@@ -109,26 +114,38 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             }
 
             @Override public void onNativeAdLoadFail(@NonNull AdbidError adError) {
-                Toast.makeText(NativeAdActivity.this, "load fail", Toast.LENGTH_SHORT).show();
+                showToast("load fail");
+                logConsole.error("信息流加载失败: " + adError.getMessage());
             }
         });
 
     }
 
     private void loadAd() {
+        destroyAd();
+        recreateNativeAdView();
+        mPanel.setVisibility(View.INVISIBLE);
+        videoControl.setVisibility(View.INVISIBLE);
         String token = getIntent().getStringExtra("s2s_token");
+        logConsole.info("开始加载自渲染信息流");
         mATNative.loadAd(token);
     }
 
     private boolean isAdReady() {
         boolean isReady = mATNative.getNativeAd() != null && mATNative.getNativeAd().isReady();
-        Toast.makeText(NativeAdActivity.this, "load isReady " + isReady, Toast.LENGTH_SHORT).show();
+        showToast("load isReady " + isReady);
+        if (isReady) {
+            logConsole.success("自渲染信息流就绪: true");
+        } else {
+            logConsole.warning("自渲染信息流就绪: false");
+        }
         return isReady;
     }
 
     private void showAd() {
         AdbidNativeAd nativeAd = mATNative.getNativeAd();
         if (nativeAd != null) {
+            logConsole.info("开始展示自渲染信息流");
             if (mNativeAd != null) {
                 mNativeAd.destroy();
             }
@@ -140,22 +157,26 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
                     videoControl.setVisibility(
                             nativeAd.getAdMaterialType() == AdMaterialType.VIDEO ? View.VISIBLE :
                                     View.INVISIBLE);
-                    Toast.makeText(NativeAdActivity.this, "ad impress", Toast.LENGTH_SHORT).show();
+                    showToast("ad impress");
+                    logConsole.success("信息流曝光成功");
                 }
 
                 @Override public void onNativeAdClick(@NonNull AdbidNativeAdView view,
                                                       @NonNull AdbidAdInfo adInfo) {
-                    Toast.makeText(NativeAdActivity.this, "ad click", Toast.LENGTH_SHORT).show();
+                    showToast("ad click");
+                    logConsole.info("信息流被点击");
                 }
 
                 @Override public void onAdClose(@Nullable AdbidNativeAdView view) {
-                    Toast.makeText(NativeAdActivity.this, "ad close", Toast.LENGTH_SHORT).show();
+                    showToast("ad close");
+                    logConsole.warning("信息流已关闭");
                 }
             });
 
-            mNativeAd.setDislikeCallbackListener(
-                    info -> Toast.makeText(NativeAdActivity.this, "dislike click",
-                            Toast.LENGTH_SHORT).show());
+            mNativeAd.setDislikeCallbackListener(info -> {
+                showToast("dislike click");
+                logConsole.warning("触发不感兴趣回调");
+            });
 
             if (!isCustomVideo) {
                 BindViewUtils.registerView(this, mNativeAd, mATNativeView);
@@ -166,9 +187,29 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
 
             mATNativeView.setVisibility(View.VISIBLE);
             mPanel.setVisibility(View.VISIBLE);
+            logConsole.success("广告视图已绑定到预览区");
+        } else {
+            logConsole.warning("当前无可展示的信息流广告，请先加载");
         }
 
 
+    }
+
+    private void recreateNativeAdView() {
+        if (!(mPanel instanceof ViewGroup)) {
+            return;
+        }
+        ViewGroup panelGroup = (ViewGroup) mPanel;
+        panelGroup.removeAllViews();
+        AdbidNativeAdView nativeAdView = new AdbidNativeAdView(this);
+        nativeAdView.setId(R.id.native_ad_view);
+        nativeAdView.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        nativeAdView.setBackgroundResource(android.R.color.transparent);
+        LayoutInflater.from(this).inflate(R.layout.layout_native_self, nativeAdView, true);
+        panelGroup.addView(nativeAdView);
+        mATNativeView = nativeAdView;
     }
 
     private boolean isMute = true;
@@ -176,11 +217,13 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     private void initAdNativeListener(AdbidNativeAd mNativeAd) {
         videoStart.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
+                logConsole.info("点击视频播放");
                 mNativeAd.startVideo();
             }
         });
         videoPause.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
+                logConsole.info("点击视频暂停");
                 mNativeAd.pauseVideo();
             }
         });
@@ -217,6 +260,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
                 isMute = !isMute;
                 videoMuteChange.setText(isMute ? "打开声音" : "关闭声音");
                 mNativeAd.setMuted(isMute);
+                logConsole.info("视频静音切换: " + (isMute ? "静音" : "有声"));
             }
         });
         mNativeAd.setVideoListener(new AdbidNativeVideoListener() {
@@ -281,11 +325,15 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void logText(String msg) {
-        videoLog.setText(msg);
+        logConsole.info(msg);
     }
 
     private void progressText(String msg) {
-        videoProgress.setText(msg);
+        logConsole.info(msg);
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(NativeAdActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -295,11 +343,13 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         if (mATNative != null) {
             mATNative.setAdListener(null);
         }
+        logConsole.unbind();
     }
 
     private void destroyAd() {
         if (mNativeAd != null) {
             mNativeAd.destroy();
+            mNativeAd = null;
         }
     }
 
@@ -315,4 +365,3 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         }
     }
 }
-

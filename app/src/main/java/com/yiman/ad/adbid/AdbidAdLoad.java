@@ -2,6 +2,7 @@ package com.yiman.ad.adbid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -22,17 +23,27 @@ import com.adbid.media.ad.AdbidAppOpen;
 import com.adbid.media.ad.AdbidBannerView;
 import com.adbid.media.ad.AdbidInterstitial;
 import com.adbid.media.ad.AdbidRewarded;
+import com.adbid.sdk.AdbidCustomController;
+import com.adbid.sdk.AdbidInitConfig;
+import com.adbid.sdk.AdbidLocation;
+import com.adbid.sdk.AdbidSdk;
+import com.adbid.sdk.AdbidSdkInitListener;
 import com.adbid.utils.ViewUtils;
+import com.yiman.ad.AppIdStore;
 import com.yiman.ad.DemoRequestUtils;
 import com.yiman.ad.IAdLoad;
+import com.yiman.ad.MyApplication;
 import com.yiman.ad.adbid.ad.NativeAdActivity;
+import com.yiman.ad.adbid.ad.NativeAdDrawActivity;
 import com.yiman.ad.adbid.ad.NativeAdRecycleActivity;
 import com.yiman.ad.log.MainLogConsole;
 import com.yiman.ad.log.ToastHub;
 
 import java.lang.ref.SoftReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AdbidAdLoad extends IAdLoad {
@@ -46,8 +57,165 @@ public class AdbidAdLoad extends IAdLoad {
     private SoftReference<ViewGroup> adContainer;
     private String token;
 
-    public AdbidAdLoad(Context context) {
-        super(context);
+    public AdbidAdLoad(Context context, MainLogConsole logConsole) {
+        super(context, logConsole);
+    }
+
+    @Override
+    protected void init() {
+        // Reserved for manual initialization logic.
+        AdbidSdk.getInstance(MyApplication.myApplication).setDebugMode(true);
+        //广告sdk初始化
+        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId())
+                //设置App渠道
+                .setAppChannel("xiaomi")
+                //设置App版本
+                .setAppVersion("1.0.0")
+                //设置用户ID
+                .setUserId("xxxxxx")
+                //设置隐私权限
+                .addCustomController(new AdbidCustomController() {
+                    //是否允许SDK主动使用手机硬件参数（如IMEI）
+                    @Override
+                    public boolean isCanUsePhoneState() {
+                        return true;
+                    }
+
+                    //是否允许SDK使用个性化广告（GDPR/CCPA合规需关闭）
+                    @Override
+                    public boolean isSupportPersonalized() {
+                        return false;
+                    }
+
+                    //是否允许SDK主动使用地理位置信息
+                    @Override
+                    public boolean isCanUseLocation() {
+                        return true;
+                    }
+
+                    //是否允许SDK主动获取OAID
+                    @Override
+                    public boolean isCanUseWifiState() {
+                        return true;
+                    }
+
+                    //是否允许SDK主动获取OAID
+                    @Override
+                    public boolean isCanUseOaid() {
+                        return true;
+                    }
+
+                    //开发者可传入OAID（当isCanUseOaid=false时生效）
+                    @Nullable
+                    @Override
+                    public String getDevOaid() {
+                        return "";
+                    }
+
+                    //是否允许SDK获取应用安装列表
+                    @Override
+                    public boolean isCanUseAppList() {
+                        return true;
+                    }
+
+                    //开发者可传入应用安装列表（当isCanUseAppList=false时生效）
+                    @Nullable
+                    @Override
+                    public List<PackageInfo> getAppList() {
+                        return Collections.emptyList();
+                    }
+
+                    //是否允许SDK获取ANDROID_ID
+                    @Override
+                    public boolean isCanUseAndroidId() {
+                        return true;
+                    }
+
+                    // 开发者可传入ANDROID_ID（当isCanUseAndroidId=false时生效）
+                    @Nullable
+                    @Override
+                    public String getAndroidId() {
+                        return "";
+                    }
+
+                    //是否允许SDK获取MAC地址
+                    @Override
+                    public boolean isCanUseMacAddress() {
+                        return true;
+                    }
+
+                    //开发者可传入MAC地址（当isCanUseMacAddress=false时生效）
+                    @Nullable
+                    @Override
+                    public String getMacAddress() {
+                        return "";
+                    }
+
+                    //是否允许写入存储卡权限
+                    @Override
+                    public boolean isCanUseWriteExternal() {
+                        return true;
+                    }
+
+                    // 是否允许加载摇一摇广告（需加速度传感器权限）
+                    @Override
+                    public boolean isCanUseShakeAd() {
+                        return true;
+                    }
+
+                    //是否允许SDK使用录音权限
+                    @Override
+                    public boolean isCanUseRecordAudio() {
+                        return true;
+                    }
+
+                    //开发者可传入IMEI（当isCanUsePhoneState=false时生效）
+                    @Nullable
+                    @Override
+                    public String getDevImei() {
+                        return "";
+                    }
+
+                    //开发者可传入IMEI列表（多卡设备）
+                    @Nullable
+                    @Override
+                    public String[] getDevImeiList() {
+                        return new String[0];
+                    }
+
+                    //开发者可传入定位信息
+                    @Nullable
+                    @Override
+                    public AdbidLocation getLocation() {
+                        return null;
+                    }
+
+                    //是否允许SDK主动获取IP地址
+                    @Override
+                    public boolean isCanUseIP() {
+                        return true;
+                    }
+
+                    //开发者可传入IP地址（当isCanUseIP=false时生效）
+                    @Nullable
+                    @Override
+                    public String getIP() {
+                        return "";
+                    }
+                }).build();
+        AdbidSdk.getInstance(MyApplication.myApplication).initialize(config, new AdbidSdkInitListener() {
+            @Override
+            public void onSdkInitCallback(boolean isSuccess, AdbidError adbidError) {
+                if (isSuccess) {
+                    logSuccess("初始化成功");
+                    toast("初始化成功");
+                } else {
+                    logError("初始化失败");
+                    toast("初始化失败");
+                }
+
+            }
+        });
     }
 
     public void checkS2SBiddingToken(String adUnitId, Runnable callback) {
@@ -55,7 +223,7 @@ public class AdbidAdLoad extends IAdLoad {
             callback.run();
             return;
         }
-        new DemoRequestUtils().requestBiddingToken(adUnitId, new DemoRequestUtils.RequestCallBack() {
+        DemoRequestUtils.requestBiddingToken(adUnitId, new DemoRequestUtils.RequestCallBack() {
             @Override
             public void onSuccess(String result) {
                 if (!StringUtils.isEmpty(result)) {
@@ -71,10 +239,12 @@ public class AdbidAdLoad extends IAdLoad {
             }
         });
     }
+
     @Override
     public void loadSplash() {
         checkS2SBiddingToken(AdConfig.getAdConfig().getSplashUnitId(), new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 AdbidListener appOpenAdListener = new AdbidListener() {
                     @Override
                     public void onAdLoad(@NonNull AdbidAdInfo adInfo) {
@@ -396,18 +566,29 @@ public class AdbidAdLoad extends IAdLoad {
         });
     }
 
+    @Override
+    protected void loadNativeDraw() {
+        checkS2SBiddingToken(AdConfig.getAdConfig().getNativeUnitId(), () -> {
+            Intent intent = new Intent(context, NativeAdDrawActivity.class);
+            if (!StringUtils.isEmpty(token)) {
+                intent.putExtra("s2s_token", token);
+            }
+            context.startActivity(intent);
+        });
+    }
+
     private void logInfo(String msg) {
-        MainLogConsole.info(msg);
+        logConsole.info(msg);
         Log.i("AdbidSdk", msg);
     }
 
     private void logSuccess(String msg) {
-        MainLogConsole.success(msg);
+        logConsole.success(msg);
         Log.i("AdbidSdk", msg);
     }
 
     private void logError(String msg) {
-        MainLogConsole.error(msg);
+        logConsole.error(msg);
         Log.e("AdbidSdk", msg);
     }
 

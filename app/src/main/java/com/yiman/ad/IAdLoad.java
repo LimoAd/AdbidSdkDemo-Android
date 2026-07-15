@@ -5,12 +5,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-public abstract class IAdLoad {
-    protected Context context;
+import com.yiman.ad.log.MainLogConsole;
 
-    public IAdLoad(Context context) {
+public abstract class IAdLoad {
+    protected final Context context;
+    protected final MainLogConsole logConsole;
+
+    public IAdLoad(Context context, MainLogConsole logConsole) {
         this.context = context;
+        this.logConsole = logConsole;
     }
+
+    protected abstract void init();
 
     protected abstract void loadSplash();
 
@@ -37,4 +43,6 @@ public abstract class IAdLoad {
     protected abstract void loadNative();
 
     protected abstract void loadRecycleNative();
+
+    protected abstract void loadNativeDraw();
 }

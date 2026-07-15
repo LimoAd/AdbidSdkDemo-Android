@@ -26,36 +26,67 @@
                 android:layout_height="@dimen/adbid_45dp" />
 
             <LinearLayout
+                android:id="@+id/ad_control"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_surface_card"
                 android:orientation="vertical"
-                android:gravity="center_vertical"
                 android:padding="10dp">
 
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="2dp"
+                    android:text="@string/app_main_title_source"
+                    android:textColor="@color/app_text_primary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:paddingVertical="2dp"
-                        android:text="@string/app_main_title_source"
                         android:layout_weight="1"
-                        android:textColor="@color/app_text_primary"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+                        android:background="@drawable/bg_surface_chip"
+                        android:gravity="center_vertical"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingVertical="8dp"
+                        android:layout_marginEnd="6dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/app_source_action_adx"
+                            android:textColor="@color/app_text_primary"
+                            android:textSize="13sp"
+                            android:textStyle="bold" />
+
+                        <Switch
+                            android:id="@+id/btn_check_adx"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="false" />
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_surface_chip"
+                        android:gravity="center_vertical"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="8dp"
+                        android:paddingVertical="8dp"
+                        android:layout_marginStart="6dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -69,16 +100,65 @@
 
                         <Switch
                             android:id="@+id/btn_check_s2s"
-                            android:layout_marginEnd="12dp"
-                            android:layout_marginStart="12dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:checked="false" />
                     </LinearLayout>
-
-
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/llayout_appid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_surface_chip"
+                    android:gravity="center_vertical"
+                    android:minHeight="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="8dp">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/app_app_title"
+                            android:textColor="@color/app_text_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/text_app_id_value"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:text="10005"
+                            android:textColor="@color/app_text_secondary"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/btn_switch_app_id"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/bg_badge_action"
+                        android:gravity="center"
+                        android:minWidth="56dp"
+                        android:paddingStart="12dp"
+                        android:paddingEnd="12dp"
+                        android:text="@string/app_app_action"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/llayout_platform"
@@ -168,6 +248,36 @@
                     android:textColor="@color/app_text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_surface_chip"
+                    android:gravity="center_vertical"
+                    android:minHeight="52dp"
+                    android:orientation="horizontal"
+                    android:paddingStart="12dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/app_section_init"
+                        android:textColor="@color/app_text_primary"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/btn_ad_init_load"
+                        style="@style/ActionLoadButtonStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_action_start" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -370,6 +480,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
                             android:text="@string/app_action_native_list" />
+
+                        <Button
+                            android:id="@+id/btn_native_load_draw"
+                            style="@style/ActionShowButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:text="Draw" />
                     </LinearLayout>
                 </LinearLayout>
 

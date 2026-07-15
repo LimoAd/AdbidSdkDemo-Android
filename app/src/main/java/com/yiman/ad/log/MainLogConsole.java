@@ -22,44 +22,42 @@ public final class MainLogConsole {
     private static final int COLOR_ERROR = Color.parseColor("#FFB0B0");
     private static final int MAX_LOG_LENGTH = 6000;
 
-    private static final SpannableStringBuilder LOG_BUILDER = new SpannableStringBuilder();
-    private static final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private final SpannableStringBuilder logBuilder = new SpannableStringBuilder();
+    private final SimpleDateFormat timeFormat =
+            new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
-    private static WeakReference<ScrollView> scrollViewRef;
-    private static WeakReference<TextView> textViewRef;
+    private WeakReference<ScrollView> scrollViewRef;
+    private WeakReference<TextView> textViewRef;
 
-    private MainLogConsole() {
-    }
-
-    public static void bind(ScrollView scrollView, TextView textView) {
+    public void bind(ScrollView scrollView, TextView textView) {
         scrollViewRef = new WeakReference<>(scrollView);
         textViewRef = new WeakReference<>(textView);
         render();
     }
 
-    public static void unbind() {
+    public void unbind() {
         scrollViewRef = null;
         textViewRef = null;
     }
 
-    public static void clear() {
-        LOG_BUILDER.clear();
+    public void clear() {
+        logBuilder.clear();
         render();
     }
 
-    public static void info(String msg) {
+    public void info(String msg) {
         append(msg, COLOR_INFO, "💡");
     }
 
-    public static void success(String msg) {
+    public void success(String msg) {
         append(msg, COLOR_SUCCESS, "✅");
     }
 
-    public static void warning(String msg) {
+    public void warning(String msg) {
         append(msg, COLOR_WARNING, "⚠️");
     }
 
-    public static void error(String msg) {
+    public void error(String msg) {
         append(msg, COLOR_ERROR, "❌");
     }
 
@@ -67,43 +65,43 @@ public final class MainLogConsole {
         ToastHub.show(context, msg);
     }
 
-    private static void append(String msg, int color, String icon) {
+    private void append(String msg, int color, String icon) {
         if (msg == null) {
             return;
         }
-        if (LOG_BUILDER.length() > 0) {
-            LOG_BUILDER.append('\n');
+        if (logBuilder.length() > 0) {
+            logBuilder.append('\n');
         }
         String lineText = formatNow() + " " + icon + " " + msg;
         SpannableString line = new SpannableString(lineText);
         line.setSpan(new ForegroundColorSpan(color), 0, line.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        LOG_BUILDER.append(line);
+        logBuilder.append(line);
         trimIfNeeded();
         render();
     }
 
-    private static String formatNow() {
-        synchronized (TIME_FORMAT) {
-            return TIME_FORMAT.format(new Date());
+    private String formatNow() {
+        synchronized (timeFormat) {
+            return timeFormat.format(new Date());
         }
     }
 
-    private static void trimIfNeeded() {
-        if (LOG_BUILDER.length() <= MAX_LOG_LENGTH) {
+    private void trimIfNeeded() {
+        if (logBuilder.length() <= MAX_LOG_LENGTH) {
             return;
         }
-        int trimEnd = Math.min(LOG_BUILDER.length(), LOG_BUILDER.length() - MAX_LOG_LENGTH + 400);
-        LOG_BUILDER.delete(0, trimEnd);
+        int trimEnd = Math.min(logBuilder.length(), logBuilder.length() - MAX_LOG_LENGTH + 400);
+        logBuilder.delete(0, trimEnd);
     }
 
-    private static void render() {
+    private void render() {
         TextView textView = textViewRef == null ? null : textViewRef.get();
         if (textView == null) {
             return;
         }
         textView.post(() -> {
-            textView.setText(LOG_BUILDER);
+            textView.setText(logBuilder);
             ScrollView scrollView = scrollViewRef == null ? null : scrollViewRef.get();
             if (scrollView != null) {
                 scrollView.post(() -> {

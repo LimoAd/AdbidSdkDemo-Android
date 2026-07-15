@@ -1,6 +1,9 @@
 package com.yiman.ad.adbid.ad;
 
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
@@ -14,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.adbid.media.AdMaterialType;
 import com.adbid.media.AdbidAdInfo;
 import com.adbid.media.AdbidError;
 import com.adbid.media.nativeAd.AdbidNativeAd;
@@ -29,7 +33,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@SuppressWarnings("unused") public class NativeViewAdapter extends RecyclerView.Adapter {
+@SuppressWarnings("unused")
+public class NativeViewAdapter extends RecyclerView.Adapter {
     public final static int NEWS = 0;
     public final static int NATIVE = 2;
     public final static int EXPRESS = 1;
@@ -43,7 +48,8 @@ import java.util.List;
         this.list = list;
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == EXPRESS) {
             View view = View.inflate(parent.getContext(), R.layout.native_express_item, null);
@@ -57,8 +63,8 @@ import java.util.List;
         }
     }
 
-    @Override public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder,
-                                           @SuppressLint("RecyclerView") int position) {
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         if (holder instanceof NativeExpressAdHolder) {
             /*((NativeExpressAdHolder) holder).nativeExpressView.removeAllViews();
             View target = getItem(holder.getAdapterPosition()).nativeExpressAd.getNativeExpressView();
@@ -67,75 +73,97 @@ import java.util.List;
             ((NativeExpressAdHolder) holder).nativeExpressView.addView(target, new ViewGroup.LayoutParams(-1, -2));*/
         } else if (holder instanceof NativeAdHolder) {
             AdbidNativeAd nativeAd = getItem(position).nativeAd;
-            String imageUrl = null;
+            NativeAdHolder nativeHolder = (NativeAdHolder) holder;
+            String imageUrl;
             View mediaView = nativeAd.getMediaView();
             List<View> clickViews = new ArrayList<>();
-            if (mediaView != null) {
-                ((NativeAdHolder) holder).videoLayout.removeAllViews();
+            bindAssetViews(nativeHolder);
+            resetMediaArea(nativeHolder);
+            if (nativeAd.getAdMaterialType() == AdMaterialType.VIDEO && mediaView != null) {
+                nativeHolder.testImg.setVisibility(GONE);
+                nativeHolder.videoLayout.setVisibility(VISIBLE);
                 ViewUtils.removeFromParent(mediaView);
-                ((NativeAdHolder) holder).videoLayout.addView(mediaView);
+                nativeHolder.videoLayout.addView(mediaView, new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                clickViews.add(nativeHolder.videoLayout);
                 nativeAd.setVideoListener(new AdbidNativeVideoListener() {
 
-                    @Override public void onVideoStart() {
+                    @Override
+                    public void onVideoStart() {
                         if (null != consoleCallback)
                             consoleCallback.printMsg("onVideoStart " + nativeAd.getTitle());
                     }
 
-                    @Override public void onVideoPause() {
+                    @Override
+                    public void onVideoPause() {
                         if (null != consoleCallback)
                             consoleCallback.printMsg("onVideoPause " + nativeAd.getTitle());
                     }
 
-                    @Override public void onVideoResume() {
+                    @Override
+                    public void onVideoResume() {
                         if (null != consoleCallback)
                             consoleCallback.printMsg("onVideoResume " + nativeAd.getTitle());
                     }
 
-                    @Override public void onVideoComplete() {
+                    @Override
+                    public void onVideoComplete() {
                         if (null != consoleCallback)
                             consoleCallback.printMsg("onVideoComplete " + nativeAd.getTitle());
                     }
 
-                    @Override public void onVideoError(AdbidError var1) {
+                    @Override
+                    public void onVideoError(AdbidError var1) {
                         if (null != consoleCallback)
                             consoleCallback.printMsg("onVideoError " + var1.getMessage());
                     }
 
 
-                    @Override public void onVideoProgressUpdate(long current, long total) {
-                        if (null != consoleCallback) consoleCallback.printMsg(
-                                "onVideoProgressUpdate " + total + "；" + current + " ;" + nativeAd);
+                    @Override
+                    public void onVideoProgressUpdate(long current, long total) {
+                        if (null != consoleCallback)
+                            consoleCallback.printMsg("onVideoProgressUpdate " + total + "；" + current + " ;" + nativeAd);
                     }
                 });
-            } else {
-                if (!TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
-                    imageUrl = nativeAd.getMainImageUrl();
-                } else if (nativeAd.getImageUrlList() != null &&
-                        !nativeAd.getImageUrlList().isEmpty()) {
-                    imageUrl = nativeAd.getImageUrlList().get(0);
-                }
-                ImageView img = ((NativeAdHolder) holder).testImg;
-                img.setScaleType(ImageView.ScaleType.FIT_XY);
+            } else if (nativeAd.getAdMaterialType() == AdMaterialType.IMAGE && !TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
+                nativeHolder.testImg.setVisibility(VISIBLE);
+                nativeHolder.videoLayout.setVisibility(GONE);
+
+                imageUrl = nativeAd.getMainImageUrl();
+                ImageView img = nativeHolder.testImg;
+                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
                 Glide.with(img).load(imageUrl).into(img);
                 clickViews.add(img);
+            } else if (nativeAd.getAdMaterialType() == AdMaterialType.MULTIPLE_IMAGE && nativeAd.getImageUrlList() != null && !nativeAd.getImageUrlList().isEmpty()) {
+                nativeHolder.testImg.setVisibility(VISIBLE);
+                nativeHolder.videoLayout.setVisibility(GONE);
+                imageUrl = nativeAd.getImageUrlList().get(0);
+                ImageView img = nativeHolder.testImg;
+                img.setScaleType(ImageView.ScaleType.FIT_CENTER);
+                Glide.with(img).load(imageUrl).into(img);
+                clickViews.add(img);
+            } else {
+                // Keep the media slot visible after RecyclerView reuse even when the SDK does not expose a usable asset.
+                nativeHolder.testImg.setVisibility(VISIBLE);
+                nativeHolder.videoLayout.setVisibility(GONE);
             }
-            ((NativeAdHolder) holder).titleTv.setText(nativeAd.getTitle());
-            ((NativeAdHolder) holder).timeTv.setText("广告");
-            clickViews.add(((NativeAdHolder) holder).titleTv);
+            nativeHolder.titleTv.setText(nativeAd.getTitle());
+            nativeHolder.timeTv.setText("广告");
+            clickViews.add(nativeHolder.titleTv);
 
-            (((NativeAdHolder) holder).closeBtn).setVisibility(View.VISIBLE);
+            (nativeHolder.closeBtn).setVisibility(VISIBLE);
             nativeAd.setEventListener(new AdbidNativeEventListener() {
-                @Override public void onImpression(@NonNull AdbidNativeAdView view,
-                                                   @NonNull AdbidAdInfo adInfo) {
+                @Override
+                public void onImpression(@NonNull AdbidNativeAdView view, @NonNull AdbidAdInfo adInfo) {
                     if (null != consoleCallback) consoleCallback.printMsg("onImpression");
                 }
 
-                @Override public void onNativeAdClick(@NonNull AdbidNativeAdView view,
-                                                      @NonNull AdbidAdInfo adInfo) {
+                @Override
+                public void onNativeAdClick(@NonNull AdbidNativeAdView view, @NonNull AdbidAdInfo adInfo) {
                     if (null != consoleCallback) consoleCallback.printMsg("onAdClicked");
                 }
 
-                @Override public void onAdClose(@Nullable AdbidNativeAdView view) {
+                @Override
+                public void onAdClose(@Nullable AdbidNativeAdView view) {
                     if (null != consoleCallback) consoleCallback.printMsg("onAdClosed");
                     list.remove(holder.getAdapterPosition());
                     notifyDataSetChanged();
@@ -143,23 +171,15 @@ import java.util.List;
             });
 
             //信息流自渲染
-            nativeAd.registerViews(((NativeAdHolder) holder).nativeLayout, clickViews,
-                    ((NativeAdHolder) holder).closeBtn);
+            nativeAd.registerViews(nativeHolder.nativeLayout, clickViews, nativeHolder.closeBtn);
         } else {
             ((InfoHolder) holder).titleTv.setText(getItem(position).title);
             ((InfoHolder) holder).authorTv.setText(getItem(position).shareUser);
-            ((InfoHolder) holder).timeTv.setText(
-                    new Date(getItem(position).publishTime).toLocaleString());
+            ((InfoHolder) holder).timeTv.setText(new Date(getItem(position).publishTime).toLocaleString());
             holder.itemView.setOnClickListener(v -> {
             });
             ImageView img = ((InfoHolder) holder).testImg;
-            String[] imgUlrs =
-                    {"https://q4.itc.cn/images01/20240305/07a6c1f603984e69a631288952f5347c.jpeg",
-                            "https://q5.itc.cn/images01/20250630/06beb11d47414e19bbf6dc1a062194fe.jpeg",
-                            "https://img0.baidu.com/it/u=68977182,2518794064&fm=253&fmt=auto&app=138&f=JPEG?w=439&h=552",
-                            "https://q6.itc.cn/q_70/images03/20240411/96dd36d55e1645b083273924998ff7bc.png",
-                            "https://img0.baidu.com/it/u=2062646163,2646513048&fm=253&fmt=auto&app=138&f=JPEG?w=916&h=516",
-                            "https://pics6.baidu.com/feed/d009b3de9c82d1588ef78a2b4896a1d4bd3e4258.jpeg@f_auto?token=750f89c05337ce46175cccbe8350bc3f"};
+            String[] imgUlrs = {"https://q4.itc.cn/images01/20240305/07a6c1f603984e69a631288952f5347c.jpeg", "https://q5.itc.cn/images01/20250630/06beb11d47414e19bbf6dc1a062194fe.jpeg", "https://img0.baidu.com/it/u=68977182,2518794064&fm=253&fmt=auto&app=138&f=JPEG?w=439&h=552", "https://q6.itc.cn/q_70/images03/20240411/96dd36d55e1645b083273924998ff7bc.png", "https://img0.baidu.com/it/u=2062646163,2646513048&fm=253&fmt=auto&app=138&f=JPEG?w=916&h=516", "https://pics6.baidu.com/feed/d009b3de9c82d1588ef78a2b4896a1d4bd3e4258.jpeg@f_auto?token=750f89c05337ce46175cccbe8350bc3f"};
             Glide.with(img).load(imgUlrs[position % 6]).into(img);
         }
     }
@@ -168,12 +188,28 @@ import java.util.List;
         return list.get(position);
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         return list.size();
     }
 
-    @Override public int getItemViewType(int position) {
+    @Override
+    public int getItemViewType(int position) {
         return list.get(position).itemType;
+    }
+
+    private void bindAssetViews(@NonNull NativeAdHolder holder) {
+        holder.nativeLayout.setTitleView(holder.titleTv);
+        holder.nativeLayout.setMainImageView(holder.testImg);
+        holder.nativeLayout.setMutiImageView(holder.videoLayout);
+    }
+
+    private void resetMediaArea(@NonNull NativeAdHolder holder) {
+        Glide.with(holder.testImg).clear(holder.testImg);
+        holder.testImg.setImageDrawable(null);
+        holder.testImg.setVisibility(VISIBLE);
+        holder.videoLayout.removeAllViews();
+        holder.videoLayout.setVisibility(GONE);
     }
 
     private static class InfoHolder extends RecyclerView.ViewHolder {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Adbid Demo</string>
+    <string name="app_name">领摩-Demo</string>
     <string name="app_main_eyebrow">AdBid Demo Console</string>
     <string name="app_main_title">调试面板</string>
     <string name="app_main_title_source">广告设置</string>
@@ -18,17 +18,23 @@
     <string name="app_app_action">切换</string>
     <string name="app_platform_action">切换</string>
     <string name="app_actions_title">广告操作</string>
+    <string name="app_section_init">广告初始化</string>
     <string name="app_section_splash">开屏广告</string>
     <string name="app_section_reward">激励广告</string>
     <string name="app_section_interstitial">插屏广告</string>
     <string name="app_section_native">自渲染信息流</string>
     <string name="app_section_banner">横幅广告</string>
     <string name="app_title_native_feed">信息流列表</string>
+    <string name="app_native_preview_title">广告预览</string>
+    <string name="app_native_preview_summary">保持与主页一致的卡片化布局，便于在调试信息流时快速查看展示结果与状态变化。</string>
+    <string name="app_native_preview_hint">先点击加载，再检查就绪状态并展示广告；预览区会在广告绑定后显示。</string>
+    <string name="app_native_action_title">广告操作</string>
     <string name="app_action_load">加载</string>
+    <string name="app_action_start">开始</string>
     <string name="app_action_ready">就绪</string>
     <string name="app_action_show">展示</string>
-    <string name="app_action_native_single">单条</string>
-    <string name="app_action_native_list">列表</string>
+    <string name="app_action_native_single">Single</string>
+    <string name="app_action_native_list">List</string>
     <string name="app_action_banner_show">展示</string>
     <string name="app_log_title">调试日志</string>
     <string name="app_platform_dialog_title">选择调试平台</string>

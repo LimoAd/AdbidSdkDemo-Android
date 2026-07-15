@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -17,6 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.adbid.media.AdMaterialType;
+import com.adbid.media.Logger;
 import com.adbid.media.nativeAd.AdbidNativeAd;
 import com.adbid.media.nativeAd.AdbidNativeAdView;
 import com.adbid.media.nativeAd.AdbidNativeAppInfo;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BindViewUtils {
+
+    private static final float MEDIA_ASPECT_RATIO = 600F / 1024F;
 
     public static void registerView(Context context, @NonNull AdbidNativeAd nativeAd,
                                     @NonNull AdbidNativeAdView nativeAdView) {
@@ -101,55 +104,25 @@ public class BindViewUtils {
 
         // media view
         View mediaView = nativeAd.getMediaView();
-        FrameLayout.LayoutParams mainImageParam =
-                new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-                        FrameLayout.LayoutParams.WRAP_CONTENT);
-        if (mediaView == null) {
-            ViewTreeObserver viewTreeObserver = nativeAdView.getViewTreeObserver();
-            viewTreeObserver.addOnGlobalLayoutListener(
-                    new ViewTreeObserver.OnGlobalLayoutListener() {
-                        @Override public void onGlobalLayout() {
-                            // 移除监听器
-                            nativeAdView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                            int realMainImageWidth = nativeAdView.getWidth() - dip2px(context, 10);
-                            mainImageParam.width = FrameLayout.LayoutParams.MATCH_PARENT;
-                            mainImageParam.height = realMainImageWidth * 600 / 1024;
-                        }
-                    });
-        } else {
-            int realMainImageWidth =
-                    context.getResources().getDisplayMetrics().widthPixels - dip2px(context, 10);
-            if (context.getResources().getDisplayMetrics().widthPixels >
-                    context.getResources().getDisplayMetrics().heightPixels) {//Horizontal screen
-                realMainImageWidth = context.getResources().getDisplayMetrics().widthPixels -
-                        dip2px(context, 10) - dip2px(context, 330) - dip2px(context, 130);
-            }
-
-            mainImageParam.width = FrameLayout.LayoutParams.MATCH_PARENT;
-            mainImageParam.height = realMainImageWidth * 600 / 1024;
-        }
-
         List<String> imageList = nativeAd.getImageUrlList();
         contentArea.removeAllViews();
-        if (mediaView != null) {
+        Logger.i("getAdMaterialType","isVideo:"+(nativeAd.getAdMaterialType() == AdMaterialType.VIDEO)+", mediaView: "+mediaView);
+        if (nativeAd.getAdMaterialType() == AdMaterialType.VIDEO && mediaView != null) {
             if (mediaView.getParent() != null) {
                 ((ViewGroup) mediaView.getParent()).removeView(mediaView);
             }
-            mainImageParam.gravity = Gravity.CENTER;
-            mediaView.setLayoutParams(mainImageParam);
-            contentArea.addView(mediaView, mainImageParam);
+            bindCenteredMediaView(contentArea, mediaView);
             clickViewList.add(mediaView);
             contentArea.setVisibility(View.VISIBLE);
-        } else if (imageList != null && !imageList.isEmpty()) {
+        } else if (nativeAd.getAdMaterialType() == AdMaterialType.MULTIPLE_IMAGE && imageList != null && !imageList.isEmpty()) {
             createDynamicImageLayout(contentArea, imageList, context, 3);
             clickViewList.add(contentArea);
-        } else if (!TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
+        } else if (nativeAd.getAdMaterialType() == AdMaterialType.IMAGE && !TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
             ImageView imageView = new ImageView(context);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             Glide.with(context).load(nativeAd.getMainImageUrl())// 圆形裁剪
                     .into(imageView);
-            imageView.setLayoutParams(mainImageParam);
-            contentArea.addView(imageView, mainImageParam);
-            clickViewList.add(imageView);
+            contentArea.addView(imageView);
             contentArea.setVisibility(View.VISIBLE);
         } else {
             contentArea.removeAllViews();
@@ -265,10 +238,40 @@ public class BindViewUtils {
 
     }
 
-
     public static int dip2px(Context context, float dipValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dipValue * scale + 0.5f);
+    }
+
+    private static void bindCenteredMediaView(FrameLayout contentArea, View mediaView) {
+        FrameLayout.LayoutParams initialParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+        initialParams.gravity = Gravity.CENTER;
+        contentArea.addView(mediaView, initialParams);
+        contentArea.post(() -> {
+            FrameLayout.LayoutParams params =
+                    buildMediaLayoutParams(contentArea.getWidth(), contentArea.getHeight());
+            mediaView.setLayoutParams(params);
+            mediaView.requestLayout();
+        });
+    }
+
+    private static FrameLayout.LayoutParams buildMediaLayoutParams(int containerWidth,
+                                                                   int containerHeight) {
+        int safeWidth = Math.max(containerWidth, 1);
+        int safeHeight = Math.max(containerHeight, 1);
+        int targetWidth = Math.min(safeWidth, Math.round(safeHeight / MEDIA_ASPECT_RATIO));
+        int targetHeight = Math.round(targetWidth * MEDIA_ASPECT_RATIO);
+        if (targetHeight > safeHeight) {
+            targetHeight = safeHeight;
+            targetWidth = Math.round(targetHeight / MEDIA_ASPECT_RATIO);
+        }
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(targetWidth, targetHeight);
+        params.gravity = Gravity.CENTER;
+        return params;
     }
 
 
@@ -527,5 +530,3 @@ public class BindViewUtils {
         initSixAppInfo(nativeAd.getNativeAppInfo(), nativeAdView);
     }*/
 }
-
-

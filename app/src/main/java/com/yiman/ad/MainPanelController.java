@@ -4,14 +4,17 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.adbid.sdk.AdbidSdkConfiguration;
 import com.adbid.utils.sp.PreferencesUtils;
 import com.yiman.ad.adbid.AdConfig;
+import com.yiman.ad.adbid.BuildConfig;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.platform.BottomSelectDialog;
 import com.yiman.ad.adbid.platform.PlatformManager;
@@ -26,22 +29,26 @@ import java.util.List;
 public final class MainPanelController {
 
     private final MainActivity activity;
+    private final MainLogConsole logConsole = new MainLogConsole();
+    private final TextView textAppId;
+    private final Switch adxCheckBox;
     private final Switch s2sCheckBox;
     private final BounceMarqueeTextView textPlatform;
     private final View platformContainer;
 
     public MainPanelController(@NonNull MainActivity activity) {
         this.activity = activity;
+        this.textAppId = activity.findViewById(R.id.text_app_id_value);
+        this.adxCheckBox = activity.findViewById(R.id.btn_check_adx);
         this.s2sCheckBox = activity.findViewById(R.id.btn_check_s2s);
         this.textPlatform = activity.findViewById(R.id.text_platform);
         this.platformContainer = activity.findViewById(R.id.llayout_platform);
+        View container=activity.findViewById(R.id.ad_control);
+        container.setVisibility(BuildConfig.DEBUG?View.VISIBLE:View.GONE);
     }
 
     public void bind() {
-        ScrollView logScroll = activity.findViewById(R.id.scroll_log);
-        TextView logText = activity.findViewById(R.id.text_log);
-        MainLogConsole.bind(logScroll, logText);
-        MainLogConsole.clear();
+        bindLogConsole(true);
 
         textPlatform.setText(PlatformManager.getSelectedNamesText());
         activity.findViewById(R.id.btn_change).setOnClickListener(
@@ -50,8 +57,17 @@ public final class MainPanelController {
                 }).show());
 
         boolean isAdxMode = PreferencesUtils.getBoolean("is_check_adx", false);
+        adxCheckBox.setChecked(isAdxMode);
         updatePlatformVisibility(isAdxMode);
-
+        adxCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                PreferencesUtils.put("is_check_adx", checked);
+                updatePlatformVisibility(checked);
+                refreshCurrentAppId();
+                ToastHub.show(activity, "广告源已切换，应用ID可单独配置");
+                activity.resetAdLoad(getCurrentAdLoad());
+            }
+        });
 
         boolean isS2SMode = PreferencesUtils.getBoolean("is_check_s2s", false);
         s2sCheckBox.setChecked(isS2SMode);
@@ -61,17 +77,51 @@ public final class MainPanelController {
             AdConfig.setS2SBiddingEnabled(checked);
         });
 
+        activity.findViewById(R.id.btn_switch_app_id).setOnClickListener(v -> showAppSwitchDialog());
+        refreshCurrentAppId();
+    }
+
+    public void rebindLogConsole() {
+        bindLogConsole(false);
     }
 
     public void unbind() {
-        MainLogConsole.unbind();
+        logConsole.unbind();
+    }
+
+    @NonNull public MainLogConsole getLogConsole() {
+        return logConsole;
     }
 
     public IAdLoad getCurrentAdLoad() {
-        return AdConfig.getAdLoad(activity);
+        return
+                AdConfig.getAdLoad(activity, logConsole);
     }
 
+    private void showAppSwitchDialog() {
+        List<String> ids = AdConfig.getAvailableAppIds();
+        if (ids.isEmpty()) {
+            ToastHub.show(activity, "当前模式无可用应用");
+            return;
+        }
+        Collections.sort(ids);
+        String current = AppIdStore.getSelectedAppKey();
 
+        new AppSwitchDialog(activity, ids, current, selectedAppId -> {
+            if (selectedAppId.equals(current)) {
+                return;
+            }
+            AppIdStore.saveSelectedAppId(selectedAppId);
+            refreshCurrentAppId();
+
+            if (AdbidSdkConfiguration.Instance.isInit()){
+                ToastHub.show(activity, "已切换 " + selectedAppId + "，请手动重启");
+                restartApp();
+            }else {
+                ToastHub.show(activity, "已切换 " + selectedAppId + "，请重新初始化");
+            }
+        }).show();
+    }
 
     private void restartApp() {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -80,7 +130,20 @@ public final class MainPanelController {
         }, 500);
     }
 
+    private void refreshCurrentAppId() {
+        textAppId.setText(AppIdStore.getSelectedAppKey());
+    }
+
     private void updatePlatformVisibility(boolean isAdxMode) {
         platformContainer.setVisibility(isAdxMode ? View.GONE : View.VISIBLE);
+    }
+
+    private void bindLogConsole(boolean clearLogs) {
+        ScrollView logScroll = activity.findViewById(R.id.scroll_log);
+        TextView logText = activity.findViewById(R.id.text_log);
+        logConsole.bind(logScroll, logText);
+        if (clearLogs) {
+            logConsole.clear();
+        }
     }
 }
