@@ -64,16 +64,16 @@ dependencies {
 
 
    /* //领摩
-    implementation 'com.limo.sdk:adbid-sdk:2.1.0.18'
+    implementation 'com.limo.sdk:adbid-sdk:2.1.0.20'
     //ubix
     implementation 'com.limo.sdk:adbid-ubix-adapter:1.0.5'
     implementation 'com.limo.sdk.ubix:ubix-sdk:2.10.2.11'
     //泛连
     implementation 'com.limo.sdk:adbid-funlink-adapter:1.0.2'
-    implementation 'com.limo.sdk.funlink:funlink-sdk:2.9.1.9'
+    implementation 'com.limo.sdk.funlink:funlink-sdk:2.9.1.10'
     //sigmob
-    implementation 'com.limo.sdk:adbid-sigmob-adapter:1.0.0'
-    implementation 'com.limo.sdk.wind:wind-sdk:4.26.20.4'
+    implementation 'com.limo.sdk:adbid-sigmob-adapter:1.0.1'
+    implementation 'com.limo.sdk.wind:wind-sdk:4.26.22'
     //萤石
     implementation 'com.limo.sdk:adbid-ezviz-adapter:1.0.1'
     implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.1.0.0616'
@@ -145,7 +145,7 @@ dependencies {
 
     //sigmob
     implementation(files("libs/adbid_sigmob_1.0.1_0715_1139.aar"))
-    implementation(files("libs/wind-sdk-4.26.20.2.aar"))
+    implementation(files("libs/wind-sdk-4.26.22.aar"))
 
     //美数广告
     implementation(files("libs/adbid_ms_1.0.0_0323_1910.aar"))
@@ -169,6 +169,7 @@ dependencies {
     implementation "com.github.bumptech.glide:glide:4.11.0"
     implementation "com.airbnb.android:lottie:3.7.2"
 }
+
 
 
 
