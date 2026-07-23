@@ -75,7 +75,7 @@ dependencies {
 
 
     //萤石
-    implementation(files("libs/adbid_ezviz_1.0.0_0511_1050.aar"))
+    implementation(files("libs/adbid_ezviz_1.0.1_0723_1506.aar"))
     implementation(files("libs/ezviz-sdk-4.2.0.0721.aar"))
     implementation "com.google.code.gson:gson:2.8.9"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
