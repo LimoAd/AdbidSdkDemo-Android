@@ -23,7 +23,7 @@ public class AdConfig {
     private final String bannerUnitId;
     private String nativeUnitId2;
 
-    public static final String DEFAULT_APP_ID = "10005";
+    public static final String DEFAULT_APP_ID = "10007_Ezviz";
     private static final Map<String, AdConfig> configMap = new HashMap<>();
 
     private static boolean s2sBiddingEnabled = false;
@@ -38,33 +38,11 @@ public class AdConfig {
 
 
     static {
-
-        configMap.put("10005", new AdConfig("10005", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==",
-                "MTc1ODcwMDkyNjk1NA==", "MTc1MzkzMDY5NDkyOA==", "MTc1ODc5NjM5NTY4OA=="));
-        configMap.put("10006",
-                new AdConfig("10006", "MTc1ODc4MzcyODk3Ng==", "MTc1NDAzMjI5MTk4OQ==", "",
-                        "MTc1NDAzMTYwOTk3OQ==", ""));
-
-        configMap.put("10007_LM", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
-                "MTc3OTI0ODU5MjcxNQ==",
-                "MTc3OTI0ODU2ODYxNQ==", "MTc3OTI0ODU0OTgxMg==", "MTc1ODc5NjM5NTY4OA=="));
-
-        configMap.put("10007_FL", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
-                "MTc3OTI0NjMyODQzNA==",
-                "MTc3OTI0NjM4MzE5Ng==", "MTc3OTI0NjQxNTkxOA==", "MTc1ODc5NjM5NTY4OA=="));
-
-        configMap.put("10007_Sigmob", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
-                "MTc3OTcwNTk5MjcxMg==",
-                "MTc3OTcwNTk1ODkxNQ==", "MTc3OTcwNTkyNzA5Mg==", "MTc1ODc5NjM5NTY4OA=="));
-
         configMap.put("10007_Ezviz", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
                 "MTc3OTcwNjA5MjgyMw==",
                 //  "MTc3OTcwNjEwNTAyNg==",
                 "MTc3OTcwNjA1NjI2Nw==", "MTc3OTcwNjA0NDAxNg==", "MTc1ODc5NjM5NTY4OA=="));
 
-        configMap.put("10028",
-                new AdConfig("10028", "", "", "",
-                        "MTc3OTg1ODEyOTc5Nw==", ""));
     }
 
     public static IAdLoad getAdLoad(@NonNull Context context, @NonNull MainLogConsole logConsole) {

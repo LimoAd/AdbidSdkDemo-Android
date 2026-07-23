@@ -19,19 +19,6 @@ public class PlatformManager {
         if (!TextUtils.isEmpty(data)) {
             mItemList = GsonUtils.fromJson(data, GsonUtils.getListType(ItemModel.class));
         } else {
-            mItemList.add(new ItemModel("领摩", true, AdBidPlatform.LM.getLabel()));
-            mItemList.add(new ItemModel("领摩新", true, AdBidPlatform.LMX.getLabel()));
-            mItemList.add(new ItemModel("酷盈S2S", true, AdBidPlatform.KuYing.getLabel()));
-            mItemList.add(new ItemModel("穿山甲", true, AdBidPlatform.CSJ.getLabel()));
-            mItemList.add(new ItemModel("优量汇", true, AdBidPlatform.GDT.getLabel()));
-            mItemList.add(new ItemModel("快手", true, AdBidPlatform.KS.getLabel()));
-            mItemList.add(new ItemModel("汇川", true, AdBidPlatform.HuiChuan.getLabel()));
-            mItemList.add(new ItemModel("TopOn", true, AdBidPlatform.TaKu.getLabel()));
-            mItemList.add(new ItemModel("AdHub", true, AdBidPlatform.AMPS.getLabel()));
-            mItemList.add(new ItemModel("优必客思", true, AdBidPlatform.UBX.getLabel()));
-            mItemList.add(new ItemModel("Sigmob", true, AdBidPlatform.Sigmob.getLabel()));
-            mItemList.add(new ItemModel("美数", true, AdBidPlatform.MS.getLabel()));
-            mItemList.add(new ItemModel("Funlink", true, AdBidPlatform.FL.getLabel()));
             mItemList.add(new ItemModel("萤石", true, AdBidPlatform.Ezviz.getLabel()));
         }
         setConfig();
