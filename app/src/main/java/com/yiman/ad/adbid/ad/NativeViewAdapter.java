@@ -90,38 +90,38 @@ public class NativeViewAdapter extends RecyclerView.Adapter {
                     @Override
                     public void onVideoStart() {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoStart " + nativeAd.getTitle());
+                            consoleCallback.printMsg("视频开始播放: " + nativeAd.getTitle());
                     }
 
                     @Override
                     public void onVideoPause() {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoPause " + nativeAd.getTitle());
+                            consoleCallback.printMsg("视频暂停播放: " + nativeAd.getTitle());
                     }
 
                     @Override
                     public void onVideoResume() {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoResume " + nativeAd.getTitle());
+                            consoleCallback.printMsg("视频继续播放: " + nativeAd.getTitle());
                     }
 
                     @Override
                     public void onVideoComplete() {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoComplete " + nativeAd.getTitle());
+                            consoleCallback.printMsg("视频播放完成: " + nativeAd.getTitle());
                     }
 
                     @Override
                     public void onVideoError(AdbidError var1) {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoError " + var1.getMessage());
+                            consoleCallback.printMsg("视频播放出错: " + var1.getMessage());
                     }
 
 
                     @Override
                     public void onVideoProgressUpdate(long current, long total) {
                         if (null != consoleCallback)
-                            consoleCallback.printMsg("onVideoProgressUpdate " + total + "；" + current + " ;" + nativeAd);
+                            consoleCallback.printMsg("视频播放进度: " + current + "/" + total);
                     }
                 });
             } else if (nativeAd.getAdMaterialType() == AdMaterialType.IMAGE && !TextUtils.isEmpty(nativeAd.getMainImageUrl())) {
@@ -154,17 +154,17 @@ public class NativeViewAdapter extends RecyclerView.Adapter {
             nativeAd.setEventListener(new AdbidNativeEventListener() {
                 @Override
                 public void onImpression(@NonNull AdbidNativeAdView view, @NonNull AdbidAdInfo adInfo) {
-                    if (null != consoleCallback) consoleCallback.printMsg("onImpression");
+                    if (null != consoleCallback) consoleCallback.printMsg("信息流曝光成功");
                 }
 
                 @Override
                 public void onNativeAdClick(@NonNull AdbidNativeAdView view, @NonNull AdbidAdInfo adInfo) {
-                    if (null != consoleCallback) consoleCallback.printMsg("onAdClicked");
+                    if (null != consoleCallback) consoleCallback.printMsg("信息流被点击");
                 }
 
                 @Override
                 public void onAdClose(@Nullable AdbidNativeAdView view) {
-                    if (null != consoleCallback) consoleCallback.printMsg("onAdClosed");
+                    if (null != consoleCallback) consoleCallback.printMsg("信息流已关闭");
                     list.remove(holder.getAdapterPosition());
                     notifyDataSetChanged();
                 }

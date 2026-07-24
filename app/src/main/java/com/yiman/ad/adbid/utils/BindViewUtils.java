@@ -29,7 +29,6 @@ import java.util.List;
 
 public class BindViewUtils {
 
-    private static final float MEDIA_ASPECT_RATIO = 600F / 1024F;
 
     public static void registerView(Context context, @NonNull AdbidNativeAd nativeAd,
                                     @NonNull AdbidNativeAdView nativeAdView) {
@@ -260,16 +259,9 @@ public class BindViewUtils {
 
     private static FrameLayout.LayoutParams buildMediaLayoutParams(int containerWidth,
                                                                    int containerHeight) {
-        int safeWidth = Math.max(containerWidth, 1);
-        int safeHeight = Math.max(containerHeight, 1);
-        int targetWidth = Math.min(safeWidth, Math.round(safeHeight / MEDIA_ASPECT_RATIO));
-        int targetHeight = Math.round(targetWidth * MEDIA_ASPECT_RATIO);
-        if (targetHeight > safeHeight) {
-            targetHeight = safeHeight;
-            targetWidth = Math.round(targetHeight / MEDIA_ASPECT_RATIO);
-        }
 
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(targetWidth, targetHeight);
+
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
         return params;
     }

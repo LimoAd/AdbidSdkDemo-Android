@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,10 @@ import com.adbid.media.nativeAd.AdbidNativeEventListener;
 import com.adbid.media.nativeAd.AdbidNativeVideoListener;
 import com.adbid.utils.ViewUtils;
 import com.bumptech.glide.Glide;
+import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.bean.TestShopBean;
+import com.yiman.ad.log.ToastHub;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -79,6 +82,7 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     private void bindNativeAdHolder(@NonNull NativeAdHolder holder, @NonNull TestShopBean item) {
         bindAssetViews(holder);
         resetMediaArea(holder);
+        showRewardEntry(holder.rewardEntry, holder.rewardBtn, true);
         holder.authorTv.setVisibility(VISIBLE);
         holder.authorTv.setText("广告推荐");
         holder.timeTv.setText("广告");
@@ -103,43 +107,42 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 @Override
                 public void onVideoStart() {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg("onVideoStart " + nativeAd.getTitle());
+                        consoleCallback.printMsg("视频开始播放: " + nativeAd.getTitle());
                     }
                 }
 
                 @Override
                 public void onVideoPause() {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg("onVideoPause " + nativeAd.getTitle());
+                        consoleCallback.printMsg("视频暂停播放: " + nativeAd.getTitle());
                     }
                 }
 
                 @Override
                 public void onVideoResume() {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg("onVideoResume " + nativeAd.getTitle());
+                        consoleCallback.printMsg("视频继续播放: " + nativeAd.getTitle());
                     }
                 }
 
                 @Override
                 public void onVideoComplete() {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg("onVideoComplete " + nativeAd.getTitle());
+                        consoleCallback.printMsg("视频播放完成: " + nativeAd.getTitle());
                     }
                 }
 
                 @Override
                 public void onVideoError(AdbidError error) {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg("onVideoError " + error.getMessage());
+                        consoleCallback.printMsg("视频播放出错: " + error.getMessage());
                     }
                 }
 
                 @Override
                 public void onVideoProgressUpdate(long current, long total) {
                     if (consoleCallback != null) {
-                        consoleCallback.printMsg(
-                                "onVideoProgressUpdate " + total + "；" + current);
+                        consoleCallback.printMsg("视频播放进度: " + current + "/" + total);
                     }
                 }
             });
@@ -181,7 +184,7 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             @Override
             public void onImpression(@NonNull AdbidNativeAdView view, @NonNull AdbidAdInfo adInfo) {
                 if (consoleCallback != null) {
-                    consoleCallback.printMsg("onImpression");
+                    consoleCallback.printMsg("信息流曝光成功");
                 }
             }
 
@@ -189,7 +192,7 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             public void onNativeAdClick(@NonNull AdbidNativeAdView view,
                                         @NonNull AdbidAdInfo adInfo) {
                 if (consoleCallback != null) {
-                    consoleCallback.printMsg("onAdClicked");
+                    consoleCallback.printMsg("信息流被点击");
                 }
             }
 
@@ -202,7 +205,7 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 }
                 if (consoleCallback != null) {
                     consoleCallback.onAdClosed();
-                    consoleCallback.printMsg("onAdClosed");
+                    consoleCallback.printMsg("信息流已关闭");
                 }
             }
         });
@@ -211,6 +214,7 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     private void bindInfoHolder(@NonNull InfoHolder holder, @NonNull TestShopBean item,
                                 int position) {
+        showRewardEntry(holder.rewardEntry, holder.rewardBtn, false);
         holder.videoLayout.setVisibility(GONE);
         holder.videoLayout.removeAllViews();
         holder.authorTv.setVisibility(VISIBLE);
@@ -240,6 +244,28 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             imageUrl = imgUrls[position % imgUrls.length];
         }
         Glide.with(holder.testImg).load(imageUrl).into(holder.testImg);
+    }
+
+    private void showRewardEntry(@Nullable View rewardEntry, @Nullable View rewardBtn,
+                                 boolean visible) {
+        if (rewardEntry == null) {
+            return;
+        }
+        rewardEntry.setVisibility(visible ? VISIBLE : GONE);
+        if (!visible || rewardBtn == null) {
+            return;
+        }
+        rewardBtn.setOnClickListener(v -> {
+            try {
+                Context context = v.getContext();
+                AdbidAdLoad.getInstance().updateContext(context);
+                ToastHub.show(context, "激励广告开始加载...");
+                AdbidAdLoad.getInstance().loadReward(true);
+            } catch (Exception e) {
+                Log.e("AdbidSdkDemo", "load reward failed", e);
+                ToastHub.show(v.getContext(), "请先在首页完成广告初始化");
+            }
+        });
     }
 
     private void showAdPlaceholder(@NonNull NativeAdHolder holder) {
@@ -415,6 +441,8 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         HorizontalScrollView sixInfo;
         ImageView testImg;
         RelativeLayout videoLayout;
+        View rewardEntry;
+        View rewardBtn;
 
         InfoHolder(@NonNull View itemView) {
             super(itemView);
@@ -428,6 +456,8 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sixInfo = itemView.findViewById(R.id.six_info);
             testImg = itemView.findViewById(R.id.testImg);
             videoLayout = itemView.findViewById(R.id.videoLayout);
+            rewardEntry = itemView.findViewById(R.id.fl_reward_entry);
+            rewardBtn = itemView.findViewById(R.id.btn_reward_video);
         }
     }
 
@@ -449,6 +479,8 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         HorizontalScrollView sixInfo;
         ImageView testImg;
         RelativeLayout videoLayout;
+        View rewardEntry;
+        View rewardBtn;
 
         NativeAdHolder(@NonNull View itemView) {
             super(itemView);
@@ -469,6 +501,8 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             sixInfo = itemView.findViewById(R.id.six_info);
             testImg = itemView.findViewById(R.id.testImg);
             videoLayout = itemView.findViewById(R.id.videoLayout);
+            rewardEntry = itemView.findViewById(R.id.fl_reward_entry);
+            rewardBtn = itemView.findViewById(R.id.btn_reward_video);
         }
     }
 

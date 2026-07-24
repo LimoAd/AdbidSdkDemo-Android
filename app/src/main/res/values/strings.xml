@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">领摩-Demo</string>
+    <string name="app_name">Adbid Debug</string>
     <string name="app_main_eyebrow">AdBid Demo Console</string>
     <string name="app_main_title">调试面板</string>
     <string name="app_main_title_source">广告设置</string>
@@ -28,12 +28,17 @@
     <string name="app_native_preview_title">广告预览</string>
     <string name="app_native_preview_summary">保持与主页一致的卡片化布局，便于在调试信息流时快速查看展示结果与状态变化。</string>
     <string name="app_native_preview_hint">先点击加载，再检查就绪状态并展示广告；预览区会在广告绑定后显示。</string>
+    <string name="app_native_setting_title">广告位切换</string>
     <string name="app_native_action_title">广告操作</string>
+    <string name="app_native_slot_draw">信息流1</string>
+    <string name="app_native_slot_bottom">信息流2</string>
+    <string name="app_native_slot_none">无广告</string>
+    <string name="app_native_slot_current">当前广告位：%1$s</string>
     <string name="app_action_load">加载</string>
     <string name="app_action_start">开始</string>
     <string name="app_action_ready">就绪</string>
     <string name="app_action_show">展示</string>
-    <string name="app_action_native_single">Single</string>
+    <string name="app_action_native_single">单广告</string>
     <string name="app_action_native_list">List</string>
     <string name="app_action_banner_show">展示</string>
     <string name="app_log_title">调试日志</string>
@@ -75,11 +80,6 @@
     <string name="adbid_main_desc_banner">Flexible formats which could appear at the top, middle or bottom of your app.</string>
     <string name="adbid_main_desc_native">Include Native,Vertical Draw Video and Pre-roll Ads.Most compatible with your native app code for video ads and graphic ads.</string>
 
-    <string name="adbid_load_ad">Load Ad</string>
-    <string name="adbid_is_ad_ready">Is Ad Ready</string>
-    <string name="adbid_show_ad">Show Ad</string>
-    <string name="adbid_select_network">Select Network</string>
-
     <string name="adbid_click_to_copy_device_id">Copy AndroidID: %s</string>
     <string name="adbid_sdk_version">Taku SDK: %s</string>
 
@@ -88,6 +88,8 @@
     <string name="app_banner_name">自渲染信息流</string>
     <string name="app_inter_name">插屏广告</string>
     <string name="app_reward_name">激励广告</string>
+    <string name="app_reward_entry_title">激励视频</string>
+    <string name="app_reward_entry_subtitle">观看领取奖励</string>
     <string name="app_spalsh_name">开屏广告</string>
     <integer name="adbid_native_button_col">2</integer>
 </resources>

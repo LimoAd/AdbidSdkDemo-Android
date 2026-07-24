@@ -8,41 +8,55 @@ import androidx.annotation.NonNull;
 import com.yiman.ad.log.MainLogConsole;
 
 public abstract class IAdLoad {
-    protected final Context context;
-    protected final MainLogConsole logConsole;
+    protected Context context;
+    protected MainLogConsole logConsole;
 
     public IAdLoad(Context context, MainLogConsole logConsole) {
         this.context = context;
         this.logConsole = logConsole;
     }
 
-    protected abstract void init();
+    public void update(@NonNull Context context, @NonNull MainLogConsole logConsole) {
+        this.context = context;
+        this.logConsole = logConsole;
+    }
 
-    protected abstract void loadSplash();
+    public void updateContext(@NonNull Context context) {
+        this.context = context;
+    }
 
-    protected abstract boolean isSplashReady();
+    @NonNull
+    public MainLogConsole getLogConsole() {
+        return logConsole;
+    }
 
-    protected abstract void showSplash(@NonNull ViewGroup viewGroup);
+    public abstract void init();
 
-    protected abstract void loadInterstitial();
+    public abstract void loadSplash();
 
-    protected abstract boolean isInterstitialReady();
+    public abstract boolean isSplashReady();
 
-    protected abstract void showInterstitial();
+    public abstract void showSplash(@NonNull ViewGroup viewGroup);
 
-    protected abstract void loadReward();
+    public abstract void loadInterstitial();
 
-    protected abstract boolean isRewardReady();
+    public abstract boolean isInterstitialReady();
 
-    protected abstract void showReward();
+    public abstract void showInterstitial();
 
-    protected abstract void showBanner(@NonNull ViewGroup viewGroup);
+    public abstract void loadReward();
 
-    protected abstract void destroy();
+    public abstract boolean isRewardReady();
 
-    protected abstract void loadNative();
+    public abstract void showReward();
 
-    protected abstract void loadRecycleNative();
+    public abstract void showBanner(@NonNull ViewGroup viewGroup);
 
-    protected abstract void loadNativeDraw();
+    public abstract void destroy();
+
+    public abstract void loadNative();
+
+    public abstract void loadRecycleNative();
+
+    public abstract void loadNativeDraw();
 }
