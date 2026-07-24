@@ -36,6 +36,7 @@ import com.yiman.ad.MyApplication;
 import com.yiman.ad.adbid.ad.NativeAdActivity;
 import com.yiman.ad.adbid.ad.NativeAdDrawActivity;
 import com.yiman.ad.adbid.ad.NativeAdRecycleActivity;
+import com.yiman.ad.adbid.platform.PlatformManager;
 import com.yiman.ad.log.MainLogConsole;
 import com.yiman.ad.log.ToastHub;
 
@@ -47,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 
 public class AdbidAdLoad extends IAdLoad {
+    private static volatile AdbidAdLoad sInstance;
+
     @Nullable
     AdbidAppOpen appOpenAd;
     @Nullable
@@ -56,17 +59,47 @@ public class AdbidAdLoad extends IAdLoad {
     private int size = 0;
     private SoftReference<ViewGroup> adContainer;
     private String token;
+    private boolean autoShowReward;
 
-    public AdbidAdLoad(Context context, MainLogConsole logConsole) {
+    private AdbidAdLoad(Context context, MainLogConsole logConsole) {
         super(context, logConsole);
     }
 
+    @NonNull
+    public static AdbidAdLoad getInstance() {
+        AdbidAdLoad instance = sInstance;
+        if (instance == null) {
+            throw new IllegalStateException("AdbidAdLoad not initialized, call getInstance(context, logConsole) first");
+        }
+        return instance;
+    }
+
+    @Nullable
+    public static AdbidAdLoad getInstanceOrNull() {
+        return sInstance;
+    }
+
+    @NonNull
+    public static AdbidAdLoad getInstance(@NonNull Context context,
+                                          @NonNull MainLogConsole logConsole) {
+        if (sInstance == null) {
+            synchronized (AdbidAdLoad.class) {
+                if (sInstance == null) {
+                    sInstance = new AdbidAdLoad(context, logConsole);
+                }
+            }
+        } else {
+            sInstance.update(context, logConsole);
+        }
+        return sInstance;
+    }
+
     @Override
-    protected void init() {
+    public void init() {
         // Reserved for manual initialization logic.
         AdbidSdk.getInstance(MyApplication.myApplication).setDebugMode(true);
         //广告sdk初始化
-        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId())
+        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId(false))
                 //设置App渠道
                 .setAppChannel("xiaomi")
                 //设置App版本
@@ -388,6 +421,11 @@ public class AdbidAdLoad extends IAdLoad {
 
     @Override
     public void loadReward() {
+        loadReward(false);
+    }
+
+    public void loadReward(boolean autoShow) {
+        autoShowReward = autoShow;
         checkS2SBiddingToken(AdConfig.getAdConfig().getRewardUnitId(), () -> {
             AdbidRewardListener adbidRewardListener = new AdbidRewardListener() {
                 @Override
@@ -402,11 +440,16 @@ public class AdbidAdLoad extends IAdLoad {
                     logSuccess("激励广告加载成功，eCPM " + adInfo.getPrice());
                     toast("激励广告加载成功");
                     if (rewardedAd != null) {
-                        if (size % 2 > 0) rewardedAd.winNotice(1000);
-                        else rewardedAd.lossNotice(
-                                new AdBidLossInfo(AdBidPlatform.GDT, 5000, "this is test " + "ad"));
-
-                        size++;
+                        if (autoShowReward) {
+                            rewardedAd.winNotice(1000);
+                            rewardedAd.showAd();
+                        } else {
+                            if (size % 2 > 0) rewardedAd.winNotice(1000);
+                            else rewardedAd.lossNotice(
+                                    new AdBidLossInfo(AdBidPlatform.GDT, 5000,
+                                            "this is test " + "ad"));
+                            size++;
+                        }
                     }
                 }
 
@@ -443,7 +486,6 @@ public class AdbidAdLoad extends IAdLoad {
             };
             rewardedAd = new AdbidRewarded(AdConfig.getAdConfig().getRewardUnitId(), token);
             rewardedAd.setAdListener(adbidRewardListener);
-
             Map<String, Object> extra = new HashMap<>();
             extra.put("customId", "user_custom_id_12345");  // 用户自定义ID
             extra.put("testId", 189978878);
@@ -525,7 +567,7 @@ public class AdbidAdLoad extends IAdLoad {
     }
 
     @Override
-    protected void destroy() {
+    public void destroy() {
         if (appOpenAd != null) {
             appOpenAd.destroy();
             appOpenAd = null;
@@ -537,15 +579,12 @@ public class AdbidAdLoad extends IAdLoad {
 
         if (interstitialAd != null) {
             interstitialAd.destroy();
-        }
-
-        if (rewardedAd != null) {
-            rewardedAd.destroy();
+            interstitialAd = null;
         }
     }
 
     @Override
-    protected void loadNative() {
+    public void loadNative() {
         checkS2SBiddingToken(AdConfig.getAdConfig().getNativeUnitId(), () -> {
             Intent intent = new Intent(context, NativeAdActivity.class);
             if (!StringUtils.isEmpty(token)) {
@@ -556,7 +595,7 @@ public class AdbidAdLoad extends IAdLoad {
     }
 
     @Override
-    protected void loadRecycleNative() {
+    public void loadRecycleNative() {
         checkS2SBiddingToken(AdConfig.getAdConfig().getNativeUnitId(), () -> {
             Intent intent = new Intent(context, NativeAdRecycleActivity.class);
             if (!StringUtils.isEmpty(token)) {
@@ -567,7 +606,7 @@ public class AdbidAdLoad extends IAdLoad {
     }
 
     @Override
-    protected void loadNativeDraw() {
+    public void loadNativeDraw() {
         checkS2SBiddingToken(AdConfig.getAdConfig().getNativeUnitId(), () -> {
             Intent intent = new Intent(context, NativeAdDrawActivity.class);
             if (!StringUtils.isEmpty(token)) {

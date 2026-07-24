@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -168,6 +169,7 @@ public class NativeAdDrawActivity extends BaseActivity implements NativeDrawPage
                     nativeAd.destroy();
                 }
                 isRequestingAd = pendingAdRequestCount > 0;
+                printMsg("信息流加载成功");
                 ensureAdPreload(viewPager.getCurrentItem());
             }
 
@@ -176,7 +178,7 @@ public class NativeAdDrawActivity extends BaseActivity implements NativeDrawPage
                 pendingAdSlots.remove(slotIndex);
                 pendingAdRequestCount = Math.max(0, pendingAdRequestCount - 1);
                 isRequestingAd = pendingAdRequestCount > 0;
-                printMsg("draw load fail " + adError.getMessage());
+                printMsg("信息流加载失败: " + adError.getMessage());
             }
         });
         String token = getIntent().getStringExtra("s2s_token");
@@ -186,6 +188,7 @@ public class NativeAdDrawActivity extends BaseActivity implements NativeDrawPage
     @Override
     public void printMsg(String s) {
         Log.i("AdbidSdkDemo", s);
+        Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -118,7 +118,7 @@ dependencies {
 
     //优必客思
     implementation(files("libs/adbid_ubix_1.0.5_0429_1454.aar"))
-    implementation(files("libs/ubix-sdk-2.10.2.11.aar"))
+    implementation(files("libs/ubix-sdk-2.11.0.11.aar"))
 
     //TopOn(Taku)
     implementation(files("libs/adbid_taKu_1.0.5_0423_1106.aar"))
@@ -144,8 +144,8 @@ dependencies {
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
     //sigmob
-    implementation(files("libs/adbid_sigmob_1.0.1_0715_1139.aar"))
-    implementation(files("libs/wind-sdk-4.26.22.aar"))
+    implementation(files("libs/adbid_sigmob_1.0.2_0723_1745.aar"))
+    implementation(files("libs/wind-sdk-4.26.23.aar"))
 
     //美数广告
     implementation(files("libs/adbid_ms_1.0.0_0323_1910.aar"))

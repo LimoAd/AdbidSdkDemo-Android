@@ -2,6 +2,7 @@ package com.yiman.ad.adbid.ad;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,9 +37,24 @@ import com.yiman.ad.adbid.utils.BindViewUtils;
 import com.yiman.ad.adbid.view.TitleBar;
 import com.yiman.ad.log.MainLogConsole;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class NativeAdActivity extends BaseActivity implements View.OnClickListener {
+    private static final class PlacementOption {
+        final String label;
+        final String placementId;
+
+        PlacementOption(String label, String placementId) {
+            this.label = label;
+            this.placementId = placementId;
+        }
+    }
 
     private final MainLogConsole logConsole = new MainLogConsole();
+    private final List<PlacementOption> availablePlacementOptions = new ArrayList<>();
+    private PlacementOption drawPlacementOption;
+    private PlacementOption bottomPlacementOption;
     private AdbidNativeLoader mATNative;
     private AdbidNativeAd mNativeAd;
 
@@ -45,20 +62,32 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     private TextView mTVLoadAdBtn;
     private TextView mTVIsAdReadyBtn;
     private TextView mTVShowAdBtn;
+    private View mLayoutAdSettingCard;
+    private View mLayoutAdSlotTabs;
+    private TextView mTVDrawTab;
+    private TextView mTVBottomTab;
     private View mPanel;
     private View videoControl;
     private View videoStart;
     private View videoPause;
     private Button videoMuteChange;
+    private String currentPlacementLabel;
+    private String currentPlacementId;
     //是否自定义video展示
     private boolean isCustomVideo = false;
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native);
+        initPlacementOptions();
         initView();
         initListener();
-        initATNativeAd(AdConfig.getAdConfig().getNativeUnitId());
+        updatePlacementUI();
+        if (hasAvailablePlacement()) {
+            initATNativeAd(currentPlacementId);
+        } else {
+            logConsole.warning("[" + currentPlacementForLog() + "] 当前应用未配置自渲染信息流广告位，无广告可加载");
+        }
     }
 
 
@@ -66,6 +95,10 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         mTVLoadAdBtn = findViewById(R.id.load_ad_btn);
         mTVIsAdReadyBtn = findViewById(R.id.is_ad_ready_btn);
         mTVShowAdBtn = findViewById(R.id.show_ad_btn);
+        mLayoutAdSettingCard = findViewById(R.id.layout_ad_setting_card);
+        mLayoutAdSlotTabs = findViewById(R.id.layout_ad_slot_tabs);
+        mTVDrawTab = findViewById(R.id.tab_draw);
+        mTVBottomTab = findViewById(R.id.tab_bottom);
         TitleBar titleBar = findViewById(R.id.title_bar);
         titleBar.setTitle(R.string.app_section_native);
         titleBar.setListener(view -> finish());
@@ -84,7 +117,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         TextView logText = findViewById(R.id.text_log);
         logConsole.bind(logScroll, logText);
         logConsole.clear();
-        logConsole.info("自渲染信息流页面已打开");
+        logConsole.info("自渲染信息流页面已打开，当前广告位: " + currentPlacementForLog());
 
     }
 
@@ -92,6 +125,8 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
         mTVLoadAdBtn.setOnClickListener(this);
         mTVIsAdReadyBtn.setOnClickListener(this);
         mTVShowAdBtn.setOnClickListener(this);
+        mTVDrawTab.setOnClickListener(this);
+        mTVBottomTab.setOnClickListener(this);
     }
 
     int size=0;
@@ -103,7 +138,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
                 String msg = "load success ecpm" + (adinfo == null ? "adinfo null" :
                         adinfo.getPrice());
                 showToast(msg);
-                logConsole.success("信息流加载成功: " + msg);
+                logConsole.success("[" + currentPlacementForLog() + "] 信息流加载成功: " + msg);
 
                 if (size % 2 > 0)
                     mATNative.winNotice(1000);
@@ -115,37 +150,52 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
 
             @Override public void onNativeAdLoadFail(@NonNull AdbidError adError) {
                 showToast("load fail");
-                logConsole.error("信息流加载失败: " + adError.getMessage());
+                logConsole.error("[" + currentPlacementForLog() + "] 信息流加载失败: " +
+                        adError.getMessage());
             }
         });
 
     }
 
     private void loadAd() {
+        if (!hasAvailablePlacement() || mATNative == null) {
+            showToast(getString(R.string.app_native_slot_none));
+            logConsole.warning("[" + currentPlacementForLog() + "] 当前无可用广告位，无法加载信息流广告");
+            return;
+        }
         destroyAd();
         recreateNativeAdView();
-        mPanel.setVisibility(View.INVISIBLE);
-        videoControl.setVisibility(View.INVISIBLE);
+        resetPreviewState();
         String token = getIntent().getStringExtra("s2s_token");
-        logConsole.info("开始加载自渲染信息流");
+        logConsole.info("开始加载自渲染信息流，广告位: " + currentPlacementLabel);
         mATNative.loadAd(token);
     }
 
     private boolean isAdReady() {
+        if (!hasAvailablePlacement() || mATNative == null) {
+            showToast(getString(R.string.app_native_slot_none));
+            logConsole.warning("[" + currentPlacementForLog() + "] 当前无可用广告位，无法检查信息流就绪状态");
+            return false;
+        }
         boolean isReady = mATNative.getNativeAd() != null && mATNative.getNativeAd().isReady();
         showToast("load isReady " + isReady);
         if (isReady) {
-            logConsole.success("自渲染信息流就绪: true");
+            logConsole.success("[" + currentPlacementForLog() + "] 自渲染信息流就绪: true");
         } else {
-            logConsole.warning("自渲染信息流就绪: false");
+            logConsole.warning("[" + currentPlacementForLog() + "] 自渲染信息流就绪: false");
         }
         return isReady;
     }
 
     private void showAd() {
+        if (!hasAvailablePlacement() || mATNative == null) {
+            showToast(getString(R.string.app_native_slot_none));
+            logConsole.warning("[" + currentPlacementForLog() + "] 当前无可用广告位，无法展示信息流广告");
+            return;
+        }
         AdbidNativeAd nativeAd = mATNative.getNativeAd();
         if (nativeAd != null) {
-            logConsole.info("开始展示自渲染信息流");
+            logConsole.info("[" + currentPlacementForLog() + "] 开始展示自渲染信息流");
             if (mNativeAd != null) {
                 mNativeAd.destroy();
             }
@@ -158,24 +208,24 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
                             nativeAd.getAdMaterialType() == AdMaterialType.VIDEO ? View.VISIBLE :
                                     View.INVISIBLE);
                     showToast("ad impress");
-                    logConsole.success("信息流曝光成功");
+                    logConsole.success("[" + currentPlacementForLog() + "] 信息流曝光成功");
                 }
 
                 @Override public void onNativeAdClick(@NonNull AdbidNativeAdView view,
                                                       @NonNull AdbidAdInfo adInfo) {
                     showToast("ad click");
-                    logConsole.info("信息流被点击");
+                    logConsole.info("[" + currentPlacementForLog() + "] 信息流被点击");
                 }
 
                 @Override public void onAdClose(@Nullable AdbidNativeAdView view) {
                     showToast("ad close");
-                    logConsole.warning("信息流已关闭");
+                    logConsole.warning("[" + currentPlacementForLog() + "] 信息流已关闭");
                 }
             });
 
             mNativeAd.setDislikeCallbackListener(info -> {
                 showToast("dislike click");
-                logConsole.warning("触发不感兴趣回调");
+                logConsole.warning("[" + currentPlacementForLog() + "] 触发不感兴趣回调");
             });
 
             if (!isCustomVideo) {
@@ -187,12 +237,110 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
 
             mATNativeView.setVisibility(View.VISIBLE);
             mPanel.setVisibility(View.VISIBLE);
-            logConsole.success("广告视图已绑定到预览区");
+            logConsole.success("[" + currentPlacementForLog() + "] 广告视图已绑定到预览区");
         } else {
-            logConsole.warning("当前无可展示的信息流广告，请先加载");
+            logConsole.warning("[" + currentPlacementForLog() + "] 当前无可展示的信息流广告，请先加载");
         }
 
 
+    }
+
+    private void initPlacementOptions() {
+        availablePlacementOptions.clear();
+        AdConfig adConfig = AdConfig.getAdConfig();
+        drawPlacementOption = createPlacementOption(getString(R.string.app_native_slot_draw),
+                adConfig.getNativeUnitId());
+        bottomPlacementOption = createPlacementOption(getString(R.string.app_native_slot_bottom),
+                adConfig.getNativeUnitId2());
+        addPlacementOption(drawPlacementOption);
+        addPlacementOption(bottomPlacementOption);
+        if (availablePlacementOptions.isEmpty()) {
+            currentPlacementLabel = null;
+            currentPlacementId = null;
+            return;
+        }
+        PlacementOption defaultOption = availablePlacementOptions.get(0);
+        currentPlacementLabel = defaultOption.label;
+        currentPlacementId = defaultOption.placementId;
+    }
+
+    @Nullable
+    private PlacementOption createPlacementOption(String label, String placementId) {
+        if (TextUtils.isEmpty(placementId)) {
+            return null;
+        }
+        String normalizedPlacementId = placementId.trim();
+        if (normalizedPlacementId.isEmpty()) {
+            return null;
+        }
+        return new PlacementOption(label, normalizedPlacementId);
+    }
+
+    private void addPlacementOption(@Nullable PlacementOption option) {
+        if (option != null) {
+            availablePlacementOptions.add(option);
+        }
+    }
+
+    private boolean hasAvailablePlacement() {
+        return !availablePlacementOptions.isEmpty() && !TextUtils.isEmpty(currentPlacementId);
+    }
+
+    @NonNull
+    private String currentPlacementForLog() {
+        return TextUtils.isEmpty(currentPlacementLabel) ? getString(R.string.app_native_slot_none) :
+                currentPlacementLabel;
+    }
+
+    private void updatePlacementUI() {
+        boolean hasPlacement = hasAvailablePlacement();
+        boolean showSettingCard = availablePlacementOptions.size() > 1;
+        mLayoutAdSettingCard.setVisibility(showSettingCard ? View.VISIBLE : View.GONE);
+        mLayoutAdSlotTabs.setVisibility(showSettingCard ? View.VISIBLE : View.GONE);
+        bindPlacementTab(mTVDrawTab, drawPlacementOption);
+        bindPlacementTab(mTVBottomTab, bottomPlacementOption);
+        updateActionEnabledState(hasPlacement);
+        if (!hasPlacement) {
+            resetPreviewState();
+        }
+    }
+
+    private void bindPlacementTab(@NonNull TextView tabView, @Nullable PlacementOption option) {
+        if (option == null) {
+            tabView.setVisibility(View.GONE);
+            return;
+        }
+        boolean isSelected = TextUtils.equals(option.placementId, currentPlacementId);
+        tabView.setVisibility(View.VISIBLE);
+        tabView.setText(option.label);
+        tabView.setSelected(isSelected);
+        tabView.setTextColor(ContextCompat.getColor(this, isSelected ? android.R.color.white :
+                R.color.app_text_secondary));
+        tabView.setAlpha(1F);
+    }
+
+    private void updateActionEnabledState(boolean enabled) {
+        mTVLoadAdBtn.setEnabled(enabled);
+        mTVIsAdReadyBtn.setEnabled(enabled);
+        mTVShowAdBtn.setEnabled(enabled);
+        mTVLoadAdBtn.setAlpha(enabled ? 1F : 0.5F);
+        mTVIsAdReadyBtn.setAlpha(enabled ? 1F : 0.5F);
+        mTVShowAdBtn.setAlpha(enabled ? 1F : 0.5F);
+    }
+
+    private void switchPlacement(PlacementOption option) {
+        if (option == null || TextUtils.equals(currentPlacementId, option.placementId)) {
+            return;
+        }
+        currentPlacementLabel = option.label;
+        currentPlacementId = option.placementId;
+        destroyAd();
+        releaseNativeLoader();
+        recreateNativeAdView();
+        resetPreviewState();
+        initATNativeAd(currentPlacementId);
+        updatePlacementUI();
+        logConsole.info("切换广告位: " + currentPlacementLabel);
     }
 
     private void recreateNativeAdView() {
@@ -340,9 +488,7 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
     @Override protected void onDestroy() {
         super.onDestroy();
         destroyAd();
-        if (mATNative != null) {
-            mATNative.setAdListener(null);
-        }
+        releaseNativeLoader();
         logConsole.unbind();
     }
 
@@ -351,6 +497,18 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             mNativeAd.destroy();
             mNativeAd = null;
         }
+    }
+
+    private void releaseNativeLoader() {
+        if (mATNative != null) {
+            mATNative.setAdListener(null);
+            mATNative = null;
+        }
+    }
+
+    private void resetPreviewState() {
+        mPanel.setVisibility(View.INVISIBLE);
+        videoControl.setVisibility(View.INVISIBLE);
     }
 
 
@@ -362,6 +520,10 @@ public class NativeAdActivity extends BaseActivity implements View.OnClickListen
             isAdReady();
         } else if (v.getId() == R.id.show_ad_btn) {
             showAd();
+        } else if (v.getId() == R.id.tab_draw) {
+            switchPlacement(drawPlacementOption);
+        } else if (v.getId() == R.id.tab_bottom) {
+            switchPlacement(bottomPlacementOption);
         }
     }
 }

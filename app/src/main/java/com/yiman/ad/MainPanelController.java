@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import com.adbid.sdk.AdbidSdkConfiguration;
 import com.adbid.utils.sp.PreferencesUtils;
 import com.yiman.ad.adbid.AdConfig;
-import com.yiman.ad.adbid.BuildConfig;
+import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.platform.BottomSelectDialog;
 import com.yiman.ad.adbid.platform.PlatformManager;
@@ -43,8 +43,6 @@ public final class MainPanelController {
         this.s2sCheckBox = activity.findViewById(R.id.btn_check_s2s);
         this.textPlatform = activity.findViewById(R.id.text_platform);
         this.platformContainer = activity.findViewById(R.id.llayout_platform);
-        View container=activity.findViewById(R.id.ad_control);
-        container.setVisibility(BuildConfig.DEBUG?View.VISIBLE:View.GONE);
     }
 
     public void bind() {
@@ -65,7 +63,7 @@ public final class MainPanelController {
                 updatePlatformVisibility(checked);
                 refreshCurrentAppId();
                 ToastHub.show(activity, "广告源已切换，应用ID可单独配置");
-                activity.resetAdLoad(getCurrentAdLoad());
+                activity.resetAdLoad();
             }
         });
 
@@ -94,11 +92,12 @@ public final class MainPanelController {
     }
 
     public IAdLoad getCurrentAdLoad() {
-        return
-                AdConfig.getAdLoad(activity, logConsole);
+
+        return AdbidAdLoad.getInstance(activity, logConsole);
     }
 
     private void showAppSwitchDialog() {
+        boolean isAdxMode = adxCheckBox.isChecked();
         List<String> ids = AdConfig.getAvailableAppIds();
         if (ids.isEmpty()) {
             ToastHub.show(activity, "当前模式无可用应用");
@@ -111,7 +110,7 @@ public final class MainPanelController {
             if (selectedAppId.equals(current)) {
                 return;
             }
-            AppIdStore.saveSelectedAppId(selectedAppId);
+            AppIdStore.saveSelectedAppId(isAdxMode, selectedAppId);
             refreshCurrentAppId();
 
             if (AdbidSdkConfiguration.Instance.isInit()){
@@ -131,6 +130,7 @@ public final class MainPanelController {
     }
 
     private void refreshCurrentAppId() {
+        boolean isAdxMode = adxCheckBox.isChecked();
         textAppId.setText(AppIdStore.getSelectedAppKey());
     }
 
