@@ -63,29 +63,6 @@ dependencies {
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
 
-   /* //领摩
-    implementation 'com.limo.sdk:adbid-sdk:2.1.0.20'
-    //ubix
-    implementation 'com.limo.sdk:adbid-ubix-adapter:1.0.5'
-    implementation 'com.limo.sdk.ubix:ubix-sdk:2.10.2.11'
-    //泛连
-    implementation 'com.limo.sdk:adbid-funlink-adapter:1.0.2'
-    implementation 'com.limo.sdk.funlink:funlink-sdk:2.9.1.10'
-    //sigmob
-    implementation 'com.limo.sdk:adbid-sigmob-adapter:1.0.1'
-    implementation 'com.limo.sdk.wind:wind-sdk:4.26.22'
-    //萤石
-    implementation 'com.limo.sdk:adbid-ezviz-adapter:1.0.1'
-    implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.1.0.0616'
-
-    implementation "com.google.code.gson:gson:2.8.9"
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
-    implementation "com.squareup.okhttp3:okhttp:4.9.0"
-    implementation "com.squareup.retrofit2:retrofit:2.8.1"
-    implementation "com.github.bumptech.glide:glide:4.11.0"
-    implementation "com.airbnb.android:lottie:3.7.2"*/
-
-
 
     //*********************广告聚合接入*******************************************
 
