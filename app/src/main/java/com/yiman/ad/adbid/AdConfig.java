@@ -44,7 +44,7 @@ public class AdConfig {
 
         configMap.put("10007_UBIX", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
                 "MTc3OTI0OTI2MzA1OA==",
-                "MTc3OTI0ODU2ODYxNQ==", "MTc3OTI0ODU0OTgxMg==", "MTc1ODc5NjM5NTY4OA==", "MTc3OTI0NzExMzgyOQ=="));
+                "MTc3OTI0NzA4NDQ0Mw==", "MTc3OTI0NzA0OTgxNg==", "MTc1ODc5NjM5NTY4OA==", "MTc3OTI0NzExMzgyOQ=="));
 
         configMap.put("10007_LM", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
                 "MTc3OTI0ODU5MjcxNQ==",

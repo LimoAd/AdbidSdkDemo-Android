@@ -134,16 +134,12 @@ public class NativeDrawPagerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
                 @Override
                 public void onVideoError(AdbidError error) {
-                    if (consoleCallback != null) {
-                        consoleCallback.printMsg("视频播放出错: " + error.getMessage());
-                    }
+
                 }
 
                 @Override
                 public void onVideoProgressUpdate(long current, long total) {
-                    if (consoleCallback != null) {
-                        consoleCallback.printMsg("视频播放进度: " + current + "/" + total);
-                    }
+
                 }
             });
         } else if (nativeAd.getAdMaterialType() == AdMaterialType.IMAGE
