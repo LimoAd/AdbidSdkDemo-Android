@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 
-import com.adbid.utils.sp.PreferencesUtils;
 import com.yiman.ad.adbid.AdbidAdLoad;
 import com.yiman.ad.adbid.R;
 import com.yiman.ad.adbid.view.TitleBar;
@@ -30,18 +29,6 @@ public class MainActivity extends BaseActivity {
         ensureAdLoadSingleton();
 
         initAdActions();
-    }
-
-    void resetAdLoad() {
-        IAdLoad previous =  AdbidAdLoad.getInstanceOrNull() ;
-        if (previous != null) {
-            previous.destroy();
-        }
-        ensureAdLoadSingleton();
-    }
-
-    private boolean isAdxMode() {
-        return PreferencesUtils.getBoolean("is_check_adx", false);
     }
 
     private IAdLoad ensureAdLoadSingleton() {

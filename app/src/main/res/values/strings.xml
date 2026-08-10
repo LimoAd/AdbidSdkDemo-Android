@@ -7,8 +7,6 @@
     <string name="app_mode_title">广告源模式</string>
     <string name="app_source_title">广告设置</string>
     <string name="app_mode_summary">切换当前使用的广告加载实现，默认使用 AdBid。</string>
-    <string name="app_mode_adx">启用 AdX</string>
-    <string name="app_source_action_adx">启动Adx</string>
     <string name="app_platform_title">当前平台</string>
     <string name="app_platform_prefix">已选:</string>
     <string name="app_platform_default">全部平台</string>

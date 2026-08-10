@@ -3,8 +3,6 @@ package com.yiman.ad;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Process;
-import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -31,18 +29,14 @@ public final class MainPanelController {
     private final MainActivity activity;
     private final MainLogConsole logConsole = new MainLogConsole();
     private final TextView textAppId;
-    private final Switch adxCheckBox;
     private final Switch s2sCheckBox;
     private final BounceMarqueeTextView textPlatform;
-    private final View platformContainer;
 
     public MainPanelController(@NonNull MainActivity activity) {
         this.activity = activity;
         this.textAppId = activity.findViewById(R.id.text_app_id_value);
-        this.adxCheckBox = activity.findViewById(R.id.btn_check_adx);
         this.s2sCheckBox = activity.findViewById(R.id.btn_check_s2s);
         this.textPlatform = activity.findViewById(R.id.text_platform);
-        this.platformContainer = activity.findViewById(R.id.llayout_platform);
     }
 
     public void bind() {
@@ -53,19 +47,6 @@ public final class MainPanelController {
                 view -> new BottomSelectDialog(activity, () -> {
                     textPlatform.setText(PlatformManager.getSelectedNamesText());
                 }).show());
-
-        boolean isAdxMode = PreferencesUtils.getBoolean("is_check_adx", false);
-        adxCheckBox.setChecked(isAdxMode);
-        updatePlatformVisibility(isAdxMode);
-        adxCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                PreferencesUtils.put("is_check_adx", checked);
-                updatePlatformVisibility(checked);
-                refreshCurrentAppId();
-                ToastHub.show(activity, "广告源已切换，应用ID可单独配置");
-                activity.resetAdLoad();
-            }
-        });
 
         boolean isS2SMode = PreferencesUtils.getBoolean("is_check_s2s", false);
         s2sCheckBox.setChecked(isS2SMode);
@@ -92,12 +73,10 @@ public final class MainPanelController {
     }
 
     public IAdLoad getCurrentAdLoad() {
-
         return AdbidAdLoad.getInstance(activity, logConsole);
     }
 
     private void showAppSwitchDialog() {
-        boolean isAdxMode = adxCheckBox.isChecked();
         List<String> ids = AdConfig.getAvailableAppIds();
         if (ids.isEmpty()) {
             ToastHub.show(activity, "当前模式无可用应用");
@@ -110,13 +89,13 @@ public final class MainPanelController {
             if (selectedAppId.equals(current)) {
                 return;
             }
-            AppIdStore.saveSelectedAppId(isAdxMode, selectedAppId);
+            AppIdStore.saveSelectedAppId(selectedAppId);
             refreshCurrentAppId();
 
-            if (AdbidSdkConfiguration.Instance.isInit()){
+            if (AdbidSdkConfiguration.Instance.isInit()) {
                 ToastHub.show(activity, "已切换 " + selectedAppId + "，请手动重启");
                 restartApp();
-            }else {
+            } else {
                 ToastHub.show(activity, "已切换 " + selectedAppId + "，请重新初始化");
             }
         }).show();
@@ -130,12 +109,7 @@ public final class MainPanelController {
     }
 
     private void refreshCurrentAppId() {
-        boolean isAdxMode = adxCheckBox.isChecked();
         textAppId.setText(AppIdStore.getSelectedAppKey());
-    }
-
-    private void updatePlatformVisibility(boolean isAdxMode) {
-        platformContainer.setVisibility(isAdxMode ? View.GONE : View.VISIBLE);
     }
 
     private void bindLogConsole(boolean clearLogs) {

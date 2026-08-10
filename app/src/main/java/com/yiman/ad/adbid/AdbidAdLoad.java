@@ -99,7 +99,7 @@ public class AdbidAdLoad extends IAdLoad {
         // Reserved for manual initialization logic.
         AdbidSdk.getInstance(MyApplication.myApplication).setDebugMode(true);
         //广告sdk初始化
-        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId(false))
+        AdbidInitConfig config = AdbidInitConfig.builder(AppIdStore.getSelectedAppId())
                 //设置App渠道
                 .setAppChannel("xiaomi")
                 //设置App版本
