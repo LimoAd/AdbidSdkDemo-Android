@@ -91,7 +91,7 @@ dependencies {
     //*********************广告聚合接入*******************************************
 
     //领摩聚合核心库(默认接入领摩ADX)
-    implementation(files("libs/adbid_sdk_2.1.0.21_0814_1911.aar"))
+    implementation(files("libs/adbid_sdk_2.1.0.22_0818_1421.aar"))
 
     //lmx
     implementation(files("libs/adbid_common_1.0.0_0616_2248.aar"))
