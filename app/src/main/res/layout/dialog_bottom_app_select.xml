@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.adbid.adx.view.round.LMRoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.yiman.ad.adbid.view.round.RoundLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:lm_backgroundColor="@color/app_surface"
-    app:lm_cornerRadius="24dp">
+    app:round_backgroundColor="@color/app_surface"
+    app:round_cornerRadius="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,4 +61,4 @@
         android:layout_marginEnd="18dp"
         android:layout_marginBottom="18dp"
         android:text="@string/app_platform_dialog_confirm" />
-</com.adbid.adx.view.round.LMRoundLinearLayout>
+</com.yiman.ad.adbid.view.round.RoundLinearLayout>

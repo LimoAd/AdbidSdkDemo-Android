@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundLinearLayout">
+        <attr name="round_backgroundColor" format="color" />
+        <attr name="round_backgroundPressColor" format="color" />
+        <attr name="round_cornerRadius" format="dimension" />
+        <attr name="round_cornerRadius_TL" format="dimension" />
+        <attr name="round_cornerRadius_TR" format="dimension" />
+        <attr name="round_cornerRadius_BL" format="dimension" />
+        <attr name="round_cornerRadius_BR" format="dimension" />
+        <attr name="round_strokeWidth" format="dimension" />
+        <attr name="round_strokeColor" format="color" />
+    </declare-styleable>
+</resources>
