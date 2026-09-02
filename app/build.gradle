@@ -63,8 +63,8 @@ dependencies {
     implementation 'com.geyifeng.immersionbar:immersionbar:3.2.2'
 
 
-  /*  //领摩
-    implementation 'com.limo.sdk:adbid-sdk:2.1.0.22'
+   /* //领摩
+    implementation 'com.limo.sdk:adbid-sdk:2.1.0.23'
     //快手
     implementation 'com.limo.sdk:adbid-ks-adapter:1.0.13'
     //ubix
@@ -78,7 +78,7 @@ dependencies {
     implementation 'com.limo.sdk.wind:wind-sdk:4.26.23'
     //萤石
     implementation 'com.limo.sdk:adbid-ezviz-adapter:1.0.3'
-    implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.2.0.0821'
+    implementation 'com.limo.sdk.ezviz:ezviz-sdk:4.1.0.0529'
 
     implementation "com.google.code.gson:gson:2.8.9"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
@@ -88,7 +88,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:3.7.2"
 
 
-    implementation(files("libs/kssdk-ad-4.12.20.4-publishRelease-5fe79af37b.aar"))*/
+    implementation(files("libs/kssdklite-ad-5.6.10.1-publishRelease-a4998d6ba3.aar"))*/
 
 
     //*********************广告聚合接入*******************************************
@@ -110,7 +110,7 @@ dependencies {
 
     //快手
     implementation(files("libs/adbid_ks_1.0.13_0724_1552.aar"))
-    implementation(files("libs/kssdk-ad-4.12.20.4-publishRelease-5fe79af37b.aar"))
+    implementation(files("libs/kssdklite-ad-5.6.10.1-publishRelease-a4998d6ba3.aar"))
 
     //汇川
     implementation(files("libs/adbid_huichuan_1.0.9_0323_1909.aar"))
