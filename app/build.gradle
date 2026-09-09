@@ -121,7 +121,7 @@ dependencies {
     implementation(files("libs/GDTSDK-union-4.671.1541.aar"))// 普通版本
 
     //优必客思
-    implementation(files("libs/adbid_ubix_1.0.5_0429_1454.aar"))
+    implementation(files("libs/adbid_ubix_1.0.7_0909_1756.aar"))
     implementation(files("libs/ubix-sdk-2.11.0.11.aar"))
 
     //TopOn(Taku)
@@ -160,12 +160,12 @@ dependencies {
     implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0"
 
     //funlink
-    implementation(files("libs/adbid_funlink_1.0.2_0527_2116.aar"))
+    implementation(files("libs/adbid_funlink_1.0.3_0909_1758.aar"))
     implementation(files("libs/funlink-sdk-2.9.1.11.aar"))
 
     //萤石
-    implementation(files("libs/adbid_ezviz_1.0.2_0724_1545.aar"))
-    implementation(files("libs/ezviz-sdk-4.2.0.0724.aar"))
+    implementation(files("libs/adbid_ezviz_1.0.3_0909_1758.aar"))
+    implementation(files("libs/ezviz-sdk-4.2.2.0908.aar"))
     implementation "com.google.code.gson:gson:2.8.9"
     implementation 'io.reactivex.rxjava2:rxjava:2.2.19'
     implementation "com.squareup.okhttp3:okhttp:4.9.0"
