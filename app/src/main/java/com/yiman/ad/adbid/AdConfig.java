@@ -38,11 +38,15 @@ public class AdConfig {
 
 
     static {
-
+        configMap.put("10001", new AdConfig("10001", "MTc5MjM4MjU4NDM0Mw==", "MTc5MjM4MjU5ODQ2OQ==",
+                "MTc5MjM4MjYxOTg0Nw==", "MTc5MjM4MjU2OTA1Mg==", "MTc5MjM4MjYwODQxMg=="));
         configMap.put("10005", new AdConfig("10005", "MTc1MzkzMDgyNTk4MA==", "MTc1MzkzMTExNjA4NA==",
                 "MTc1ODcwMDkyNjk1NA==", "MTc1MzkzMDY5NDkyOA==", "MTc1ODc5NjM5NTY4OA=="));
         configMap.put("10005_KS", new AdConfig("10005", "", "MTc4NzY1NzE3OTk4Mg==",
-                "MTc4NzY1NzA2MjEwNQ==", "MTc4NzY1NzAxNTAyOQ==", "MTc1ODc5NjM5NTY4OA==","MTc4NzY1NzI1MjU3OA=="));
+                "MTc4NzY1NzA2MjEwNQ==", "MTc4NzY1NzAxNTAyOQ==", "MTc1ODc5NjM5NTY4OA==", "MTc4NzY1NzI1MjU3OA=="));
+
+        configMap.put("10007_ALL", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==", "MTc4NjA5MjE5NjUxMw==",
+                "MTc4NjA5MjE4MDcxMg==", "MTc4NjA5MjE2NzE2OQ==", "MTc1ODc5NjM5NTY4OA==", "MTc4NjA5MjIxNDMzMg=="));
 
         configMap.put("10007_UBIX", new AdConfig("10007", "MTc1MzkzMDgyNTk4MA==",
                 "MTc3OTI0OTI2MzA1OA==",
@@ -64,6 +68,10 @@ public class AdConfig {
                 "MTc3OTcwNjA5MjgyMw==",
 
                 "MTc3OTcwNjA1NjI2Nw==", "MTc3OTcwNjA0NDAxNg==", "MTc1ODc5NjM5NTY4OA==", "MTc3OTcwNjEwNTAyNg=="));
+
+        configMap.put("10007_JuTui", new AdConfig("10007", "",
+                "MTc5MTYzMDUwNjQyOQ==",
+                "MTc5MTYzMDY1NjgxNQ==", "MTc5MTYzMDM5Mjc2Mg==", "MTc1ODc5NjM5NTY4OA==", "MTc5MTYzMDU4NDI0MQ=="));
 
         configMap.put("10028",
                 new AdConfig("10028", "", "", "",
